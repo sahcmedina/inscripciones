@@ -1,0 +1,11 @@
+{
+"sProcessing": "Procesando",
+"sZeroRecords": "No se encontraron resultados",
+"sSearch": "Buscar",
+"oPaginate":{
+	"sfirst":"Primero",
+	"sLast":"Ultimo",
+	"sNext":"Siguiente",
+	"sPrevious":"Anterior"
+}
+}
