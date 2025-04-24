@@ -20,7 +20,6 @@ session_start();
 
     <br/><br/><br/><br/>
 
-
     <div class="auth-container d-flex">
 
         <div class="container mx-auto align-self-center">
@@ -59,7 +58,7 @@ session_start();
                                 </div>
                                 <div class="col-12">
                                     <div class="text-center">
-                                        <p class="mb-0">Más que software, una solución inteligente para tu crecimiento... 
+                                        <p class="mb-0">al Sistema de Inscripciones 
                                         </p>
                                     </div>
                                 </div>
