@@ -1,16 +1,11 @@
 <?php
-session_start();
-
-// Empresa logueada
-if($id_empresa_logueada == 0){	$url_logo = "./images/logos/icono.png";						}
-else{							$url_logo = "./images/logos/".$id_empresa_logueada.".png";	}
+	session_start();					
 ?>
 
 <!-- BEGIN LOADER -->
 <div id="load_screen"> <div class="loader"> <div class="loader-content">
 	<div class="spinner-grow align-self-center"></div>
-</div></div></div>
-
+</div></div></div>	
 
 <!--  BEGIN NAVBAR  -->
 <div class="header-container container-xxl">
@@ -22,11 +17,11 @@ else{							$url_logo = "./images/logos/".$id_empresa_logueada.".png";	}
 		<ul class="navbar-item theme-brand flex-row  text-center">
 			<li class="nav-item theme-logo">
 				<a href="./principal.php">
-					<img src="<?php echo $url_logo ?>" alt="logo">
+					<img src="./images/logos/icono.ico" alt="logo">
 				</a>
 			</li>
 			<li class="nav-item theme-text">
-				<a href="./principal.php" class="nav-link"> <?php echo $empresa_logueada ?></a>
+				<a href="./principal.php" class="nav-link"> <?php echo 'Inscripciones' ?></a>
 			</li>
 		</ul>
 	

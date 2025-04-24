@@ -2,4 +2,4 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
 
-<title>San Juan SAAS</title>
+<title>Ministerio de Producción, Trabajo e Innovación</title>

@@ -65,7 +65,7 @@
                             </a>
                         </li>
                         <div class="nav-item theme-text">
-                            <a href="./principal.php" class="nav-link"> San Juan SAAS </a>
+                            <a href="./principal.php" class="nav-link"> Inscripciones </a>
                         </div>
                     </div>
                     <div class="nav-item sidebar-toggle">
@@ -138,7 +138,8 @@
 
                     <?php 
                         // Cliente NICOVAL - perfiles Admin & Tecnico
-                        if($perfil_user == 4 OR $perfil_user == 6){ require_once('./indicadores/sol_materiales_tecnicos.php');  } 
+                        // if($perfil_user == 4 OR $perfil_user == 6){ 
+                            // require_once('./indicadores/sol_materiales_tecnicos.php');  } 
                     ?>    
 
                 </div>

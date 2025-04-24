@@ -1,5 +1,5 @@
 <?php
-session_start();
+	session_start();
 ?>
 
 <!-- BEGIN LOADER -->
@@ -18,11 +18,11 @@ session_start();
 		<ul class="navbar-item theme-brand flex-row  text-center">
 			<li class="nav-item theme-logo">
 				<a href="./principal.php">
-					<img src="./images/logos/icono.png" alt="logo">
+					<img src="./images/logos/icono.ico" alt="logo">
 				</a>
 			</li>
 			<li class="nav-item theme-text">
-				<a href="./principal.php" class="nav-link"> San Juan SAAS </a>
+				<a href="./principal.php" class="nav-link"> Inscripciones </a>
 			</li>
 		</ul>
 	
