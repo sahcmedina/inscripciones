@@ -14,7 +14,7 @@
 	// recibo el id del perfil
 	$idperfil   = $_POST['idperfil'];	
 	$arr_funcion= array();
-	$arr_funcion= $U->gets_funciones_segun_perfil($idperfil, $id_empresa_logueada);
+	$arr_funcion= $U->gets_funciones_segun_perfil($idperfil);
 	$nbre_perfil= $U->get_nbre_perfil($idperfil);
 ?>
 
@@ -81,7 +81,7 @@
                             </a>
                         </li>
                         <div class="nav-item theme-text">
-                            <a href="./principal.php" class="nav-link"> San Juan SAAS </a>
+                            <a href="./principal.php" class="nav-link"> Inscripciones </a>
                         </div>
                     </div>
                     <div class="nav-item sidebar-toggle">
@@ -182,12 +182,13 @@
 											if($cur["modificacion"] == '1')   $modific= 'checked'; 	  else    $modific= '';
 											
 											echo "<tr class=\"cellColor" . ($i%2) . "\" align=\"center\" id=\"tr$i\">\n"
-                                                . '<td style="text-align:center">' . '<input name="chek[]" id="chek[]" value="'.$cur["f"].'" type="checkbox" '.$elejida.' class="form-check-success" > '. "</td>\n"
+                                                . '<td style="text-align:center">' . '<input name="chek[]" id="chek[]" value="'.$cur["f"].'" type="checkbox" '.$elejida.' class="form-check-input chk-parent" > '. "</td>\n"
+                                                // <input class="form-check-input chk-parent" type="checkbox" id="form-check-default">
                                                 . '<td style="text-align:center">' . utf8_encode($cur['nbre_m'])      . "</td>\n"
                                                 . '<td style="text-align:center">' . utf8_encode($cur['nbre_f'])      . "</td>\n"
-                                                . '<td style="text-align:center">' . '<input id="'.$cur["f"].'-A" name="'.$cur["f"].'-A" value="1" type="checkbox" '.$alta.' class="styled" > '. "</td>\n"
-                                                . '<td style="text-align:center">' . '<input id="'.$cur["f"].'-B" name="'.$cur["f"].'-B" value="1" type="checkbox" '.$baja.' class="styled" > '. "</td>\n"
-                                                . '<td style="text-align:center">' . '<input id="'.$cur["f"].'-M" name="'.$cur["f"].'-M" value="1" type="checkbox" '.$modific.' class="styled" > '. "</td>\n"
+                                                . '<td style="text-align:center">' . '<input id="'.$cur["f"].'-A" name="'.$cur["f"].'-A" value="1" type="checkbox" '.$alta.' class="form-check-input chk-parent" > '. "</td>\n"
+                                                . '<td style="text-align:center">' . '<input id="'.$cur["f"].'-B" name="'.$cur["f"].'-B" value="1" type="checkbox" '.$baja.' class="form-check-input chk-parent" > '. "</td>\n"
+                                                . '<td style="text-align:center">' . '<input id="'.$cur["f"].'-M" name="'.$cur["f"].'-M" value="1" type="checkbox" '.$modific.' class="form-check-input chk-parent" > '. "</td>\n"
                                                 . '<td style="text-align:left">'   . $cur['descripcion'] . "</td>\n"
                                                 . '<input type="hidden" id="idperfil" name="idperfil" value="'.$idperfil.'" > '. "</td>\n"
                                                 . "</tr>\n";
@@ -198,7 +199,7 @@
 								</table>
                                 </div><br />
 	            
-                            <div class="modal-footer"><center>								
+                            <div class="modal-footer" style="display: flex; justify-content: center; align-items: center; flex-direction: column;"><center>								
                                 <button type="submit" id="Submit" name="Submit" class="btn btn-success" onclick="javascript:this.form.submit();this.disabled= true;mostrarMsjBtn_upd()" title="Presione el botón para agregar actualizar los permisos." > Actualizar Permisos </button>
                                 <br /><br />
                                 <div id="msjBtn_upd" style='display:none;' ><img src="images/loading.gif" width="35px" height="35px" alt="loading"/><?php echo '<font color=grey><b><i>'.'Por favor, espere unos segundos..'.'</b></i></font>'; ?></div>

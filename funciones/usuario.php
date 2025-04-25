@@ -3,7 +3,7 @@ class Usuario {
 
 	/**
 	ESTADOS: 
-	* 	(usuario_) tipo: '1' Admin (sysAdmin - Administrador) 
+	* 	(usuario_) 
 	*/
 	
 	function conectar($login, $pass){
@@ -39,13 +39,13 @@ class Usuario {
 		if($tipo_user == '10'){ 
 
 			// Modulo
-			$datos_modulos_sadmin = array();
-			$datos_modulos_sadmin = $this->gets_modulos_sadmin();
-			$datos_modulos = array_merge($datos_modulos, $datos_modulos_sadmin);
+			// $datos_modulos_sadmin = array();
+			// $datos_modulos_sadmin = $this->gets_modulos_sadmin();
+			// $datos_modulos = array_merge($datos_modulos, $datos_modulos_sadmin);
 
 			// Funcion
-			$datos_menu_sadmin = array();
-			$datos_menu_sadmin = $this->gets_menu_sadmin();				
+			// $datos_menu_sadmin = array();
+			// $datos_menu_sadmin = $this->gets_menu_sadmin();				
 		} 
 		
 		// armo el menu para el usuario logueado
@@ -87,7 +87,7 @@ class Usuario {
 
 			$menu.='<a href="#'.$datos_modulos[$i]['nombre'].'" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle" title="Modulo '.$datos_modulos[$i]['nombre'].'">';
 			$menu.='	<div class="">';
-			$menu.='		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>';
+			// $menu.='		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>';
 			$menu.='		<span>'.$datos_modulos[$i]['nombre'].'</span>';
 			$menu.='	</div>';
 			$menu.='	<div>';
@@ -122,7 +122,7 @@ class Usuario {
 						?> <script type="text/javascript"> window.location="../principal.php"; </script> <?php
 						break;
 				
-			case '1': 	// SysAdmin - Administradores 
+			case '1': 	// Administradores (unico tipo)
 						?> <script type="text/javascript"> window.location="../principal.php"; </script> <?php
 						break;		
 						
@@ -183,7 +183,7 @@ class Usuario {
 		}
 		catch (Exception $e){	echo $e->getMessage();		}
 	}	
-	function gets_funciones_segun_perfil($id_perfil, $id_cli){ 
+	function gets_funciones_segun_perfil($id_perfil){ 
 		include('conexion_pdo.php');				
 		$query_  = "SELECT m.id as m,f.id as f,m.nombre as nbre_m,f.nombre as nbre_f,f.descripcion,
 				         p.alta,p.baja,p.modificacion,p.vista,perf.nombre as nbre_perf,perf.descripcion as descrip_perf
@@ -191,12 +191,11 @@ class Usuario {
 				  	   LEFT JOIN usuario_funcion f            ON m.id=f.fk_modulo
 				  	   LEFT JOIN usuario_permisos p           ON (f.id=p.fk_funcion AND p.fk_usuario_perfil= :id_perfil)		  	
 				  	   LEFT JOIN usuario_perfil perf          ON perf.id=p.fk_usuario_perfil
-				  	   RIGHT JOIN usuario_cliente_permisos pc ON (m.id=pc.fk_modulo AND pc.fk_cliente= :grupo)
+					   WHERE f.estado = 1
 				    ORDER BY nbre_m, nbre_f ASC"; 
 		try{
 			$sql = $con->prepare($query_);
 			$sql->bindParam(':id_perfil', $id_perfil);
-			$sql->bindParam(':grupo',     $id_cli);
 			$sql->execute();
 			$res = $sql->fetchAll();
 			$sql = null;
@@ -328,7 +327,19 @@ class Usuario {
 		}
 		catch (Exception $e){	echo $e->getMessage();		}
 	}
-	function gets_perfil($id_cliente){ 
+	function gets_perfil(){ 
+		include('conexion_pdo.php');				
+		$query_  = " SELECT id, nombre FROM usuario_perfil WHERE estado= '1' ORDER BY nombre ASC "; 
+		try{
+			$sql = $con->prepare($query_);
+			$sql->execute();
+			$res = $sql->fetchAll();
+			$sql = null;
+			return $res;
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+	}
+	function gets_perfil_OLD($id_cliente){ 
 		include('conexion_pdo.php');				
 		$query_  = " SELECT id, nombre FROM usuario_perfil WHERE estado= '1' AND grupo= :grupo ORDER BY nombre ASC "; 
 		try{
@@ -394,7 +405,7 @@ class Usuario {
 		}
 		catch (Exception $e){	echo $e->getMessage();	}	
 	}
-	function gets_user_empresa($id_cliente){				
+	function gets_user_empresa(){				
 		include('conexion_pdo.php');		
 		$query_  = "SELECT u.id, u.tipo, u.login, u.estado as estado_user, 
 							concat(p.apellido,', ',p.nombre) as nbre_c, 
@@ -402,11 +413,9 @@ class Usuario {
    					   FROM usuario_ u LEFT JOIN usuario_persona p           ON u.fk_personal = p.dni
 					                   INNER JOIN usuario_perfil_asociado pa ON u.id = pa.fk_usuario       
 					                   INNER JOIN usuario_perfil perf        ON pa.fk_perfil = perf.id
-									   LEFT JOIN usuario_cliente c           ON u.grupo = c.id
-                       WHERE c.id = :id_cliente ";		
+									   LEFT JOIN usuario_cliente c           ON u.grupo = c.id ";		
 		try{
 			$sql = $con->prepare($query_);
-			$sql->bindParam(':id_cliente',  $id_cliente);
 			$sql->execute();
 			$res = $sql->fetchAll();
 			$sql = null;

@@ -39,7 +39,6 @@
     <!-- Barra Horizontal: Logo / Notificaciones, Eventos, Mensajes & Usuario logueado -->
 	<?php 
 		switch($tipo_user){			  	
-			case 'sadmin': 			require('./estructura/barraNotificaciones_SuperAdmin.php');	 				break;
 			case 'admin': 			require('./estructura/barraNotificaciones_Administradores.php'); 			break;
 		} 
 	?>
