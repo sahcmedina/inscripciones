@@ -25,3 +25,8 @@
 
 <script src="./src/plugins/src/apex/apexcharts.min.js"></script>
 <script src="./src/assets/js/dashboard/dash_2.js"></script>
+
+
+<script src="./src/plugins/src/notification/snackbar/snackbar.min.js"></script>
+<script src="./src/plugins/src/sweetalerts2/sweetalerts2.min.js"></script>
+<script src="./src/assets/js/users/account-settings.js"></script>

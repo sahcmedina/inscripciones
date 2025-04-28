@@ -1,5 +1,7 @@
 <?php
 	require_once('./estructura/cookies_datsUser_msjBienvenida_version.php');
+    $rutaImagen = './foto_perfil/'.$datos[0]['id'].'.png';
+    $_SESSION['img_perfil'] = $datos[0]['id'];
 ?>
 
 <!DOCTYPE html><html lang="es">
@@ -15,12 +17,25 @@
 
 <body class="alt-menu layout-boxed">
 
+    <!-- NOTIFICACIONES - SWEET ALERT -->
+    <?php 
+    if (isset($_SESSION['alert_tit']))      { $alert_tit= $_SESSION['alert_tit'];      } else { $alert_tit= ''; }
+    if (isset($_SESSION['alert_sub']))      { $alert_sub= $_SESSION['alert_sub'];      } else { $alert_sub= ''; }
+    if (isset($_SESSION['alert_ico']))      { $alert_ico= $_SESSION['alert_ico'];      } else { $alert_ico= ''; }
+    
+    if($alert_tit!= ''){
+        ?><script type="text/javascript">
+        swal.fire({ title: "<?php echo $alert_tit; ?>",  text:  "<?php echo $alert_sub; ?>",    icon:  "<?php echo $alert_ico; ?>"   });
+        </script><?php
+        $_SESSION['alert_tit']= '';     $_SESSION['alert_sub']= '';      $_SESSION['alert_ico']= '';
+    }    
+	?>
+
     <!--  BEGIN LOADER && NAVBAR  -->
 
     <!-- Barra Horizontal: Logo / Notificaciones, Eventos, Mensajes & Usuario logueado -->
 	<?php 
 		switch($tipo_user){			  	
-			case 'sadmin': 			require('./estructura/barraNotificaciones_SuperAdmin.php');	 				break;
 			case 'admin': 			require('./estructura/barraNotificaciones_Administradores.php'); 			break;
 		} 
 	?>
@@ -95,7 +110,7 @@
                                         <nav class="breadcrumb-style-five" aria-label="breadcrumb">
                                             <ol class="breadcrumb">
                                                 <li class="breadcrumb-item"><a href="principal.php" title="Dashboard"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="inner-text"></span></a></li>
-                                                <li class="breadcrumb-item active" aria-current="page"> Cambiar contraseña </li>
+                                                <li class="breadcrumb-item active" aria-current="page"> Perfil </li>
                                             </ol>
                                         </nav>
                         
@@ -110,6 +125,7 @@
                     <!-- CONTENIDO ------------------------------------------------------------------------------------------------------------------------>
                     <!-- CONTENIDO ------------------------------------------------------------------------------------------------------------------------>
                     
+                    
 
                     <!-- DATATABLE -->
                     <div class="row layout-top-spacing">                    
@@ -119,31 +135,27 @@
                             <div class="widget-content widget-content-area br-12">
 
                                 <br/>
-                                <!-- <div class="panel-heading"><h7 class="panel-title"><i class="icon-table"></i><center><?php echo ' Permisos del Perfil:  <b>'.$nbre_perfil.'</b> ' ?></center></h7> -->
+                                <div class="panel-heading"><h7 class="panel-title"><i class="icon-table"></i><center><?php echo ' Foto de Perfil:  <b>'.$nbre_perfil.'</b> ' ?></center></h7>
                                 <br/>
 
                                 <div class="modal-content">
-                                <form name="add_dep" id="add_dep" class="form-horizontal validate" method="post" action="./funciones/cambiar_clave.php" enctype="multipart/form-data" >
+                                <form name="add_dep" id="add_dep" class="form-horizontal validate" method="post" action="./funciones/usuario_mdf_foto_perfil.php" enctype="multipart/form-data" >
                                 
-                                    <div class="modal-body with-padding">
-
-                                        <div class="form-group-sm">                                    
-                                            <div class="row">
-												<div class="col-md-5">
-												</div>	
-												<div class="col-md-2">
-                                                    <label>Nueva contraseña<span class="mandatory">*</span></label>   
-                                                    <input type="text"   id="new_pass"   name="new_pass"   class="form-control form-control-sm" value="" tabindex="1">
-		                             				<input type="hidden" id="id_user_2"  name="id_user_2"  value="<?php echo $user_id ?>">                                                    
-                                                </div>
+                                    <div class="row">
+                                            <div class="col-xl-5 col-lg-12 col-md-4">
+                                            </div>      
+                                            <div class="col-xl-2 col-lg-12 col-md-4">
+                                                <div class="profile-image  mt-4 pe-md-4">                        
+                                                    <div class="img-uploader-content">            
+                                                    <input type="file" name="url_" id="url_" accept="image/png, image/jpeg, image/gif"/>
+                                                    <!-- <input type="file" class="filepond" name="url_" id="url_" accept="image/png, image/jpeg, image/gif"/> -->
+                                                    </div>                        
+                                                </div><br/>
                                             </div>
-                                        </div>
-
-                                    </div>	
+                                    </div>
 
 									<div class="modal-footer d-flex justify-content-center"><br /><br /><br />
-										<button type="submit" id="validar_add" name="validar_add" class="btn btn-success" title="Se va a cambiar la contraseña." tabindex="3">Modificar</button>
-										<div id="mostrar_validar_add"></div>
+										<button type="submit" id="validar_add" name="validar_add" class="btn btn-success" title="Se va a cambiar la foto de perfil." tabindex="3">Modificar</button>
 									</div>
                                 
                                 </form>
@@ -176,6 +188,59 @@
 	    require_once('./estructura/librerias_utilizadas_body.php');
 	?>  
 
+    <!-- Mostrar imagen del perfil en miniatura -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // Configurar FilePond
+        FilePond.registerPlugin(
+            FilePondPluginImagePreview,
+            FilePondPluginImageCrop,
+            FilePondPluginFileValidateType
+        );
+        
+        const pond = FilePond.create(document.querySelector('.filepond'), {
+            stylePanelAspectRatio: 1, // Hace que el panel sea cuadrado
+            imageCropAspectRatio: 1, // Hace que la imagen recortada sea cuadrada
+            imagePreviewHeight: 170,
+            imagePreviewWidth: 170,
+            stylePanelLayout: 'compact circle', // Intenta aplicar un estilo circular
+            styleLoadIndicatorPosition: 'center bottom',
+            styleProgressIndicatorPosition: 'center bottom'
+        });
+        
+        <?php if (file_exists($rutaImagen)): ?>
+            // Añadir el archivo existente
+            pond.addFile('<?php echo $rutaImagen; ?>');
+        <?php endif; ?> 
+
+        // Seleccionar el elemento input
+        const inputElement = document.querySelector('input[type="file"].filepond');
+        
+        // Crear la instancia de FilePond
+        const pond = FilePond.create(inputElement, {
+            allowMultiple: false,
+            acceptedFileTypes: ['image/png', 'image/jpeg', 'image/gif'],
+            labelIdle: 'Arrastra tu imagen o <span class="filepond--label-action">Busca</span>',
+            // Importante: Esto asegura que FilePond envíe el archivo con el mismo nombre que tu PHP espera
+            name: 'url_',
+            // FilePond no enviará el formulario automáticamente
+            instantUpload: false
+        });
+        
+        // Evento para cuando se envía el formulario
+        document.getElementById('add_dep').addEventListener('submit', function(e) {
+            // Si no hay archivo seleccionado, evita el envío
+            if (pond.getFiles().length === 0) {
+                e.preventDefault();
+                alert('Por favor selecciona una imagen');
+            }
+            // Si hay archivo, el formulario se enviará normalmente
+        });
+    });
+    </script>
+
+    
 
 </body>
 </html>

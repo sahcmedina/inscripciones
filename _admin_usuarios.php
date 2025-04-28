@@ -10,7 +10,7 @@
 	
 	// ------------------------------ FUNCION ------------------------------ //			
 	$arr_sino= array('no','si');
-	
+	$id_user = $U->get_id( $login); 
 	// perfiles	
 	$arr_perfil = array();
 	$arr_perfil = $U->gets_perfil();
@@ -21,8 +21,6 @@
 	
 	// modulos y funciones del sistema
 	$arr_modulos= array();
-	// $arr_funcion= array();
-	// $arr_funcion= $U->gets_funciones_segun_cli();
 	$arr_modulos= $U->gets_modulos_();
 
     $datos = array();
@@ -62,10 +60,6 @@
         });              
     });
     </script>
-
-<!-- //////////////////////////////////7 -->
-<!-- //////////////////////////////////7 -->
-<!-- //////////////////////////////////7 -->
 
 <!-- AJAX: BUSCAR -->	
 <script language="javascript">
@@ -458,12 +452,9 @@ $(document).ready(function(){
 
 <!-- MSJ: Espere unos segundos -->
 <script type="text/javascript">
-	// function mostrarMsjBtn_mdfPerfil(){   document.getElementById('msjBtn_mdfPerfil').style.display = 'block'; 		}
-	// function mostrarMsjBtn_mdfPass(){	  document.getElementById('msjBtn_mdfPass').style.display = 'block';	 	}
 	function mostrarMsjBtn_mdfPermisos(){ document.getElementById('msjBtn_mdfPermisos').style.display = 'block';	}
 	function mostrarMsjBtn_addPerfil(){   document.getElementById('msjBtn_addPerfil').style.display = 'block'; 		}
 </script>
-
 
 </head>
 
@@ -552,14 +543,6 @@ $(document).ready(function(){
                                         <line x1="3" y1="18" x2="21" y2="18"></line>
                                     </svg>
                                 </a>
-
-                                <!-- <nav class="breadcrumb-style-five  mb-3" aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="inner-text">Home</span></a></li>
-                                        <li class="breadcrumb-item"><a href="#">Library</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Data</li>
-                                    </ol>
-                                </nav> -->
 
                                 <!-- MAPA DE SITIO -->
                                 <div class="d-flex breadcrumb-content">
@@ -1062,6 +1045,11 @@ $(document).ready(function(){
         });
     </script>
 
+<!-- Iconos Feather -->
+<script src="https://unpkg.com/feather-icons"></script>
+<script>
+  feather.replace()
+</script>
 
 </body>
 </html>

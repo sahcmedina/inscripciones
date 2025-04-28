@@ -41,7 +41,7 @@ class Versionado {
 			$sql->execute();
 			$res = $sql->fetch();
 			$sql = null;
-			return Date('Y').'. V '.$res['v'].' - San Juan SAAS';
+			return Date('Y').'. V '.$res['v'].' - Sistema de Inscripciones';
 		}
 		catch (Exception $e){			
 			echo $e->getMessage();

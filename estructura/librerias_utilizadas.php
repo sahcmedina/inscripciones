@@ -69,3 +69,9 @@
 <link href="./src/assets/css/light/dashboard/dash_2.css" rel="stylesheet" type="text/css" />
 <link href="./src/assets/css/dark/components/list-group.css" rel="stylesheet" type="text/css">
 <link href="./src/assets/css/dark/dashboard/dash_2.css" rel="stylesheet" type="text/css" />
+
+<link href="./src/assets/css/light/users/account-setting.css" rel="stylesheet" type="text/css" />
+<link href="./src/plugins/css/dark/notification/snackbar/custom-snackbar.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="./src/assets/css/dark/forms/switches.css">
+<link href="./src/assets/css/dark/users/account-setting.css" rel="stylesheet" type="text/css" />
+

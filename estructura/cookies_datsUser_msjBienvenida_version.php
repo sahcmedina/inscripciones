@@ -7,7 +7,7 @@
 	## VERIFICACION DE COOKIE ####################################################################################
 	include('./funciones/_cripto.php'); 	
 	$Cripto = new Cripto();	
-	$login  = $_SESSION['sesion_UserId'];
+	$login  = $_SESSION['sesion_UserId']; 
 	
 	if( isset($_COOKIE['sisMinProd_UserId']) )   $cookieActiva = true;	else	$cookieActiva = false;	
 	$cookieStorage = $Cripto->encrypt_decrypt('decrypt',$_COOKIE['sisMinProd_UserId']);
@@ -30,21 +30,6 @@
 	$datos  = array();
 	$tipo   = $U->get_tipo_user( $login);	
 	switch($tipo){
-		
-		case '10': 	$tipo_user= 'sadmin'; 		
-				  	// datos
-				  	$datos      = $U->gets_datos_persona($login);	
-				  	$perfil_user= $datos[0]['fk_perfil'];
-					$dni        = $datos[0]['dni'];
-					$user_id    = $datos[0]['id'];
-					// mensaje
-					$arr_msj= $Msj_bienvenida->gets_msj_user(1);
-					$msj    = utf8_encode($arr_msj[0]['mensaje']);
-					$titulo = utf8_encode($arr_msj[0]['titulo']);
-					// empresa
-					$empresa_logueada   = 'Administracion SAAS';
-					$id_empresa_logueada= '0';
-				  	break;	
 		
 		case '1': 	$tipo_user= 'admin'; 		
 				  	// datos
