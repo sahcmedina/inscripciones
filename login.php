@@ -35,8 +35,8 @@ session_start();
                             <div class="row">
                                 
                                 <div class="col-md-12 mb-3">                                    
-                                    <h2>Acceso</h2>
-                                    <p>Por favor ingresa tus credenciales..</p>                                    
+                                    <center><h2>Sistema de Inscripciones</h2></center>
+                                    <center><p>Por favor ingresa tus credenciales..</p></center>                                    
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
@@ -58,7 +58,7 @@ session_start();
                                 </div>
                                 <div class="col-12">
                                     <div class="text-center">
-                                        <p class="mb-0">al Sistema de Inscripciones 
+                                        <p class="mb-0"> 
                                         </p>
                                     </div>
                                 </div>
