@@ -6,7 +6,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 $btn     = $_REQUEST['btn'];
 $username= $_REQUEST['usuario'];
 $pass    = $_REQUEST['pass']; 
-// echo 'En USUARIO: '.$username;die();die();
+echo 'En USUARIO: '.$btn.'-'.$username.'-'.$pass;die();die();
 
 if($btn == 'Ingresar'){ 
 
