@@ -1,15 +1,13 @@
 <?php 
-  ini_set('display_errors', 1);
-  ini_set('display_startup_errors', 1);
-  error_reporting(E_ALL);
+  // ini_set('display_errors', 1);
+  // ini_set('display_startup_errors', 1);
+  // error_reporting(E_ALL);
   
-  echo '1 - ANTES. ';
   include('./_sis/funciones/eventos.php'); 	$Eve = new Eventos();
   $arr_ = array();
   $arr_ = $Eve->gets_activos(); 
   $knt  = count($arr_);
-  echo '2 - DESPUES. '.$knt;
-
+  
 ?>
 
 <section class="u-carousel u-carousel-duration-1000 u-slide u-block-71ab-1" id="carousel-9f8a" data-interval="5000" data-u-ride="carousel">
