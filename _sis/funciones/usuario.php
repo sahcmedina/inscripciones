@@ -8,7 +8,7 @@ class Usuario {
 	
 	function conectar($login, $pass){
 		session_start();
-		require_once('./_cripto.php');		$Cripto2  = new Cripto();
+		require_once('_cripto.php');		$Cripto2  = new Cripto();
 
 		// traigo el id
 		$datos_user= array();
