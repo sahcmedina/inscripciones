@@ -105,7 +105,7 @@ class Usuario {
 		
 		switch($tipo_user){
 			
-			case '1': 	// Administradores (unico tipo)
+			case '1': 	// Administradores
 						?> <script type="text/javascript"> window.location="../principal.php"; </script> <?php
 						break;		
 						
