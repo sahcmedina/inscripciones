@@ -4,6 +4,7 @@
   $arr_ = array();
   $arr_ = $Eve->gets_activos(); 
   $knt  = count($arr_);
+  echo 'ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA. '.$knt;
 
 ?>
 
