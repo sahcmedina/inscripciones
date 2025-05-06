@@ -1,7 +1,7 @@
 <?php 
 
   echo '1 - ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA. ';
-  include('./_sis/funciones/eventos.php'); 	$Eve = new Eventos();
+  include('._sis/funciones/eventos.php'); 	$Eve = new Eventos();
   $arr_ = array();
   $arr_ = $Eve->gets_activos(); 
   $knt  = count($arr_);
