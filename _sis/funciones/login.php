@@ -1,12 +1,15 @@
 <?php
 session_start();
 include('usuario.php');	$U = new Usuario();				
-error_reporting(E_ALL ^ E_NOTICE);
+// error_reporting(E_ALL ^ E_NOTICE);
+
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
 
 $btn     = $_REQUEST['btn'];
 $username= $_REQUEST['usuario'];
 $pass    = $_REQUEST['pass']; 
-echo 'En USUARIO: '.$btn.'-'.$username.'-'.$pass;die();die();
 
 if($btn == 'Ingresar'){ 
 
@@ -20,7 +23,7 @@ if($btn == 'Ingresar'){
 		if($existe == 'si') 		$opcion = 'ok'; 
 		else            			$opcion = 'er2';
 	}
-	// echo 'LLEGUE ACA: '.$existe.'-'.$opcion; die();die();
+	echo 'LLEGUE ACA: '.$existe.'-'.$opcion; die();die();
 	switch($opcion){
 		case 'ok':  $U->conectar( $username, $pass); 
 					break;
