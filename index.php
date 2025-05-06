@@ -69,7 +69,7 @@ box-shadow: 5px 5px 20px 0 rgba(0,0,0,0.4) !important
             </div>
             <div class="u-container-style u-list-item u-repeater-item">
               <div class="u-container-layout u-similar-container u-valign-middle-lg u-valign-middle-md u-valign-middle-sm u-valign-middle-xs u-container-layout-4">
-                <a href="./sis/login.php" class="u-border-none u-btn u-btn-round u-button-style u-custom-color-4 u-radius u-text-body-alt-color u-btn-4" target="_blank" title="Acceder al Sistema"><span class="u-file-icon u-icon u-text-white u-icon-4"><img src="images/2377775-04804de6.png" alt=""></span>&nbsp; &nbsp; &nbsp;Inscripciones
+                <a href="./_sis/login.php" class="u-border-none u-btn u-btn-round u-button-style u-custom-color-4 u-radius u-text-body-alt-color u-btn-4" target="_blank" title="Acceder al Sistema"><span class="u-file-icon u-icon u-text-white u-icon-4"><img src="images/2377775-04804de6.png" alt=""></span>&nbsp; &nbsp; &nbsp;Inscripciones
                 </a>
               </div>
             </div>
