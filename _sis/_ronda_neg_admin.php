@@ -10,11 +10,14 @@
 	
 	// ------------------------------ FUNCION ------------------------------ //			
 	include_once('./funciones/mod3_productos.php');       $Productos = new Productos();
+	include_once('./funciones/mod3_ronda_neg.php');       $RondaNeg  = new RondaNegocios();
 
 	$arr_ = array(); 
-	$arr_ = $Productos->gets(); 
+	$arr_ = $RondaNeg->gets(); 
 
 	$id_user = $U->get_id( $login);
+
+    $entidad = 'Ronda de Negocios';
 ?>
 
 <!DOCTYPE html><html lang="es">
@@ -230,7 +233,7 @@ $(document).ready(function(){
                                             <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="principal.php" title="Dashboard"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="inner-text"></span></a></li>
                                                 <li class="breadcrumb-item"> Negocios </li>
-                                                <li class="breadcrumb-item active" aria-current="page"> Productos</li>
+                                                <li class="breadcrumb-item active" aria-current="page"> Administración </li>
                                             </ol>
                                         </nav>
                         
@@ -270,6 +273,9 @@ $(document).ready(function(){
                                     <?php
                                         $tabla= "<thead><tr class=\"rowHeaders\">			
                                                 <th style='text-align:center'> Nombre		</th>
+                                                <th style='text-align:center'> Lugar		</th>
+                                                <th style='text-align:center'> Fecha 1		</th>
+                                                <th style='text-align:center'> Productos	</th>
                                                 <th style='text-align:center'> Acciones		</th>";
                                         $tabla.="</tr></thead><tbody>";			
                                         echo $tabla;
@@ -288,12 +294,21 @@ $(document).ready(function(){
                                                            <i class="bi bi-pencil" style="font-size: 1rem;"></i>
                                                            </button>';
 
+                                            $btn_ver = '<button data-bs-toggle="modal" data-bs-target="#modal_ver" 
+                                                           data-id="'.$cur['id'].'" data-nombreant="'.$cur['nombre'].'" data-nombre="'.$cur['nombre'].'"                                                            
+                                                           class="btn btn-outline-info btn-icon mb-2 me-4" title="Ver más">
+                                                           <i class="bi bi-search" style="font-size: 1rem;"></i>
+                                                           </button>';
+
                                             if($baja == '1') { $btn_del_mostrar= $btn_del; } else {  $btn_del_mostrar= ''; }
                                             if($modf == '1') { $btn_mdf_mostrar= $btn_mdf; } else {  $btn_mdf_mostrar= ''; }
 
                                             echo "<tr class=\"cellColor" . ($j%2) . "\" align=\"center\" id=\"tr$j\">\n"
                                             . '<td style="text-align:center">'. $cur['nombre']  	."</td>\n"
-                                            . '<td style="text-align:center">'. $btn_mdf_mostrar . $btn_del_mostrar . "</td>\n"
+                                            . '<td style="text-align:center">'. $cur['lugar']  	."</td>\n"
+                                            . '<td style="text-align:center">'. $cur['f_dia_1']  	."</td>\n"
+                                            . '<td style="text-align:center">'. '...'  	."</td>\n"
+                                            . '<td style="text-align:center">'. $btn_ver . $btn_mdf_mostrar . $btn_del_mostrar . "</td>\n"
                                             . "</tr>\n";
                                         }
                                         echo "</tbody>";
@@ -337,7 +352,7 @@ $(document).ready(function(){
                         <div class="modal-dialog modal-content" >
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Borrar Producto </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"> Borrar <?php echo $entidad ?> </h6></div>
 
                             <form name="form_del_reg" id="form_del_reg" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
                                 
@@ -376,7 +391,7 @@ $(document).ready(function(){
                     <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Agregar Producto </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"> Agregar <?php echo $entidad ?> </h6></div>
 
                             <form name="add_reg" id="add_reg" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
                                 
@@ -412,7 +427,7 @@ $(document).ready(function(){
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Modificar Producto </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"> Modificar <?php echo $entidad ?> </h6></div>
 
                             <form name="mdf_reg" id="mdf_reg" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
                                 
