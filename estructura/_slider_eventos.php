@@ -1,10 +1,11 @@
 <?php 
 
+  echo '1 - ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA. ';
   include('_sis/funciones/eventos.php'); 	$Eve = new Eventos();
   $arr_ = array();
   $arr_ = $Eve->gets_activos(); 
   $knt  = count($arr_);
-  echo 'ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA. '.$knt;
+  echo '2 - ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA. '.$knt;
 
 ?>
 
