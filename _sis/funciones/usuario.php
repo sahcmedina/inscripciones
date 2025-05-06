@@ -35,23 +35,10 @@ class Usuario {
 		$datos_modulos = array();
 		$datos_modulos = $this->gets_modulos($id);
 
-		// Si usuario es Super Admin
-		if($tipo_user == '10'){ 
-
-			// Modulo
-			// $datos_modulos_sadmin = array();
-			// $datos_modulos_sadmin = $this->gets_modulos_sadmin();
-			// $datos_modulos = array_merge($datos_modulos, $datos_modulos_sadmin);
-
-			// Funcion
-			// $datos_menu_sadmin = array();
-			// $datos_menu_sadmin = $this->gets_menu_sadmin();				
-		} 
-		
 		// armo el menu para el usuario logueado
 		$datos_menu = array();
 		$datos_menu = $this->gets_menu($id);
-		if($tipo_user == '10'){	$datos_menu = array_merge($datos_menu, $datos_menu_sadmin);	}
+		// if($tipo_user == '10'){	$datos_menu = array_merge($datos_menu, $datos_menu_sadmin);	}
 		
 		$k_mod = count( $datos_modulos);
 		$k_men = count( $datos_menu);
@@ -118,10 +105,6 @@ class Usuario {
 		
 		switch($tipo_user){
 			
-			case '10': 	// Super Admin 
-						?> <script type="text/javascript"> window.location="../principal.php"; </script> <?php
-						break;
-				
 			case '1': 	// Administradores (unico tipo)
 						?> <script type="text/javascript"> window.location="../principal.php"; </script> <?php
 						break;		
