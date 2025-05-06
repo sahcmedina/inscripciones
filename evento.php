@@ -11,15 +11,19 @@
 
 ?>
 
-<!DOCTYPE html>
-<html style="font-size: 16px;" lang="es"><head>
+<!DOCTYPE html><html style="font-size: 16px;" lang="es">
+  
+<head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <meta name="keywords" content="Nuestros trabajos, nos encanta hacer, Trabajos recientes, Creatividad con el poder de transformar">
     <meta name="description" content="">
-    <title>evento</title>
+
+    <title>Ministerio de Producción, Trabajo e Innovación</title>
+    <link rel="icon" type="image/x-icon" href="_sis/images/logos/icono.ico"/>
+
     <link rel="stylesheet" href="nicepage.css" media="screen">
-<link rel="stylesheet" href="evento.css" media="screen">
+    <link rel="stylesheet" href="evento.css" media="screen">
     <script class="u-script" type="text/javascript" src="jquery.js" defer=""></script>
     <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
     <meta name="generator" content="Nicepage 7.7.3, nicepage.com">

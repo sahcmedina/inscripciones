@@ -131,8 +131,15 @@ $arr_prov = $Pais->gets_provincias();
     </div>
 
     <div class="u-align-center u-form-group u-form-submit u-form-group-9">
-      <a href="./estructura/inscriptos_form_rn.php" class="u-active-custom-color-5 u-border-none u-btn u-btn-round u-btn-submit u-button-style u-custom-color-3 u-hover-custom-color-3 u-radius u-btn-1">Guardar </a>
-      <input type="submit" value="submit" class="u-form-control-hidden">
+      <!-- <a href="./estructura/inscriptos_form_rn.php" class="u-active-custom-color-5 u-border-none u-btn u-btn-round u-btn-submit u-button-style u-custom-color-3 u-hover-custom-color-3 u-radius u-btn-1">Guardar </a> -->
+      <!-- <input type="submit" value="submit" class="u-form-control-hidden"> -->
+      <!-- <a href="https://www.ejemplo.com" class="u-border-none u-btn u-btn-round u-button-style u-radius u-btn-1" style="background-color: #443C44; color: white;">Volver</a> -->
+      <!-- <button type="button" onclick="window.location.href='https://www.ejemplo.com'" class="u-active-custom-color-5 u-border-none u-btn u-btn-round u-button-style u-radius u-btn-1" style="background-color: #443C44; color: white;">Volver</button> -->
+      
+      <!-- <button type="submit" value="submit" class="u-border-none u-btn u-btn-round u-btn-submit u-button-style u-radius u-btn-1" style="background-color: #443C44; color: white;">Volver</button> -->
+      <button type="button" onclick="history.back()" class="u-border-none u-btn u-btn-round u-btn-submit u-button-style u-radius u-btn-1" style="background-color: #443C44; color: white;"> Volver </button>		                                    
+      <button type="submit" value="submit" class="u-active-custom-color-5 u-border-none u-btn u-btn-round u-btn-submit u-button-style u-custom-color-3 u-hover-custom-color-3 u-radius u-btn-1">Guardar</button>
+      
     </div> 
 
   </form>

@@ -1,19 +1,19 @@
-<!DOCTYPE html>
-<html style="font-size: 16px;" lang="es"><head>
+<!DOCTYPE html><html style="font-size: 16px;" lang="es">
+      
+<head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Nuestros trabajos, nos encanta hacer, Trabajos recientes, Creatividad con el poder de transformar">
+    <meta name="keywords" content="Ministerio de Producción, Trabajo e Innovación">
     <meta name="description" content="">
-    <title>casa</title>
+
+    <title>Ministerio de Producción, Trabajo e Innovación</title>
+    <link rel="icon" type="image/x-icon" href="_sis/images/logos/icono.ico"/>
+    
     <link rel="stylesheet" href="nicepage.css" media="screen">
-<link rel="stylesheet" href="index.css" media="screen">
+    <link rel="stylesheet" href="index.css" media="screen">
     <script class="u-script" type="text/javascript" src="jquery.js" defer=""></script>
     <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
     <meta name="generator" content="Nicepage 7.7.3, nicepage.com">
-    
-    
-    
-    
     
     <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
     <link id="u-page-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i">
