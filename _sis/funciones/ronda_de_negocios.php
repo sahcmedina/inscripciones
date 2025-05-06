@@ -4,7 +4,7 @@ class RondaNegocios {
 	         
 	function gets(){
 		include('conexion_pdo.php');
-		$query_  = " SELECT * FROM web_ronda_negocio ";
+		$query_  = " SELECT * FROM eventos_ronda_neg ";
 		try{
 			$sql = $con->prepare($query_);
 			$sql->execute();
@@ -16,7 +16,7 @@ class RondaNegocios {
 	}	
 	function gets_segun_id($id){
 		include('conexion_pdo.php');
-		$query_  = " SELECT * FROM web_ronda_negocio where id = :id ";
+		$query_  = " SELECT * FROM eventos_ronda_neg where id = :id ";
 		try{
 			$sql = $con->prepare($query_);
 			$sql->bindParam(':id', $id);
@@ -30,7 +30,7 @@ class RondaNegocios {
 
 	function upd_ronda_negocios($id, $titulo_es, $titulo_in, $descripcion_es, $descripcion_in, $contenido_es, $contenido_in, $url){
 		include('conexion_pdo.php');				
-		$query_  = " UPDATE web_ronda_negocio SET titulo_es= :titulo_es, titulo_in= :titulo_in, descripcion_es= :descripcion_es, 
+		$query_  = " UPDATE eventos_ronda_neg SET titulo_es= :titulo_es, titulo_in= :titulo_in, descripcion_es= :descripcion_es, 
 							descripcion_in= :descripcion_in, contenido_es= :contenido_es, contenido_in= :contenido_in, imagen= :imagen WHERE id= :id "; 
 		try{
 			$sql = $con->prepare($query_);
@@ -49,7 +49,7 @@ class RondaNegocios {
 	}
 	function upd_imagen($ult_id, $str_nombre){
 		include('conexion_pdo.php');				
-		$query_  = " UPDATE web_ronda_negocio SET imagen = :imagen WHERE id= :id "; 
+		$query_  = " UPDATE eventos_ronda_neg SET imagen = :imagen WHERE id= :id "; 
 		try{
 			$sql = $con->prepare($query_);
 			$sql->bindParam(':id',  $ult_id);
@@ -62,7 +62,7 @@ class RondaNegocios {
 
 	function add_contenido_ronda_negocios($titulo_es, $titulo_in, $descripcion_es, $descripcion_in, $contenido_es, $contenido_in, $url_tmp){
 		include('conexion_pdo.php');
-		$query_= "INSERT INTO web_ronda_negocio (titulo_es, titulo_in, descripcion_es, descripcion_in, contenido_es, contenido_in, imagen) 
+		$query_= "INSERT INTO eventos_ronda_neg (titulo_es, titulo_in, descripcion_es, descripcion_in, contenido_es, contenido_in, imagen) 
 		         VALUES (:titulo_es, :titulo_in, :descripcion_es, :descripcion_in, :contenido_es, :contenido_in, :imagen)";
 		try{
 			$sql = $con->prepare($query_);
@@ -81,7 +81,7 @@ class RondaNegocios {
 
 	function get_ultimo_id_insert(){
 		include('conexion_pdo.php');				
-		$query_  = " SELECT MAX(id) as id FROM web_ronda_negocio "; 
+		$query_  = " SELECT MAX(id) as id FROM eventos_ronda_neg "; 
 		try{
 			$sql = $con->prepare($query_);
 			$sql->execute();
