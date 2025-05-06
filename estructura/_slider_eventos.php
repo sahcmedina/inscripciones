@@ -1,5 +1,5 @@
 <?php 
-
+  error_reporting(E_ERROR | E_WARNING);
   echo '1 - ANTES. ';
   include('./_sis/funciones/eventos.php'); 	$Eve = new Eventos();
   $arr_ = array();
