@@ -1,5 +1,6 @@
 <?php
-
+  
+  date_default_timezone_set('America/Argentina/San_Juan');
   if (isset($_GET['i']))     	{ $id= $_GET['i']; }    else { $id= '';      }
 
   include('_sis/funciones/eventos.php'); 	$Eve = new Eventos();
@@ -7,6 +8,8 @@
   $arr_  = $Eve->gets($id); 
   $titulo= $arr_[0]['titulo'];
   $tipo  = $arr_[0]['tipo'];
+  $fecha = $arr_[0]['fecha'];
+
   $_SESSION['ses_id_evento']= $id;
 
 ?>
@@ -70,8 +73,8 @@ box-shadow: 5px 5px 20px 0 rgba(0,0,0,0.4) !important
             </div>
             <div class="u-container-style u-group u-white u-group-3">
               <div class="u-container-layout u-valign-middle-lg u-valign-middle-md u-valign-middle-sm u-valign-middle-xs u-container-layout-3">
-                <p class="u-text u-text-2">Tipo de Evento:<br>
-                  <br>Fecha:&nbsp;<br>
+                <p class="u-text u-text-2">Tipo de Evento: <?php echo $tipo ?><br>
+                  <br>Fecha:&nbsp; <?php echo $fecha ?>   <br>
                   <br>Lugar:
                 </p>
               </div>

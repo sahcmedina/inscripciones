@@ -36,6 +36,7 @@
                     $titulo = $arr_[$i]['titulo'];
                     $fecha  = $arr_[$i]['fecha'];
                     $tipo   = $arr_[$i]['tipo'];
+                    $lugar  = $arr_[$i]['lugar'];
                     $id     = $arr_[$i]['id'];
                     switch($tipo){
                       case 'RN': $tipo_= 'Ronda de Negocios';   break;    
@@ -50,7 +51,7 @@
                     <h4 class="u-align-center u-text u-text-2"> <?php echo $titulo ?> </h4>
                     <p class="u-align-left u-custom-font u-font-montserrat u-text u-text-default u-text-3"> Tipo de Evento: <?php echo $tipo_ ?> 
                       <br><?php echo $fecha ?>
-                      <br>Lugar
+                      <br>Lugar: <?php echo $lugar ?>
                     </p>
                     <a href="./evento.php?i=<?php echo $id; ?>" class="u-border-none u-btn u-btn-round u-button-style u-custom-color-3 u-custom-font u-font-montserrat u-radius u-text-body-alt-color u-btn-1">Inscribirme </a>
                   </div>
@@ -81,8 +82,10 @@
                 for($j=3 ; $j<6 ; $j++){
 
                   if($j < $knt){
+                    $id_2     = $arr_[$j]['id'];
                     $titulo_2 = $arr_[$j]['titulo'];
                     $fecha_2  = $arr_[$j]['fecha'];
+                    $lugar_2  = $arr_[$j]['lugar'];
                     $tipo_2   = $arr_[$j]['tipo'];
                     switch($tipo_2){
                       case 'RN': $tipo_2_= 'Ronda de Negocios';   break;    
@@ -97,9 +100,9 @@
                       <h4 class="u-align-center u-text u-text-2"> <?php echo $titulo_2 ?> </h4>
                       <p class="u-align-left u-custom-font u-font-montserrat u-text u-text-default u-text-3"> Tipo de Evento: <?php echo $tipo_2_ ?> 
                         <br><?php echo $fecha_2 ?>
-                        <br>Lugar
+                        <br>Lugar: <?php echo $lugar_2 ?>
                       </p>
-                      <a href="" class="u-border-none u-btn u-btn-round u-button-style u-custom-color-3 u-custom-font u-font-montserrat u-radius u-text-body-alt-color u-btn-1">Inscribirme </a>
+                      <a href="./evento.php?i=<?php echo $id_2; ?>" class="u-border-none u-btn u-btn-round u-button-style u-custom-color-3 u-custom-font u-font-montserrat u-radius u-text-body-alt-color u-btn-1">Inscribirme </a>
                     </div>
                   </div>
 
