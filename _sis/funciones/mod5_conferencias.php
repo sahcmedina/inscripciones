@@ -202,7 +202,9 @@ class Conferencias {
 
 	function gets_inscriptos_conferencia_segun_id($id){
 		include('conexion_pdo.php');
-		$query_= " SELECT * FROM conferencia_inscriptos WHERE fk_conferencia = :id ";
+		$query_= " SELECT co.*, d.nombre As departamento FROM conferencia_inscriptos AS co 
+					INNER JOIN departamentos AS d ON d.id= co.localidad
+					WHERE co.fk_conferencia = :id";
 		try{
 			$sql = $con->prepare($query_);
 			$sql->bindParam(':id', $id);
@@ -211,6 +213,44 @@ class Conferencias {
 			return $res;
 		}
 		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
+	         
+	function add_inscripto($fkevento, $dni, $nombre, $apellido, $telefono, $email, $empresa, $cargo, $localidad){
+		include('conexion_pdo.php');
+		$f_create= date("Y-m-d H:i");
+		$query_= "INSERT INTO conferencia_inscriptos (fk_conferencia, apellido, nombre, dni, telefono, email, empresa, cargo, localidad, f_create)
+				  VALUES (:fk_conferencia, :apellido, :nombre, :dni, :telefono, :email, :empresa, :cargo, :localidad, :f_create)";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':fk_conferencia', $fkevento);
+			$sql->bindParam(':apellido',       $apellido);
+			$sql->bindParam(':nombre',         $nombre);
+			$sql->bindParam(':dni',            $dni);
+			$sql->bindParam(':telefono',       $telefono);
+			$sql->bindParam(':email',          $email);
+			$sql->bindParam(':empresa',        $empresa);
+			$sql->bindParam(':cargo',          $cargo);
+			$sql->bindParam(':localidad',      $localidad);
+			$sql->bindParam(':f_create',       $f_create);
+			if($sql->execute())	{ $return = true; }
+			else				{ $return = false; }				
+			return $return;
+		}
+		catch (Exception $e){ echo $e->getMessage(); 		}
+		finally{				$sql = null;				}
+	}
+
+	function gets_localidades(){
+		include('conexion_pdo.php');		
+		$query_  = " SELECT * FROM departamentos  "; 
+        try{
+			$sql = $con->prepare($query_);		
+			$sql->execute();
+			$res = $sql->fetchAll();
+			return $res;
+		}
+		catch (Exception $e){ echo $e->getMessage(); 		}
 		finally{				$sql = null;				}
 	}
 
