@@ -10,17 +10,11 @@
 	
 	// ------------------------------ FUNCION ------------------------------ //			
 	include_once('./funciones/mod3_productos.php');       $Productos = new Productos();
-	include_once('./funciones/mod3_ronda_neg.php');       $RondaNeg  = new RondaNegocios();
 
 	$arr_ = array(); 
-	$arr_ = $RondaNeg->gets(); 
+	$arr_ = $Productos->gets(); 
 
 	$id_user = $U->get_id( $login);
-
-    $arr_prod= array();
-    $arr_prod= $Productos->gets();
-
-    $entidad = 'Ronda de Negocios';
 ?>
 
 <!DOCTYPE html><html lang="es">
@@ -100,7 +94,7 @@ $(document).ready(function(){
 	  	$("#mostrar_validar_del").delay(15).queue(function(n) {                                                 
             $.ajax({
                 type: "POST",
-                url: "./funciones/mod3_ronda_neg_ajax_validar_del.php",                                                                                                                                                                                                    
+                url: "./funciones/mod3_productos_ajax_validar_del.php",                                                                                                                                                                                                    
                 data: "id="+id,     
               	dataType: "html",
                 error: function(){	        alert("error petición ajax");           		},
@@ -115,15 +109,15 @@ $(document).ready(function(){
 <script language="javascript">
 $(document).ready(function(){                         
     var nom; var usu;          
-    $("#validar_add").click(function(){	        
-		usu = $("#usuario").val();		    lug= $("#lug_").val();	        f2= $("#f2").val();	                            f_insc_hst= $("#f_insc_hst").val();		
-		nom = $("#nom_").val();		        f1 = $("#f1").val();		    f_insc_dsd= $("#f_insc_dsd").val();		        chek= $("#chek").val();		
+    $("#validar_add").click(function(){	
+		usu  = $("#usuario").val();				
+		nom  = $("#nom_").val();				
 
 	  	$("#mostrar_validar_add").delay(15).queue(function(n) {                                                 
             $.ajax({
                 type: "POST",
-                url: "./funciones/mod3_ronda_neg_ajax_validar_add.php",                                                                                                                                                                                                    
-                data: "usu="+usu+"&nom="+nom+"&lug="+lug+"&f1="+f1+"&f2="+f2+"&f_insc_dsd="+f_insc_dsd+"&f_insc_hst="+f_insc_hst+"&chek="+chek,     
+                url: "./funciones/mod3_productos_ajax_validar_add.php",                                                                                                                                                                                                    
+                data: "usu="+usu+"&nom="+nom,     
               	dataType: "html",
                 error: function(){	        alert("error petición ajax");           		},
                 success: function(data){ 	$("#mostrar_validar_add").html(data);  	n();    }
@@ -236,7 +230,7 @@ $(document).ready(function(){
                                             <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="principal.php" title="Dashboard"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="inner-text"></span></a></li>
                                                 <li class="breadcrumb-item"> Negocios </li>
-                                                <li class="breadcrumb-item active" aria-current="page"> Administración </li>
+                                                <li class="breadcrumb-item active" aria-current="page"> Productos</li>
                                             </ol>
                                         </nav>
                         
@@ -263,6 +257,51 @@ $(document).ready(function(){
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- DATATABLE -->
+                    <div class="row layout-top-spacing">                    
+                    
+                        <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+                        
+                            <div class="widget-content widget-content-area br-8">
+                                <table id="dt_" class="table dt-table-hover" style="width:100%">
+                                    
+                                    <?php
+                                        $tabla= "<thead><tr class=\"rowHeaders\">			
+                                                <th style='text-align:center'> Nombre		</th>
+                                                <th style='text-align:center'> Acciones		</th>";
+                                        $tabla.="</tr></thead><tbody>";			
+                                        echo $tabla;
+                                        for($j=0 ; is_array($arr_) && $j<count($arr_) ; $j++){
+                                            $cur  = $arr_[$j];
+                                        
+                                            $btn_del = ' <button data-bs-toggle="modal" data-bs-target="#modal_del" 
+                                                            data-id="'.$cur['id'].'" data-nombre="'.$cur['nombre'].'"
+                                                            class="btn btn-outline-danger btn-icon mb-2 me-4" title="Borrar registro" >
+                                                            <i class="bi bi-trash" style="font-size: 1rem;"></i>
+                                                            </button>';
+
+                                            $btn_mdf = '<button data-bs-toggle="modal" data-bs-target="#modal_upd" 
+                                                           data-id="'.$cur['id'].'" data-nombreant="'.$cur['nombre'].'" data-nombre="'.$cur['nombre'].'"                                                            
+                                                           class="btn btn-outline-success btn-icon mb-2 me-4" title="Modificar un registro">
+                                                           <i class="bi bi-pencil" style="font-size: 1rem;"></i>
+                                                           </button>';
+
+                                            if($baja == '1') { $btn_del_mostrar= $btn_del; } else {  $btn_del_mostrar= ''; }
+                                            if($modf == '1') { $btn_mdf_mostrar= $btn_mdf; } else {  $btn_mdf_mostrar= ''; }
+
+                                            echo "<tr class=\"cellColor" . ($j%2) . "\" align=\"center\" id=\"tr$j\">\n"
+                                            . '<td style="text-align:center">'. $cur['nombre']  	."</td>\n"
+                                            . '<td style="text-align:center">'. $btn_mdf_mostrar . $btn_del_mostrar . "</td>\n"
+                                            . "</tr>\n";
+                                        }
+                                        echo "</tbody>";
+                                    ?>   
+                                </table>
+                            </div>
+                        </div>
+    
                     </div>
 
                     <!-- Modal: Info -->
@@ -298,7 +337,7 @@ $(document).ready(function(){
                         <div class="modal-dialog modal-content" >
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Borrar <?php echo $entidad ?> </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"> Borrar Producto </h6></div>
 
                             <form name="form_del_reg" id="form_del_reg" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
                                 
@@ -337,80 +376,29 @@ $(document).ready(function(){
                     <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Agregar <?php echo $entidad ?> </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"> Agregar Producto </h6></div>
 
-                            <form name="add_reg" id="add_reg" class="form-horizontal validate" method="post" action="./funciones/mod3_ronda_neg_add.php" enctype="multipart/form-data" >
+                            <form name="add_reg" id="add_reg" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
                                 
                                 <div class="modal-body with-padding">					
-                                    <div class="form-group-sm">  
-
+                                    <div class="form-group-sm">                                    
                                         <div class="row">
-                                            <div class="col-md-5">
-                                                <label>Nombre: <span class="mandatory">*</span></label>   
-                                                <input type="text" id="nom_" name="nom_" class="form-control form-control-sm" tabindex="1" required>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Nombre<span class="mandatory">*</span></label>   
+                                                <input type="text" id="nom_" name="nom_" class="form-control form-control-sm" tabindex="2" required>
                                                 <input type="hidden" id="usuario" name="usuario" value="<?php echo $id_user ?>" >
                                             </div>
-                                            <div class="col-md-5"> 
-                                                <label>Lugar: <span class="mandatory">*</span></label>   
-                                                <input type="text" id="lug_" name="lug_" class="form-control form-control-sm" tabindex="2" required>
-                                            </div> 
-                                            <div class="col-md-2"> 
-                                                <label>Hs: <span class="mandatory">*</span></label>   
-                                                <input type="time" id="hs" name="hs" class="form-control form-control-sm" tabindex="3" required>
-                                            </div> 
-                                        </div><br/>
-
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <label>Fecha 1: <span class="mandatory">*</span></label>   
-                                                <input type="date" id="f1" name="f1" class="form-control form-control-sm" tabindex="3" required>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label>Fecha 2: </label>   
-                                                <input type="date" id="f2" name="f2" class="form-control form-control-sm" tabindex="4">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label>Inscripcion desde: <span class="mandatory">*</span></label>   
-                                                <input type="date" id="f_insc_dsd" name="f_insc_dsd" class="form-control form-control-sm" tabindex="5" required>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label>Inscripcion hasta: <span class="mandatory">*</span></label>   
-                                                <input type="date" id="f_insc_hst" name="f_insc_hst" class="form-control form-control-sm" tabindex="6" required>
-                                            </div>
-                                        </div><br/>                                        
-
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <label>Productos: (al menos 1)</label>   
-                                            </div>
                                         </div>
-
-                                        <div class="row">
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-10">
-                                                <div class="row">
-                                                    <?php foreach($arr_prod as $j => $cur): ?>
-                                                        <div class="col-md-6 mb-2">
-                                                            <div class="form-check">
-                                                                <input 
-                                                                    type="checkbox" name="chek[]" id="chek[]" value="<?php echo $cur['id'] ?>" 
-                                                                    class="form-check-input"
-                                                                >
-                                                                <label class="form-check-label">  <?php echo $cur['nombre'] ?>  </label>
-                                                            </div>
-                                                        </div>
-                                                    <?php endforeach; ?>
-                                                </div>
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>	
 
                                 <div class="modal-footer d-flex center-content-end"><center>					
                                     <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="4">Cancelar</button>		                                    
-                                    <button id="validar_add" name="validar_add" type="submit" class="btn btn-success" title="Se va a validar si se puede agregar." tabindex="5" > Agregar </button>
+                                    <button id="validar_add" name="validar_add" type="button" class="btn btn-success" title="Se va a validar si se puede agregar." tabindex="5" > Agregar </button>
                                     <br /><br />
+                                    <div id="mostrar_validar_add" ></div> 
                                 </div></center>
 
                             </form>
@@ -424,7 +412,7 @@ $(document).ready(function(){
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Modificar <?php echo $entidad ?> </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"> Modificar Producto </h6></div>
 
                             <form name="mdf_reg" id="mdf_reg" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
                                 
@@ -454,65 +442,6 @@ $(document).ready(function(){
                             
                             </div>
                         </div>
-                    </div>
-
-                    <!-- DATATABLE -->
-                    <div class="row layout-top-spacing">                    
-                    
-                        <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
-                        
-                            <div class="widget-content widget-content-area br-8">
-                                <table id="dt_" class="table dt-table-hover" style="width:100%">
-                                    
-                                    <?php
-                                        $tabla= "<thead><tr class=\"rowHeaders\">			
-                                                <th style='text-align:center'> Nombre		</th>
-                                                <th style='text-align:center'> Lugar		</th>
-                                                <th style='text-align:center'> Fecha 1		</th>
-                                                <th style='text-align:center'> Productos	</th>
-                                                <th style='text-align:center'> Acciones		</th>";
-                                        $tabla.="</tr></thead><tbody>";			
-                                        echo $tabla;
-                                        for($j=0 ; is_array($arr_) && $j<count($arr_) ; $j++){
-                                            $cur  = $arr_[$j];
-                                        
-                                            $btn_del = ' <button data-bs-toggle="modal" data-bs-target="#modal_del" 
-                                                            data-id="'.$cur['id'].'" data-nombre="'.$cur['nombre'].'"
-                                                            class="btn btn-outline-danger btn-icon mb-2 me-4" title="Borrar registro" >
-                                                            <i class="bi bi-trash" style="font-size: 1rem;"></i>
-                                                            </button>';
-
-                                            $btn_mdf = '<button data-bs-toggle="modal" data-bs-target="#modal_upd" 
-                                                           data-id="'.$cur['id'].'" data-nombreant="'.$cur['nombre'].'" data-nombre="'.$cur['nombre'].'"                                                            
-                                                           class="btn btn-outline-success btn-icon mb-2 me-4" title="Modificar un registro">
-                                                           <i class="bi bi-pencil" style="font-size: 1rem;"></i>
-                                                           </button>';
-
-                                            $btn_ver = '<button data-bs-toggle="modal" data-bs-target="#modal_ver" 
-                                                           data-id="'.$cur['id'].'" data-nombreant="'.$cur['nombre'].'" data-nombre="'.$cur['nombre'].'"                                                            
-                                                           class="btn btn-outline-info btn-icon mb-2 me-4" title="Ver más">
-                                                           <i class="bi bi-search" style="font-size: 1rem;"></i>
-                                                           </button>';
-
-                                            $list_prod = $RondaNeg->get_prod_en_RN($cur['id']);
-
-                                            if($baja == '1') { $btn_del_mostrar= $btn_del; } else {  $btn_del_mostrar= ''; }
-                                            if($modf == '1') { $btn_mdf_mostrar= $btn_mdf; } else {  $btn_mdf_mostrar= ''; }
-
-                                            echo "<tr class=\"cellColor" . ($j%2) . "\" align=\"center\" id=\"tr$j\">\n"
-                                            . '<td style="text-align:center">'. $cur['nombre']  	."</td>\n"
-                                            . '<td style="text-align:center">'. $cur['lugar']  	    ."</td>\n"
-                                            . '<td style="text-align:center">'. $cur['f_dia_1']  	."</td>\n"
-                                            . '<td style="text-align:center">'. $list_prod  	    ."</td>\n"
-                                            . '<td style="text-align:center">'. $btn_ver . $btn_mdf_mostrar . $btn_del_mostrar . "</td>\n"
-                                            . "</tr>\n";
-                                        }
-                                        echo "</tbody>";
-                                    ?>   
-                                </table>
-                            </div>
-                        </div>
-    
                     </div>
 
                 </div>

@@ -23,4 +23,4 @@ switch($opc){
 }
 $_SESSION['alert_tit']= $a_tit;	$_SESSION['alert_sub']= $a_sub;	  $_SESSION['alert_ico']= $a_ico;
 
-?> <script type="text/javascript"> window.location="../_ronda_neg_admin.php"; </script>
+?> <script type="text/javascript"> window.location="../_ronda_neg_prod.php"; </script>
