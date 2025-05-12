@@ -53,7 +53,7 @@ if(count($inscriptos) > 0){		// SI HAY DATOS MUESTRO EL DATATABLE SINO MUESTRO U
                             . '<td style="text-align:center">'. $cur['email']."</td>\n"
 							. '<td style="text-align:center">'. $cur['empresa']."</td>\n"
 							. '<td style="text-align:center">'. $cur['cargo']."</td>\n"
-							. '<td style="text-align:center">'. $cur['localidad']."</td>\n"
+							. '<td style="text-align:center">'. $cur['departamento']."</td>\n"
                             . "</tr>\n";
                     }
                     echo "</tbody>";
