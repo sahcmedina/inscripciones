@@ -92,6 +92,79 @@ box-shadow: 5px 5px 20px 0 rgba(0,0,0,0.4) !important
 
 
 
+<section class="u-clearfix u-grey-5 u-valign-middle-lg u-valign-middle-md u-valign-middle-sm u-valign-middle-xs u-section-4" id="sec-b096">
+      <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
+        <div class="data-layout-selected u-clearfix u-layout-wrap u-layout-wrap-1">
+          <div class="u-gutter-0 u-layout">
+            <div class="u-layout-row">
+              <div class="u-size-17">
+                <div class="u-layout-col">
+                  <div class="u-container-style u-hidden-sm u-hidden-xs u-image u-layout-cell u-left-cell u-size-60 u-image-1" data-image-width="2560" data-image-height="2445" data-animation-name="customAnimationIn" data-animation-duration="1000" data-animation-delay="0">
+                    <div class="u-container-layout u-container-layout-1"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="u-size-43">
+                <div class="u-layout-col">
+                  <div class="u-border-no-bottom u-border-no-left u-border-no-right u-border-no-top u-container-style u-gradient u-hover-feature u-layout-cell u-right-cell u-size-60 u-white u-layout-cell-2" data-animation-name="customAnimationIn" data-animation-duration="1000" data-animation-delay="0">
+                    <div class="u-container-layout u-valign-middle-lg u-valign-middle-md u-valign-middle-sm u-valign-middle-xs u-container-layout-2">
+                      <h2 class="u-align-center u-custom-font u-font-montserrat u-text u-text-1">Agenda de &nbsp;<b style="">EVENTOS</b>
+                      </h2>
+                      <p class="u-align-left u-custom-font u-font-montserrat u-text u-text-default u-text-2">A continuación podrás ver todos los eventos que tenemos para invitarte, acompañanos... </p>
+                      <div class="u-expanded-width u-table u-table-responsive u-table-1">
+                        <table class="u-table-entity u-table-entity-1">
+                          <colgroup>
+                            <col width="15.2%">
+                            <col width="26%">
+                            <col width="42.2%">
+                            <col width="16.6%">
+                          </colgroup>
+                          <thead class="u-align-center u-custom-font u-font-montserrat u-table-header u-table-header-1">
+                            <tr>
+                              <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">Fecha</th>
+                              <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">TIPO</th>
+                              <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">Evento</th>
+                              <th class="u-border-2 u-border-grey-75 u-border-no-left u-border-no-right u-table-cell">MÁS INFO</th>
+                            </tr>
+                          </thead>
+                          <tbody class="u-align-center u-custom-font u-font-montserrat u-table-body">
+                            <tr style="height: 39px;">
+                              <td class="u-table-cell">Mayo - 10</td>
+                              <td class="u-table-cell">Ronda de Negocios</td>
+                              <td class="u-table-cell">Negocio de Aceitunas</td>
+                              <td class="u-table-cell">ver más..</td>
+                            </tr>
+                            <tr>
+                              <td class="u-table-cell">Mayo - 13</td>
+                              <td class="u-table-cell">Conferencia</td>
+                              <td class="u-table-cell">Menos es más</td>
+                              <td class="u-table-cell"> ver más..</td>
+                            </tr>
+                            <tr>
+                              <td class="u-table-cell">Junio - 3</td>
+                              <td class="u-table-cell">Ronda de Inversión</td>
+                              <td class="u-table-cell">Inversión al costo</td>
+                              <td class="u-table-cell"> ver más..</td>
+                            </tr>
+                            <tr>
+                              <td class="u-table-cell">Julio - 28</td>
+                              <td class="u-table-cell">Foro</td>
+                              <td class="u-table-cell">Aprendamos juntos</td>
+                              <td class="u-table-cell"> ver más..</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
 
     
     
