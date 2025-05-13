@@ -32,39 +32,46 @@
 	require_once('./estructura/librerias_utilizadas.php');
 	?>      
 
-<!-- PASAR DATOS AL MODAL: Borrar  -->
-<script>
-$(document).ready(function(){  
-	$('#modal_del').on('show.bs.modal', function (event) {    
-		  var button   = $(event.relatedTarget)  // Botón que activó el modal
-		  var id       = button.data('id')   
-		  var nombre   = button.data('nombre')   
-		  var modal    = $(this)
-		  modal.find('.modal-body #id_del').val(id)
-		  modal.find('.modal-body #nombre_del').val(nombre)
-		 
-		  $('.alert').hide();//Oculto alert
-		})
-	});
-</script>
+    <!-- Muestra borde de componentes del Form -->
+    <style>
+        input:focus, select:focus, textarea:focus {
+            border: 2px solid #007bff !important;                   /* Borde azul más grueso */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5) !important;  /* Sombra suave */
+            transition: all 0.3s ease;                                /* Animación suave */
+        }
+    </style>
 
-<!-- PASAR DATOS AL MODAL: Actualizar  -->
-<script>
-$(document).ready(function(){  
-	$('#modal_upd').on('show.bs.modal', function (event) {    
-		  var button    = $(event.relatedTarget)  // Botón que activó el modal
-		  var id        = button.data('id')  
-		  var nom       = button.data('nombre')   
-		  var nomant    = button.data('nombreant')   
-		  var modal     = $(this)
-		  modal.find('.modal-body #id_').val(id)
-		  modal.find('.modal-body #nombre').val(nom)
-		  modal.find('.modal-body #nombreant').val(nomant)
+    <!-- PASAR DATOS AL MODAL: Borrar  -->
+    <script>
+    $(document).ready(function(){  
+        $('#modal_del').on('show.bs.modal', function (event) {    
+            var button   = $(event.relatedTarget)  // Botón que activó el modal
+            var id       = button.data('id')   
+            var nombre   = button.data('nombre')   
+            var modal    = $(this)
+            modal.find('.modal-body #id_del').val(id)
+            modal.find('.modal-body #nombre_del').val(nombre)
+            
+            $('.alert').hide();//Oculto alert
+            })
+        });
+    </script>
 
-		  $('.alert').hide();//Oculto alert
-		})
-	});
-</script>
+    <!-- PASAR DATOS AL MODAL: Actualizar  -->
+    <script>
+    $(document).ready(function(){  
+        $('#modal_upd').on('show.bs.modal', function (event) {    
+            var button    = $(event.relatedTarget)  // Botón que activó el modal
+            var id        = button.data('id')  
+            var nom       = button.data('nombre') 
+            var modal     = $(this)
+            modal.find('.modal-body #id_rn').val(id)
+            modal.find('.modal-body #nombre').val(nom)
+
+            $('.alert').hide();//Oculto alert
+            })
+        });
+    </script>
 
 <!-- AJAX: Validar datos por ajax - Antes de Actualizar -->	
 <script language="javascript">
@@ -234,7 +241,7 @@ $(document).ready(function(){
                         
                                         <nav class="breadcrumb-style-five" aria-label="breadcrumb">
                                             <ol class="breadcrumb">
-                                            <li class="breadcrumb-item"><a href="principal.php" title="Dashboard"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="inner-text"></span></a></li>
+                                                <li class="breadcrumb-item"><a href="principal.php" title="Dashboard"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="inner-text"></span></a></li>
                                                 <li class="breadcrumb-item"> Negocios </li>
                                                 <li class="breadcrumb-item active" aria-current="page"> Administración </li>
                                             </ol>
@@ -363,19 +370,19 @@ $(document).ready(function(){
                                         <div class="row">
                                             <div class="col-md-2">
                                                 <label>Fecha 1: <span class="mandatory">*</span></label>   
-                                                <input type="date" id="f1" name="f1" class="form-control form-control-sm" tabindex="3" required>
+                                                <input type="date" id="f1" name="f1" class="form-control form-control-sm" tabindex="4" required>
                                             </div>
                                             <div class="col-md-2">
                                                 <label>Fecha 2: </label>   
-                                                <input type="date" id="f2" name="f2" class="form-control form-control-sm" tabindex="4">
+                                                <input type="date" id="f2" name="f2" class="form-control form-control-sm" tabindex="5">
                                             </div>
                                             <div class="col-md-3">
                                                 <label>Inscripcion desde: <span class="mandatory">*</span></label>   
-                                                <input type="date" id="f_insc_dsd" name="f_insc_dsd" class="form-control form-control-sm" tabindex="5" required>
+                                                <input type="date" id="f_insc_dsd" name="f_insc_dsd" class="form-control form-control-sm" tabindex="6" required>
                                             </div>
                                             <div class="col-md-3">
                                                 <label>Inscripcion hasta: <span class="mandatory">*</span></label>   
-                                                <input type="date" id="f_insc_hst" name="f_insc_hst" class="form-control form-control-sm" tabindex="6" required>
+                                                <input type="date" id="f_insc_hst" name="f_insc_hst" class="form-control form-control-sm" tabindex="7" required>
                                             </div>
                                         </div><br/>                                        
 
@@ -408,7 +415,7 @@ $(document).ready(function(){
                                 </div>	
 
                                 <div class="modal-footer d-flex center-content-end"><center>					
-                                    <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="4">Cancelar</button>		                                    
+                                    <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="8">Cancelar</button>		                                    
                                     <button id="validar_add" name="validar_add" type="submit" class="btn btn-success" title="Se va a validar si se puede agregar." tabindex="5" > Agregar </button>
                                     <br /><br />
                                 </div></center>
@@ -426,26 +433,115 @@ $(document).ready(function(){
                             
                             <div class="modal-header"><h6 class="modal-title"> Modificar <?php echo $entidad ?> </h6></div>
 
+                            <form name="form_mdf_" id="form_mdf_" class="form-horizontal validate" method="post" action="./_ronda_neg_admin_upd.php" enctype="multipart/form-data" >
+                                
+                                <div class="modal-body with-padding">					
+                                    <div class="form-group-sm">
+                                        <div class="row" align="center">
+                                            <div class="col-md-3"></div>
+                                            <div class="col-md-6">
+                                                <div><label>Nombre:</label></div>
+                                                <input type="text"   id="nombre"  name="nombre" class="form-control form-control-sm" readonly='readonly'/>				                                							
+                                                <input type="hidden" id="id_rn" name="id_rn"                         	 />  
+                                            </div>	
+                                            <div class="col-md-3"></div>
+                                        </div>								
+                                    </div><br /> 
+                                </div>	
+
+                                <div class="modal-footer"><center>	
+                                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal"> Cerrar </button>
+                                    <button type="submit" id="upd_perf" name="upd_perf" class="btn btn-success" onclick="javascript:this.form.submit();this.disabled= true;mostrarMsjBtn_mdfPermisos()" title="Presione el botón para modificar los permisos." > Siguiente </button>                                    
+                                    <br /><br />
+                                    <div id="msjBtn_mdfPermisos" style='display:none;' ><img src="images/loading.gif" width="30px" height="30px" alt="loading"/><?php echo '   <font color=grey><b><i>'.'Por favor, espere unos segundos..'.'</b></i></font>'; ?></div>
+                                </div></center>
+                                    
+                            </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal: Modificar OLD -->
+                    <div id="modal_upd_OLD" class="modal animated fadeInDown" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                            
+                            <div class="modal-header"><h6 class="modal-title"> Modificar <?php echo $entidad ?> </h6></div>
+
                             <form name="mdf_reg" id="mdf_reg" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
                                 
-                                <div class="modal-body with-padding">
-                                    					
+                                <div class="modal-body with-padding">                                    					
                                     <div class="form-group-sm">
+
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <label >Nombre <span class="mandatory">*</span></label>
-                                            <input type="text"   id="nombre"     name="nombre"   class="form-control form-control-sm" tabindex="2" required>  
-                                            <input type="hidden" id="id_"        name="id_"   >
-                                            <input type="hidden" id="nombreant"  name="nombreant"   >
-                                            <input type="hidden" id="usuario"    name="usuario" value="<?php echo $id_user ?>" >                                          
-                                        </div>                                        
-                                    </div>
+                                            <div class="col-md-5">
+                                                <label>Nombre: <span class="mandatory">*</span></label>   
+                                                <input type="text" id="nombre"    name="nombre" class="form-control form-control-sm" tabindex="1" required>
+                                                <input type="hidden" id="usuario" name="usuario" value="<?php echo $id_user ?>" >
+                                                <input type="hidden" id="id_"     name="id_" >
+                                            </div>
+                                            <div class="col-md-5"> 
+                                                <label>Lugar: <span class="mandatory">*</span></label>   
+                                                <input type="text" id="lugar_" name="lugar_" class="form-control form-control-sm" tabindex="2" required>
+                                            </div> 
+                                            <div class="col-md-2"> 
+                                                <label>Hs: <span class="mandatory">*</span></label>   
+                                                <input type="time" id="hs_" name="hs_" class="form-control form-control-sm" tabindex="3" required>
+                                            </div> 
+                                        </div><br/>
+
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>Fecha 1: <span class="mandatory">*</span></label>   
+                                                <input type="date" id="f1_" name="f1_" class="form-control form-control-sm" tabindex="4" required>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label>Fecha 2: </label>   
+                                                <input type="date" id="f2_" name="f2_" class="form-control form-control-sm" tabindex="5">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label>Inscripcion desde: <span class="mandatory">*</span></label>   
+                                                <input type="date" id="dsd_" name="dsd_" class="form-control form-control-sm" tabindex="6" required>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label>Inscripcion hasta: <span class="mandatory">*</span></label>   
+                                                <input type="date" id="hst_" name="hst_" class="form-control form-control-sm" tabindex="7" required>
+                                            </div>
+                                        </div><br/>                                        
+
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label>Productos: (al menos 1)</label>   
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-10">
+                                                <div class="row">
+                                                    <?php foreach($arr_prod as $j => $cur): ?>
+                                                        <div class="col-md-6 mb-2">
+                                                            <div class="form-check">                                                                
+                                                                <input 
+                                                                    type="checkbox" name="chek[]" id="chek[]" value="<?php echo $cur['id'] ?>" 
+                                                                    class="form-check-input"
+                                                                >
+                                                                <label class="form-check-label">  <?php echo $cur['nombre'] ?>  </label>
+                                                            </div>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                
                                     </div>
                                 </div>
 
                                 <div class="modal-footer"><center>					
-                                    <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="5">Cancelar</button>		                                    
-                                    <button id="validar_upd" name="validar_upd" type="button" class="btn btn-success" title="Se va a validar si se puede modificar." tabindex="6"> Modificar </button>
+                                    <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="8">Cancelar</button>		                                    
+                                    <button id="validar_upd" name="validar_upd" type="button" class="btn btn-success" title="Se va a validar si se puede modificar." tabindex="9"> Modificar </button>
                                     <br/><br/>
                                     <div id="mostrar_validar_upd" ></div> 
                                 </div></center>
@@ -483,10 +579,12 @@ $(document).ready(function(){
                                                             </button>';
 
                                             $btn_mdf = '<button data-bs-toggle="modal" data-bs-target="#modal_upd" 
-                                                           data-id="'.$cur['id'].'" data-nombreant="'.$cur['nombre'].'" data-nombre="'.$cur['nombre'].'"                                                            
+                                                           data-id="'.$cur['id'].'"             data-nombreant="'.$cur['nombre'].'" data-nombre="'.$cur['nombre'].'"                                                            
+                                                           data-lugar="'.$cur['lugar'].'"       data-hs="'.$cur['hs'].'"            data-f1="'.$cur['f_dia_1'].'"  data-f2="'.$cur['f_dia_2'].'"  
+                                                           data-dsd="'.date('Y-m-d', strtotime($cur['f_inscrip_dsd'])).'" data-hst="'.date('Y-m-d', strtotime($cur['f_inscrip_hst'])).'"
                                                            class="btn btn-outline-success btn-icon mb-2 me-4" title="Modificar un registro">
                                                            <i class="bi bi-pencil" style="font-size: 1rem;"></i>
-                                                           </button>';
+                                                           </button>';   $fecha_formateada = date('Y-m-d', strtotime($row['fecha']));
 
                                             $btn_ver = '<button data-bs-toggle="modal" data-bs-target="#modal_ver" 
                                                            data-id="'.$cur['id'].'" data-nombreant="'.$cur['nombre'].'" data-nombre="'.$cur['nombre'].'"                                                            
@@ -504,7 +602,7 @@ $(document).ready(function(){
                                             . '<td style="text-align:center">'. $cur['lugar']  	    ."</td>\n"
                                             . '<td style="text-align:center">'. $cur['f_dia_1']  	."</td>\n"
                                             . '<td style="text-align:center">'. $list_prod  	    ."</td>\n"
-                                            . '<td style="text-align:center">'. $btn_ver . $btn_mdf_mostrar . $btn_del_mostrar . "</td>\n"
+                                            . '<td style="text-align:center">'. $btn_mdf_mostrar . $btn_del_mostrar . "</td>\n"
                                             . "</tr>\n";
                                         }
                                         echo "</tbody>";
@@ -557,6 +655,13 @@ $(document).ready(function(){
         });
     </script>
 
+    <!-- Pone foco en el primer componente del Modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modalAdd = document.getElementById('modal_add');
+            modalAdd.addEventListener('shown.bs.modal', function () {   document.getElementById('nom_').focus();        });
+        });
+    </script> 
 
 </body>
 </html>

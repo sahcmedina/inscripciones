@@ -33,12 +33,15 @@ switch($op){
 			break;
 
 	case 'ok':
+			$id_rn = 0;
+			$add_ev= false;
+
 			// agregar ronda
 			$add  = $RN->add($user, $nom, $lug, $f1, $f2, $f_insc_dsd, $f_insc_hst, $hs);
 			$id_rn= $RN->get_last_id_rn();
 
 			// agregar evento (para web)
-			$add_ev = $RN->add_evento('RN', $id_rn, $nom, $f1, $hs, $lugar, $f_insc_dsd, $f_insc_hst, $user);
+			if($id_rn != 0)	$add_ev = $RN->add_evento('RN', $id_rn, $nom, $f1, $hs, $lug, $f_insc_dsd, $f_insc_hst, $user);
 
 			// agregar productos
 			if($add && $add_ev){	

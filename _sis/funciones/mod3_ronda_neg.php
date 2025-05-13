@@ -14,6 +14,19 @@ class RondaNegocios {
 		catch (Exception $e){	echo $e->getMessage();		}
 		finally{				$sql = null;				}
 	}
+	function gets_id($id_rn){
+		include('conexion_pdo.php');
+		$query_  = " SELECT r.* FROM eventos_ronda_neg r WHERE r.id= :id_rn ";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':id_rn', $id_rn);
+			$sql->execute();
+			$res = $sql->fetchAll();
+			return $res;
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
 
 	function get_last_id_rn(){
 		include('conexion_pdo.php');
@@ -61,6 +74,21 @@ class RondaNegocios {
 		}
 		catch (Exception $e){	echo $e->getMessage(); 	}		
 		finally             {	$sql = null;			}
+	}	
+	function tf_existe_producto_elegido($id_rn, $id_prod){
+		include('conexion_pdo.php');
+		$query_  = " SELECT count(*) as cant FROM eventos_ronda_neg_productos_select WHERE id_rn = :id_rn AND id_prod = :id_prod "; 
+        try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':id_rn',   $id_rn);
+			$sql->bindParam(':id_prod', $id_prod);
+			$sql->execute();
+			$res = $sql->fetch();
+			if ($res['cant']>0) return true;
+			else				return false;
+		}
+		catch (Exception $e){	echo $e->getMessage(); 	}		
+		finally             {	$sql = null;			}
 	}
 
 	function add($user, $nombre, $lugar, $f1, $f2, $f_insc_dsd, $f_insc_hst, $hora){
@@ -92,10 +120,12 @@ class RondaNegocios {
 		         VALUES (:tipo, :fk_evento, :titulo, :fecha, :hora, :lugar, :f_inscrip_dsd, :f_inscrip_hst, :f_create, :fk_usuario)";
 		try{
 			$sql = $con->prepare($query);
-			$sql->bindParam(':nombre', 	        $nombre);
-			$sql->bindParam(':lugar', 	        $lugar);
-			$sql->bindParam(':f_dia_1', 	    $f1);
-			$sql->bindParam(':f_dia_2', 	    $f2);
+			$sql->bindParam(':tipo', 	        $tipo);
+			$sql->bindParam(':fk_evento', 	    $fk_evento);
+			$sql->bindParam(':titulo', 	    	$titulo);
+			$sql->bindParam(':fecha', 	    	$fecha);
+			$sql->bindParam(':hora', 	    	$hora);
+			$sql->bindParam(':lugar', 	    	$lugar);
 			$sql->bindParam(':f_inscrip_dsd', 	$f_insc_dsd);
 			$sql->bindParam(':f_inscrip_hst', 	$f_insc_hst);
 			$sql->bindParam(':f_create', 	    $hoy);
@@ -135,18 +165,59 @@ class RondaNegocios {
 		catch (Exception $e){ echo $e->getMessage();}
 		finally{				$sql = null;		}
 	}
+	function del_prod($id_rn){
+		include('conexion_pdo.php');				
+		$query_  = " DELETE FROM eventos_ronda_neg_productos_select WHERE id_rn= :id_rn "; 
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':id_rn',  $id_rn);
+			if($sql->execute())	$return= true;
+			else				$return= false;
+			return $return;
+		}
+		catch (Exception $e){ echo $e->getMessage();}
+		finally{				$sql = null;		}
+	}
 
-	function upd($id, $user, $nombre){
-		include('conexion_pdo.php');		
-		$hoy     = Date('Y-m-d H:i:s');		
-		$query_  = " UPDATE eventos_ronda_neg SET nombre = :nombre, f_update= :f_update, fk_user= :fk_user
+	function upd($id, $user, $nombre, $lugar, $f1, $f2, $dsd, $hst, $hora){
+		include('conexion_pdo.php');	
+		$query_  = " UPDATE eventos_ronda_neg 
+		             SET nombre= :nombre, fk_usuario= :fk_user, lugar= :lugar, f_dia_1= :f1, f_dia_2= :f2,
+					     f_inscrip_dsd= :dsd, f_inscrip_hst= :hst, hora= :hora
 		             WHERE id= :id "; 
 		try{
 			$sql = $con->prepare($query_);
-			$sql->bindParam(':id',      $id);			
-			$sql->bindParam(':fk_user', $user);			
-			$sql->bindParam(':f_update',$hoy);			
-			$sql->bindParam(':nombre',  $nombre);			
+			$sql->bindParam(':id',       $id);			
+			$sql->bindParam(':fk_user',  $user);		
+			$sql->bindParam(':nombre',   $nombre);			
+			$sql->bindParam(':lugar',    $lugar);			
+			$sql->bindParam(':f1',       $f1);			
+			$sql->bindParam(':f2',       $f2);			
+			$sql->bindParam(':dsd',      $dsd);			
+			$sql->bindParam(':hst',      $hst);			
+			$sql->bindParam(':hora',     $hora);			
+			if($sql->execute()) return true; else return false ;
+		}
+		catch (Exception $e){ echo $e->getMessage(); 		}
+		finally{				$sql = null;				}
+	}
+	function upd_evento($tipo, $id, $user, $nombre, $lugar, $f1, $dsd, $hst, $hora){
+		include('conexion_pdo.php');		 
+		$query_  = " UPDATE eventos 
+		             SET titulo= :nombre, fecha= :f1, hora= :hora, lugar= :lugar, 
+					     f_inscrip_dsd= :dsd, f_inscrip_hst= :hst, fk_usuario= :fk_user
+		             WHERE fk_evento= :id AND tipo= :tipo"; 
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':id',       $id);			
+			$sql->bindParam(':tipo',     $tipo);			
+			$sql->bindParam(':nombre',   $nombre);			
+			$sql->bindParam(':f1',       $f1);				
+			$sql->bindParam(':hora',     $hora);				
+			$sql->bindParam(':lugar',    $lugar);	
+			$sql->bindParam(':dsd',      $dsd);			
+			$sql->bindParam(':hst',      $hst);		
+			$sql->bindParam(':fk_user',  $user);			
 			if($sql->execute()) return true; else return false ;
 		}
 		catch (Exception $e){ echo $e->getMessage(); 		}
