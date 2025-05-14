@@ -6,7 +6,8 @@ class Eventos {
 	function gets_activos(){
 		include('conexion_pdo.php');
 		$hoy     = Date('Y-m-d');
-		$query_  = " SELECT e.* FROM eventos e 
+		$query_  = " SELECT e.*, DAY(e.fecha) dia, MONTH(e.fecha) mes, YEAR(e.fecha) anio
+		             FROM eventos e 
 		             WHERE :hoy >= e.f_inscrip_dsd AND :hoy <= e.f_inscrip_hst ";
 		try{
 			$sql = $con->prepare($query_);
