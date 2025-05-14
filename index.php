@@ -1,5 +1,5 @@
 <?php
-
+  session_start();
 ?>
 
 <!DOCTYPE html><html style="font-size: 16px;" lang="es">
@@ -21,6 +21,9 @@
     
     <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
     <link id="u-page-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script type="application/ld+json">{
 		"@context": "http://schema.org",
 		"@type": "Organization",
@@ -30,15 +33,45 @@
     <meta name="theme-color" content="#478ac9">
     <meta property="og:title" content="casa">
     <meta property="og:type" content="website">
-  <meta data-intl-tel-input-cdn-path="intlTelInput/"></head>
-  <body data-home-page="casa.html" data-home-page-title="casa" data-path-to-root="./" data-include-products="false" class="u-body u-xl-mode" data-lang="es"><header class="u-clearfix u-header u-sticky u-sticky-c45e u-white u-header" id="header"><div class="u-clearfix u-sheet u-valign-middle-lg u-valign-middle-md u-valign-middle-sm u-valign-middle-xs u-sheet-1">
+  <meta data-intl-tel-input-cdn-path="intlTelInput/">
+</head>
+
+<body data-home-page="casa.html" data-home-page-title="casa" data-path-to-root="./" data-include-products="false" class="u-body u-xl-mode" data-lang="es"><header class="u-clearfix u-header u-sticky u-sticky-c45e u-white u-header" id="header"><div class="u-clearfix u-sheet u-valign-middle-lg u-valign-middle-md u-valign-middle-sm u-valign-middle-xs u-sheet-1">
+
+
+   
+<!------------------------------------------------------------------------------------------------------------------------------------------------->
+<!-- Notificaciones - Sweet Alert ----------------------------------------------------------------------------------------------------------------->
+<!------------------------------------------------------------------------------------------------------------------------------------------------->
+
+<?php 
+
+  if (isset($_SESSION['alert_tit']))      { $alert_tit= $_SESSION['alert_tit'];      } else { $alert_tit= ''; }
+  if (isset($_SESSION['alert_sub']))      { $alert_sub= $_SESSION['alert_sub'];      } else { $alert_sub= ''; }
+  if (isset($_SESSION['alert_ico']))      { $alert_ico= $_SESSION['alert_ico'];      } else { $alert_ico= ''; }
+  
+  if($alert_tit!= ''){
+      ?><script type="text/javascript">
+      swal.fire({ title: "<?php echo $alert_tit; ?>",  text:  "<?php echo $alert_sub; ?>",    icon:  "<?php echo $alert_ico; ?>"   });
+      </script><?php
+      $_SESSION['alert_tit']= '';     $_SESSION['alert_sub']= '';      $_SESSION['alert_ico']= '';
+  }    
+?>
+
+
+
+
+
+
         <a href="#" class="u-image u-logo u-image-1" data-image-width="646" data-image-height="92" target="_blank">
           <img src="images/logo.png" class="u-logo-image u-logo-image-1">
         </a>
         <img class="u-image u-image-contain u-image-default u-preserve-proportions u-image-2" src="images/ciudadanodigital.png" alt="" data-image-width="201" data-image-height="72" data-href="#" data-target="_blank">
       </div><style class="u-sticky-style" data-style-id="c45e">.u-sticky-fixed.u-sticky-c45e, .u-body.u-sticky-fixed .u-sticky-c45e {
 box-shadow: 5px 5px 20px 0 rgba(0,0,0,0.4) !important
-}</style></header>
+}</style>
+</header>
+
     <section class="u-align-center u-clearfix u-container-align-center u-grey-10 u-section-1" src="" id="carousel_ef82">
       <img class="u-expanded-width u-image u-image-1" src="images/Vector.png" data-image-width="1440" data-image-height="441">
       <img class="u-image u-image-round u-radius u-image-2" src="images/blanco.jpg" alt="" data-image-width="6000" data-image-height="4000">
@@ -106,7 +139,7 @@ box-shadow: 5px 5px 20px 0 rgba(0,0,0,0.4) !important
 
     
     
-    <footer class="u-align-center u-clearfix u-container-align-center u-footer u-grey-80 u-valign-bottom-lg u-valign-bottom-md u-valign-bottom-sm u-valign-bottom-xs u-footer" id="footer"><div class="data-layout-selected u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
+<footer class="u-align-center u-clearfix u-container-align-center u-footer u-grey-80 u-valign-bottom-lg u-valign-bottom-md u-valign-bottom-sm u-valign-bottom-xs u-footer" id="footer"><div class="data-layout-selected u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
         <div class="u-layout">
           <div class="u-layout-row">
             <div class="u-container-style u-layout-cell u-size-13 u-layout-cell-1">
@@ -155,6 +188,7 @@ box-shadow: 5px 5px 20px 0 rgba(0,0,0,0.4) !important
             </div>
           </div>
         </div>
-      </div></footer>
+      </div>
+</footer>
   
 </body></html>

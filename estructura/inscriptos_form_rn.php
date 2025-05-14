@@ -1,53 +1,54 @@
 <?php 
 session_start();
-// date_default_timezone_set('America/Argentina/San_Juan');
-// include('carrusel_index.php');	$CI = new Carrusel_Index();
 
-//------------------ RECIBO LOS DATOS ----------------------------
-if (isset($_POST['emp']))       { $emp= $_POST['emp']; 		    }    else { $emp= '';      	}
-if (isset($_POST['cuit']))     	{ $cuit= $_POST['cuit']; 		}    else { $cuit= '';      }
-if (isset($_POST['mensaje']))     	{ $mensaje= $_POST['mensaje']; 		}    else { $mensaje= '';      }
-
-echo 'ACA: '.$emp.'-'.$cuit.'-'.$mensaje;die();die();
-
-if (isset($_POST['persona']))   { $per= $_POST['persona']; 		}    else { $per= '';      	}
-if (isset($_POST['tel']))     	{ $tel= $_POST['tel']; 			}    else { $tel= '';      	}
-if (isset($_POST['participa'])) { $parti= $_POST['participa']; 	}    else { $parti= '';     }
-if (isset($_POST['pais']))     	{ $pais= $_POST['pais']; 		}    else { $pais= '';      }
-if (isset($_POST['email']))     { $email= $_POST['email']; 		}    else { $email= '';     }
-$arr_prod_elegidos = $_POST["chek"];
-
-
+if (isset($_POST['chek']))      { $arr_prod= $_POST['chek']; 	}    else { $arr_prod= '';     }
+if (isset($_POST['c_v']))       { $c_v= $_POST['c_v']; 		    }    else { $c_v= '';      	   }
+if (isset($_POST['prov']))     	{ $prov= $_POST['prov']; 		}    else { $prov= '';         }
+if (isset($_POST['emp']))     	{ $emp= $_POST['emp']; 		    }    else { $emp= '';          }
+if (isset($_POST['cuit']))     	{ $cuit= $_POST['cuit']; 		}    else { $cuit= '';         }
+if (isset($_POST['resp']))     	{ $resp= $_POST['resp']; 		}    else { $resp= '';         }
+if (isset($_POST['tel']))     	{ $tel= $_POST['tel']; 		    }    else { $tel= '';          }
+if (isset($_POST['email']))     { $email= $_POST['email']; 		}    else { $email= '';        }
+if (isset($_POST['id']))        { $id= $_POST['id']; 		    }    else { $id= '';           }
 
 // Control: datos faltantes
 $op = 'ok';
-if($emp=='' OR $cuit=='' OR $per=='' OR $tel=='' OR $parti=='' OR $pais=='' OR $email=='')	$op= 'dats_f';
+if($id=='' OR $c_v=='' OR $prov=='' OR $emp=='' OR $cuit=='' OR $resp=='' OR $tel=='' OR $email=='')	$op= 'dats_f';
 
 // Control: # productos elegidos
-if(count($arr_prod_elegidos)== 0)	$op= 'prod_f';
+if(count($arr_prod)== 0)	$op= 'prod_f';
 
 switch($op){
 
 	case 'dats_f':
-			$_SESSION['var_retorno_']= 'add_er'; 		 	$_SESSION['msj_retorno_']= 'Faltaron datos, por favor intente de nuevo.'; 	 		break;
+			$a_ico= 'error';      $a_tit= 'Error';	 $a_sub= 'Faltaron datos, por favor intente de nuevo.';  		break;
 
 	case 'prod_f':
-			$_SESSION['var_retorno_']= 'add_er'; 		 	$_SESSION['msj_retorno_']= 'Debe elegir productos, por favor intente de nuevo.'; 	 break;
-
+			$a_ico= 'error';      $a_tit= 'Error';	 $a_sub= 'Debe elegir productos, por favor intente de nuevo.';  break;
+			
 	case 'ok':
-			include_once('ronda_inscriptos.php');	$RI = new RondaInscriptos();
-			$id= $RI->add_inscrip($emp, $cuit, $per, $tel, $parti, $pais, $email);
-			for($i=0 ; $i<count($arr_prod_elegidos) ; $i++){
-				$prod= $arr_prod_elegidos[$i];
-				$add_= $RI->add_prod($id, $prod, $parti);
+			include_once('../_sis/funciones/mod3_ronda_neg.php');		$RN = new RondaNegocios();
+
+			// add inscrip
+			$id_inscrip= 0;
+			$add       = $RN->add_inscrip($id, $emp, $cuit, $resp, $tel, $c_v, $prov, $email);
+			$id_inscrip= $RN->get_last_id_inscrip();
+
+			// add productos
+			for($i=0 ; $i<count($arr_prod) ; $i++){
+				$prod    = $arr_prod[$i];
+				$add_prod= $RN->add_inscrip_prod($id_inscrip, $prod);
 			}
-			if($id!= 0){	$_SESSION['var_retorno_']= 'add_ok'; 	$_SESSION['msj_retorno_']= ''; 	 												}
-			else{			$_SESSION['var_retorno_']= 'add_er'; 	$_SESSION['msj_retorno_']= 'Faltaron datos, por favor intente de nuevo.'; 	 	}
+
+			if($id_inscrip!= 0){	$a_ico= 'success';    $a_tit= 'Inscripción realizada';	 $a_sub= 'Nos comunicaremos vía email.';	 										}
+			else{			        $a_ico= 'error';      $a_tit= 'Error';	                 $a_sub= 'Faltaron datos, por favor intente de nuevo.'; }
 			break;
 
 	default:
-			break;
+			$a_ico= 'error';      $a_tit= 'Error';	 $a_sub= 'Ocurrió un error, por favor intente de nuevo.';  		break;
 }
 
+$_SESSION['alert_tit']= $a_tit;	$_SESSION['alert_sub']= $a_sub;	$_SESSION['alert_ico']= $a_ico;
+
 // retorno
-?><script type="text/javascript"> window.location="../ronda_negocios_inscrip.php"; </script>
+?><script type="text/javascript"> window.location="../index.php"  </script>

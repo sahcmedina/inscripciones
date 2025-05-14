@@ -52,6 +52,7 @@
       </div><style class="u-sticky-style" data-style-id="c45e">.u-sticky-fixed.u-sticky-c45e, .u-body.u-sticky-fixed .u-sticky-c45e {
 box-shadow: 5px 5px 20px 0 rgba(0,0,0,0.4) !important
 }</style></header>
+
     <section class="u-align-center u-clearfix u-container-align-center u-grey-10 u-section-1" src="" id="carousel_ef82">
       <img class="u-expanded-width u-image u-image-1" src="images/Vector.png" data-image-width="1440" data-image-height="441">
       <img class="u-image u-image-round u-radius u-image-2" src="images/blanco.jpg" alt="" data-image-width="6000" data-image-height="4000">
@@ -62,6 +63,7 @@ box-shadow: 5px 5px 20px 0 rgba(0,0,0,0.4) !important
       <img class="u-image u-image-default u-preserve-proportions u-image-5" src="images/instagram.svg" alt="" data-image-width="24" data-image-height="24">
       <img class="u-image u-image-default u-preserve-proportions u-image-6" src="images/youtube.svg" alt="" data-image-width="27" data-image-height="19">
     </section>
+
     <section class="u-clearfix u-grey-10 u-section-2" id="block-1">
       <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
         <div class="u-container-style u-expanded-width u-group u-radius u-shape-round u-white u-group-1">
@@ -86,8 +88,11 @@ box-shadow: 5px 5px 20px 0 rgba(0,0,0,0.4) !important
 
 
 
+<!------------------------------------------------------------------------------------------------------------------------------------------------->
+<!-- Seccion - Formulario de inscricpcion --------------------------------------------------------------------------------------------------------->
+<!------------------------------------------------------------------------------------------------------------------------------------------------->
 
-    <section class="u-clearfix u-grey-10 u-section-3" id="sec-9946">
+<section class="u-clearfix u-grey-10 u-section-3" id="sec-9946">
       <div class="u-clearfix u-sheet u-valign-middle-lg u-valign-middle-md u-valign-middle-sm u-valign-middle-xs u-sheet-1">
         <div class="u-container-style u-expanded-width u-group u-radius u-shape-round u-white u-group-1">
           <div class="u-container-layout u-container-layout-1">
@@ -113,11 +118,10 @@ box-shadow: 5px 5px 20px 0 rgba(0,0,0,0.4) !important
               </div>
             </div>
 
-
           </div>
         </div>
       </div>
-    </section>
+</section>
     
     
 

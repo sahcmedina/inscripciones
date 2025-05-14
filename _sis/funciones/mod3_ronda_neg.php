@@ -42,6 +42,20 @@ class RondaNegocios {
 			echo $e->getMessage();
 		}
 	}
+	function get_last_id_inscrip(){
+		include('conexion_pdo.php');
+		$query_= " SELECT MAX(id) AS ult_id FROM eventos_ronda_neg_inscrip LIMIT 1 ";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->execute();
+			$res = $sql->fetch();
+			$sql = null;
+			return $res['ult_id'];
+		}
+		catch (Exception $e){			
+			echo $e->getMessage();
+		}
+	}	
 	function get_prod_en_RN($id_rn){
 		include('conexion_pdo.php');
 		$query_= " SELECT GROUP_CONCAT(p.nombre SEPARATOR ' - ') AS prod
@@ -146,6 +160,42 @@ class RondaNegocios {
 			$sql->bindParam(':id_prod', 	 $id_prod);
 			$sql->bindParam(':f_update',     $hoy);
 			$sql->bindParam(':fk_user',      $user);
+			if($sql->execute()) return true; else return false ;
+		}
+		catch (Exception $e){ echo $e->getMessage(); 		}
+		finally{				$sql = null;				}
+	}	
+	function add_inscrip($id_rn, $emp, $cuit, $resp, $tel, $c_v, $prov, $email){
+		include('conexion_pdo.php'); 
+		$hoy  = Date('Y-m-d H:i:s');
+		$query= "INSERT INTO eventos_ronda_neg_inscrip (fk_rn, persona, tel, email, fk_prov, c_v, emp, cuit, f_create) 
+		         VALUES (:fk_rn, :persona, :tel, :email, :fk_prov, :c_v, :emp, :cuit, :f_create)";
+		try{
+			$sql = $con->prepare($query);
+			$sql->bindParam(':fk_rn', 	    $id_rn);
+			$sql->bindParam(':persona', 	$resp);
+			$sql->bindParam(':tel', 	    $tel);
+			$sql->bindParam(':email', 	    $email);
+			$sql->bindParam(':fk_prov',     $prov);
+			$sql->bindParam(':c_v', 	    $c_v);
+			$sql->bindParam(':emp', 	    $emp);
+			$sql->bindParam(':cuit',     	$cuit);
+			$sql->bindParam(':f_create', 	$hoy);
+			if($sql->execute()) return true; else return false ;
+		}
+		catch (Exception $e){ echo $e->getMessage(); 		}
+		finally{				$sql = null;				}
+	}
+	function add_inscrip_prod($id_rn, $id_prod){
+		include('conexion_pdo.php'); 
+		$hoy  = Date('Y-m-d H:i:s');
+		$query= "INSERT INTO eventos_ronda_neg_inscrip_prod (fk_insc, fk_prod, f_create) 
+		         VALUES (:fk_insc, :fk_prod, :f_create)";
+		try{
+			$sql = $con->prepare($query);
+			$sql->bindParam(':fk_insc', 	 $id_rn);
+			$sql->bindParam(':fk_prod', 	 $id_prod);
+			$sql->bindParam(':f_create',     $hoy);
 			if($sql->execute()) return true; else return false ;
 		}
 		catch (Exception $e){ echo $e->getMessage(); 		}
