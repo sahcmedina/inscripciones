@@ -24,278 +24,287 @@
     <?php 
 	require_once('./estructura/cabecera.php');
 	require_once('./estructura/librerias_utilizadas.php');
-	?>    
-
-<!-- Muestra input de cupo y lugar segun elija online o presencial -->
-<script language="javascript">
-$(document).ready(function(){
-    var modalidadadd; 
-    modalidadadd= $("#modalidad").val();
-    if(modalidadadd == 'OnLine'){
-        document.getElementById('div_cupo').hidden = true;
-        document.getElementById('div_lugar').hidden = true;
-    }else{
-        if (modalidadadd == 'Presencial'){
-            document.getElementById('div_cupo').hidden = false;
-            document.getElementById('div_lugar').hidden = false;
+	?>      
+    
+    <!-- Muestra borde de componentes del Form -->
+    <style>
+        input:focus, select:focus, textarea:focus {
+            border: 2px solid #007bff !important;                   /* Borde azul más grueso */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5) !important;  /* Sombra suave */
+            transition: all 0.3s ease;                                /* Animación suave */
         }
-    };
-});
-</script>
+    </style>
 
-<!-- AJAX: Validar datos por ajax - Antes de Agregar -->
-<script language="javascript">
-$(document).ready(function(){    
-    var titulo; var dis; var org; var fecha; var hora; var mod; var cupo; var i_inicio; var i_final; var lugar; var usr;                   
-    $("#validar_add").click(function(){
-		titulo   = $("#titulo").val();
-        dis      = $("#disertante").val();
-        org      = $("#organismo").val();
-        fecha    = $("#fecha").val();
-        hora     = $("#hora").val();
-        mod      = $("#modalidad").val();
-        cupo     = $("#cupo").val();
-        i_inicio = $("#insc_inicio").val();
-        i_final  = $("#insc_final").val();
-        lugar    = $("#lugar").val();
-        usr      = $("#id_user").val();
-        $("#mostrar_validar_add").delay(15).queue(function(n) {                                                 
-            $.ajax({
-                type: "POST",
-                url: "./funciones/mod5_ajax_validar_add_conferencia.php",                                                                                                                                                                                                    
-                data: "titulo="+titulo+"&fecha="+fecha+"&hora="+hora+"&mod="+mod+"&cupo="+cupo+"&i_inicio="+i_inicio+"&i_final="+i_final+"&lugar="+lugar+"&id_user="+usr+"&disertante="+dis+"&organismo="+org,     
-              	dataType: "html",
-                error: function(){	        alert("error petición ajax");           		},
-                success: function(data){ 	$("#mostrar_validar_add").html(data);  	n();    }
-            });                                           
-        });                                
-    });              
-});
-</script>
-
-<!-- Pasar datos al modal para MOSTRARLOS -->
-<script>
-$(document).ready(function(){  
-	$('#modal_view').on('show.bs.modal', function (event) {    
-		var button = $(event.relatedTarget)  // Botón que activó el modal
-		var id          = button.data('id')    
-		var titulo      = button.data('titulo')
-        var disertante  = button.data('disertante')
-        var organismo   = button.data('organismo')
-		var fecha       = button.data('fecha')
-		var hora        = button.data('hora')
-		var insc_inicio = button.data('insc_inicio')  
-		var insc_final  = button.data('insc_final')
-		var cupo        = button.data('cupo')    
-		var estado      = button.data('estado')
-		var modalidad   = button.data('modalidad')
-        var lugar       = button.data('lugar')
-			var modal = $(this)
-		modal.find('.modal-body #id').val(id)
-		modal.find('.modal-body #titulo').val(titulo)
-        modal.find('.modal-body #disertante').val(disertante)
-        modal.find('.modal-body #organismo').val(organismo)
-		modal.find('.modal-body #fecha').val(fecha)
-		modal.find('.modal-body #hora').val(hora)
-		modal.find('.modal-body #insc_inicio').val(insc_inicio)
-		modal.find('.modal-body #insc_final').val(insc_final)
-		modal.find('.modal-body #cupo').val(cupo)
-		modal.find('.modal-body #estado').val(estado)
-		modal.find('.modal-body #modalidad').val(modalidad)   
-		modal.find('.modal-body #lugar').val(lugar)
-		$('.alert').hide();//Oculto alert       
-	})
-});
-</script>
-
-<!-- AJAX: Validar datos por ajax - Antes de Cambiar el estado -->	
-<script language="javascript">
-$(document).ready(function(){                         
-    var id; var state;          
-    $("#validar_upd_sta").click(function(){
-		id    = $("#id_sta").val();			
-		state = $("#estado_sta").val();
-        id_usr= $("#id_usr_sta").val();			
-		
-	  	$("#mostrar_validar_upd_sta").delay(15).queue(function(n) {                                                 
-            $.ajax({
-                type: "POST",
-                url: "./funciones/mod5_ajax_validar_upd_estado_conferencia.php",                                                                                                                                                                                                    
-                data: "id="+id+"&state="+state+"&idusr="+id_usr,     
-              	dataType: "html",
-                error: function(){	        alert("error petición ajax");           		},
-                success: function(data){ 	$("#mostrar_validar_upd_sta").html(data);  	n();    }
-            });                                           
-        });                                
-    });              
-});
-</script>
-
-<!-- PASAR DATOS AL MODAL: Mostrar para confirmar cambio de estado -->
-<script>
-$(document).ready(function(){  
-	$('#modal_mdfSta').on('show.bs.modal', function (event) {    
-		  var button   = $(event.relatedTarget)  // Botón que activó el modal
-		  var id_sta      = button.data('id_sta')   
-		  var titulo_sta  = button.data('titulo_sta')
-          var estado_sta  = button.data('estado_sta')   
-		  var mostrar_sta = button.data('mostrar_sta')
-          var fecha_sta   = button.data('fecha_sta')   
-		  var hora_sta    = button.data('hora_sta')
-          var modalidad_sta    = button.data('modalidad_sta')   
-		  var cupo_sta    = button.data('cupo_sta')   
-		  var modal    = $(this)
-		  modal.find('.modal-body #id_sta').val(id_sta)
-		  modal.find('.modal-body #titulo_sta').val(titulo_sta)
-          modal.find('.modal-body #estado_sta').val(estado_sta)
-		  modal.find('.modal-body #mostrar_sta').val(mostrar_sta)
-          modal.find('.modal-body #fecha_sta').val(fecha_sta)
-		  modal.find('.modal-body #hora_sta').val(hora_sta)
-          modal.find('.modal-body #modalidad_sta').val(modalidad_sta)
-		  modal.find('.modal-body #cupo_sta').val(cupo_sta) 
-		 
-		  $('.alert').hide();//Oculto alert
-		})
-	});
-</script>
-
-<!-- PASAR DATOS AL MODAL: Borrar Foro -->
-<script>
-$(document).ready(function(){  
-	$('#modal_del').on('show.bs.modal', function (event) {    
-		  var button   = $(event.relatedTarget)  // Botón que activó el modal
-		  var id_del_evento= button.data('id_del_evento')
-          var id_del_conf  = button.data('id_del_conf')   
-		  var titulo_del   = button.data('titulo_del')   
-		  var modal    = $(this)
-		  modal.find('.modal-body #id_del_evento').val(id_del_evento)
-          modal.find('.modal-body #id_del_conf').val(id_del_conf)
-		  modal.find('.modal-body #titulo_del').val(titulo_del) 
-		 
-		  $('.alert').hide();//Oculto alert
-		})
-	});
-</script>
-
-<!-- AJAX: Validar datos por ajax - Antes de Borrar el Foro -->	
-<script language="javascript">
-$(document).ready(function(){                         
-    var id_e; var id_c;          
-    $("#validar_del").click(function(){
-		id_e = $("#id_del_evento").val();
-        id_c = $("#id_del_conf").val();			
-
-	  	$("#mostrar_validar_del").delay(15).queue(function(n) {                                                 
-            $.ajax({
-                type: "POST",
-                url: "./funciones/mod5_ajax_validar_del_conferencia.php",                                                                                                                                                                                                    
-                data: "id_e="+id_e+"&id_c="+id_c,     
-              	dataType: "html",
-                error: function(){	        alert("error petición ajax");           		},
-                success: function(data){ 	$("#mostrar_validar_del").html(data);  	n();    }
-            });                                           
-        });                                
-    });              
-});
-</script>
-
-<!-- PASAR DATOS AL MODAL:  Para Actualizar Foro -->
-<script>
-$(document).ready(function(){  
-	$('#modal_mdf').on('show.bs.modal', function (event) {    
-		var button = $(event.relatedTarget)  // Botón que activó el modal
-		var id_eventomdf   = button.data('id_eventomdf')
-        var fk_eventomdf   = button.data('fk_eventomdf')    
-		var titulomdf      = button.data('titulomdf')
-        var disertantemdf  = button.data('disertantemdf')
-        var idorganismomdf = button.data('idorganismomdf')
-		var fechamdf       = button.data('fechamdf')
-		var horamdf        = button.data('horamdf')
-		var insc_iniciomdf = button.data('insc_iniciomdf')  
-		var insc_finalmdf  = button.data('insc_finalmdf')
-		var cupomdf        = button.data('cupomdf')    
-		var modalidadmdf   = button.data('modalidadmdf')
-        var lugarmdf       = button.data('lugarmdf')
-			var modal = $(this)
-		modal.find('.modal-body #id_eventomdf').val(id_eventomdf)
-        modal.find('.modal-body #fk_eventomdf').val(fk_eventomdf)
-		modal.find('.modal-body #titulomdf').val(titulomdf)
-        modal.find('.modal-body #disertantemdf').val(disertantemdf)
-        modal.find('.modal-body #idorganismomdf').val(idorganismomdf)
-		modal.find('.modal-body #fechamdf').val(fechamdf)
-		modal.find('.modal-body #horamdf').val(horamdf)
-		modal.find('.modal-body #insc_iniciomdf').val(insc_iniciomdf)
-		modal.find('.modal-body #insc_finalmdf').val(insc_finalmdf)
-		modal.find('.modal-body #cupomdf').val(cupomdf)
-		modal.find('.modal-body #modalidadmdf').val(modalidadmdf)   
-		modal.find('.modal-body #lugarmdf').val(lugarmdf)
-
-        $("#div_select_org_mdf").delay(10).queue(function(n) { 
-		  	$.ajax({
-		  		type: "POST",
-		  		url:  "./funciones/mod5_ajax_llenar_tabla_organismos.php",
-		  		data: "id_org="+idorganismomdf,
-		  		dataType: "html",
-		  		error: function(){
-		  			alert("error petición ajax");
-		  		},
-		  		success: function(data){                                                      
-		  			$("#div_select_org_mdf").html(data);
-		  			n();
-		  		}
-		  	});                                           
-		});
-
-        var modali_; 
-        modali_= $("#modalidadmdf").val();
-        if(modali_ == 'OnLine'){
-           document.getElementById('divcupomdf').hidden = true;
-           document.getElementById('divlugarmdf').hidden = true;
+    <!-- Muestra input de cupo y lugar segun elija online o presencial -->
+    <script language="javascript">
+    $(document).ready(function(){
+        var modalidadadd; 
+        modalidadadd= $("#modalidad").val();
+        if(modalidadadd == 'OnLine'){
+            document.getElementById('div_cupo').hidden = true;
+            document.getElementById('div_lugar').hidden = true;
         }else{
-            if (modalidad_ == 'Presencial'){
-                document.getElementById('divcupomdf').hidden = false;
-                document.getElementById('divlugarmdf').hidden = false;
+            if (modalidadadd == 'Presencial'){
+                document.getElementById('div_cupo').hidden = false;
+                document.getElementById('div_lugar').hidden = false;
             }
-         };
+        };
+    });
+    </script>
 
-		$('.alert').hide();//Oculto alert       
-	})
-});
-</script>
+    <!-- AJAX: Validar datos por ajax - Antes de Agregar -->
+    <script language="javascript">
+    $(document).ready(function(){    
+        var titulo; var dis; var org; var fecha; var hora; var mod; var cupo; var i_inicio; var i_final; var lugar; var usr;                   
+        $("#validar_add").click(function(){
+            titulo   = $("#titulo").val();
+            dis      = $("#disertante").val();
+            org      = $("#organismo").val();
+            fecha    = $("#fecha").val();
+            hora     = $("#hora").val();
+            mod      = $("#modalidad").val();
+            cupo     = $("#cupo").val();
+            i_inicio = $("#insc_inicio").val();
+            i_final  = $("#insc_final").val();
+            lugar    = $("#lugar").val();
+            usr      = $("#id_user").val();
+            $("#mostrar_validar_add").delay(15).queue(function(n) {                                                 
+                $.ajax({
+                    type: "POST",
+                    url: "./funciones/mod5_ajax_validar_add_conferencia.php",                                                                                                                                                                                                    
+                    data: "titulo="+titulo+"&fecha="+fecha+"&hora="+hora+"&mod="+mod+"&cupo="+cupo+"&i_inicio="+i_inicio+"&i_final="+i_final+"&lugar="+lugar+"&id_user="+usr+"&disertante="+dis+"&organismo="+org,     
+                    dataType: "html",
+                    error: function(){	        alert("error petición ajax");           		},
+                    success: function(data){ 	$("#mostrar_validar_add").html(data);  	n();    }
+                });                                           
+            });                                
+        });              
+    });
+    </script>
 
-<!-- AJAX: Validar datos por ajax - Antes de Actualizar -->	
-<script language="javascript">
-$(document).ready(function(){                         
-    var id_e; var id_c; var titulo;	var estado; var fecha; var hora; var tipo; var cupo; var i_inicio; var i_final;
-    var lugar; var usr; var dis; var org;
-    $("#validar_upd").click(function(){
-		id_e      = $("#id_eventomdf").val();
-        fk_evento = $("#fk_eventomdf").val();			
-		titulo    = $("#titulomdf").val();
-        dis       = $("#disertantemdf").val();
-        org       = $("#organismomdf").val();
-        fecha     = $("#fechamdf").val();			
-		hora      = $("#horamdf").val();			
-		mod       = $("#modalidadmdf").val();			
-		cupo      = $("#cupomdf").val();
-        i_inicio  = $("#insc_iniciomdf").val();			
-		i_final   = $("#insc_finalmdf").val();
-        lugar     = $("#lugarmdf").val();
-        usr       = $("#id_usermdf").val();
+    <!-- Pasar datos al modal para MOSTRARLOS -->
+    <script>
+    $(document).ready(function(){  
+        $('#modal_view').on('show.bs.modal', function (event) {    
+            var button = $(event.relatedTarget)  // Botón que activó el modal
+            var id          = button.data('id')    
+            var titulo      = button.data('titulo')
+            var disertante  = button.data('disertante')
+            var organismo   = button.data('organismo')
+            var fecha       = button.data('fecha')
+            var hora        = button.data('hora')
+            var insc_inicio = button.data('insc_inicio')  
+            var insc_final  = button.data('insc_final')
+            var cupo        = button.data('cupo')    
+            var estado      = button.data('estado')
+            var modalidad   = button.data('modalidad')
+            var lugar       = button.data('lugar')
+                var modal = $(this)
+            modal.find('.modal-body #id').val(id)
+            modal.find('.modal-body #titulo').val(titulo)
+            modal.find('.modal-body #disertante').val(disertante)
+            modal.find('.modal-body #organismo').val(organismo)
+            modal.find('.modal-body #fecha').val(fecha)
+            modal.find('.modal-body #hora').val(hora)
+            modal.find('.modal-body #insc_inicio').val(insc_inicio)
+            modal.find('.modal-body #insc_final').val(insc_final)
+            modal.find('.modal-body #cupo').val(cupo)
+            modal.find('.modal-body #estado').val(estado)
+            modal.find('.modal-body #modalidad').val(modalidad)   
+            modal.find('.modal-body #lugar').val(lugar)
+            $('.alert').hide();//Oculto alert       
+        })
+    });
+    </script>
 
-	  	$("#mostrar_validar_upd").delay(15).queue(function(n) {                                                 
-            $.ajax({
-                type: "POST",
-                url: "./funciones/mod5_ajax_validar_upd_conferencia.php",                                                                                                                                                                                                    
-                data: "id_e="+id_e+"&titulo="+titulo+"&fecha="+fecha+"&hora="+hora+"&mod="+mod+"&cupo="+cupo+"&i_inicio="+i_inicio+"&i_final="+i_final+"&lugar="+lugar+"&id_user="+usr+"&id_c="+fk_evento+"&dis="+dis+"&org="+org,
-              	dataType: "html",
-                error: function(){	        alert("error petición ajax");           		},
-                success: function(data){ 	$("#mostrar_validar_upd").html(data);  	n();    }
-            });                                           
-        });                                
-    });              
-});
-</script>
+    <!-- AJAX: Validar datos por ajax - Antes de Cambiar el estado -->	
+    <script language="javascript">
+    $(document).ready(function(){                         
+        var id; var state;          
+        $("#validar_upd_sta").click(function(){
+            id    = $("#id_sta").val();			
+            state = $("#estado_sta").val();
+            id_usr= $("#id_usr_sta").val();			
+            
+            $("#mostrar_validar_upd_sta").delay(15).queue(function(n) {                                                 
+                $.ajax({
+                    type: "POST",
+                    url: "./funciones/mod5_ajax_validar_upd_estado_conferencia.php",                                                                                                                                                                                                    
+                    data: "id="+id+"&state="+state+"&idusr="+id_usr,     
+                    dataType: "html",
+                    error: function(){	        alert("error petición ajax");           		},
+                    success: function(data){ 	$("#mostrar_validar_upd_sta").html(data);  	n();    }
+                });                                           
+            });                                
+        });              
+    });
+    </script>
+
+    <!-- PASAR DATOS AL MODAL: Mostrar para confirmar cambio de estado -->
+    <script>
+    $(document).ready(function(){  
+        $('#modal_mdfSta').on('show.bs.modal', function (event) {    
+            var button   = $(event.relatedTarget)  // Botón que activó el modal
+            var id_sta      = button.data('id_sta')   
+            var titulo_sta  = button.data('titulo_sta')
+            var estado_sta  = button.data('estado_sta')   
+            var mostrar_sta = button.data('mostrar_sta')
+            var fecha_sta   = button.data('fecha_sta')   
+            var hora_sta    = button.data('hora_sta')
+            var modalidad_sta    = button.data('modalidad_sta')   
+            var cupo_sta    = button.data('cupo_sta')   
+            var modal    = $(this)
+            modal.find('.modal-body #id_sta').val(id_sta)
+            modal.find('.modal-body #titulo_sta').val(titulo_sta)
+            modal.find('.modal-body #estado_sta').val(estado_sta)
+            modal.find('.modal-body #mostrar_sta').val(mostrar_sta)
+            modal.find('.modal-body #fecha_sta').val(fecha_sta)
+            modal.find('.modal-body #hora_sta').val(hora_sta)
+            modal.find('.modal-body #modalidad_sta').val(modalidad_sta)
+            modal.find('.modal-body #cupo_sta').val(cupo_sta) 
+            
+            $('.alert').hide();//Oculto alert
+            })
+        });
+    </script>
+
+    <!-- PASAR DATOS AL MODAL: Borrar Foro -->
+    <script>
+    $(document).ready(function(){  
+        $('#modal_del').on('show.bs.modal', function (event) {    
+            var button   = $(event.relatedTarget)  // Botón que activó el modal
+            var id_del_evento= button.data('id_del_evento')
+            var id_del_conf  = button.data('id_del_conf')   
+            var titulo_del   = button.data('titulo_del')   
+            var modal    = $(this)
+            modal.find('.modal-body #id_del_evento').val(id_del_evento)
+            modal.find('.modal-body #id_del_conf').val(id_del_conf)
+            modal.find('.modal-body #titulo_del').val(titulo_del) 
+            
+            $('.alert').hide();//Oculto alert
+            })
+        });
+    </script>
+
+    <!-- AJAX: Validar datos por ajax - Antes de Borrar el Foro -->	
+    <script language="javascript">
+    $(document).ready(function(){                         
+        var id_e; var id_c;          
+        $("#validar_del").click(function(){
+            id_e = $("#id_del_evento").val();
+            id_c = $("#id_del_conf").val();			
+
+            $("#mostrar_validar_del").delay(15).queue(function(n) {                                                 
+                $.ajax({
+                    type: "POST",
+                    url: "./funciones/mod5_ajax_validar_del_conferencia.php",                                                                                                                                                                                                    
+                    data: "id_e="+id_e+"&id_c="+id_c,     
+                    dataType: "html",
+                    error: function(){	        alert("error petición ajax");           		},
+                    success: function(data){ 	$("#mostrar_validar_del").html(data);  	n();    }
+                });                                           
+            });                                
+        });              
+    });
+    </script>
+
+    <!-- PASAR DATOS AL MODAL:  Para Actualizar Foro -->
+    <script>
+    $(document).ready(function(){  
+        $('#modal_mdf').on('show.bs.modal', function (event) {    
+            var button = $(event.relatedTarget)  // Botón que activó el modal
+            var id_eventomdf   = button.data('id_eventomdf')
+            var fk_eventomdf   = button.data('fk_eventomdf')    
+            var titulomdf      = button.data('titulomdf')
+            var disertantemdf  = button.data('disertantemdf')
+            var idorganismomdf = button.data('idorganismomdf')
+            var fechamdf       = button.data('fechamdf')
+            var horamdf        = button.data('horamdf')
+            var insc_iniciomdf = button.data('insc_iniciomdf')  
+            var insc_finalmdf  = button.data('insc_finalmdf')
+            var cupomdf        = button.data('cupomdf')    
+            var modalidadmdf   = button.data('modalidadmdf')
+            var lugarmdf       = button.data('lugarmdf')
+                var modal = $(this)
+            modal.find('.modal-body #id_eventomdf').val(id_eventomdf)
+            modal.find('.modal-body #fk_eventomdf').val(fk_eventomdf)
+            modal.find('.modal-body #titulomdf').val(titulomdf)
+            modal.find('.modal-body #disertantemdf').val(disertantemdf)
+            modal.find('.modal-body #idorganismomdf').val(idorganismomdf)
+            modal.find('.modal-body #fechamdf').val(fechamdf)
+            modal.find('.modal-body #horamdf').val(horamdf)
+            modal.find('.modal-body #insc_iniciomdf').val(insc_iniciomdf)
+            modal.find('.modal-body #insc_finalmdf').val(insc_finalmdf)
+            modal.find('.modal-body #cupomdf').val(cupomdf)
+            modal.find('.modal-body #modalidadmdf').val(modalidadmdf)   
+            modal.find('.modal-body #lugarmdf').val(lugarmdf)
+
+            $("#div_select_org_mdf").delay(10).queue(function(n) { 
+                $.ajax({
+                    type: "POST",
+                    url:  "./funciones/mod5_ajax_llenar_tabla_organismos.php",
+                    data: "id_org="+idorganismomdf,
+                    dataType: "html",
+                    error: function(){
+                        alert("error petición ajax");
+                    },
+                    success: function(data){                                                      
+                        $("#div_select_org_mdf").html(data);
+                        n();
+                    }
+                });                                           
+            });
+
+            var modali_; 
+            modali_= $("#modalidadmdf").val();
+            if(modali_ == 'OnLine'){
+            document.getElementById('divcupomdf').hidden = true;
+            document.getElementById('divlugarmdf').hidden = true;
+            }else{
+                if (modalidad_ == 'Presencial'){
+                    document.getElementById('divcupomdf').hidden = false;
+                    document.getElementById('divlugarmdf').hidden = false;
+                }
+            };
+
+            $('.alert').hide();//Oculto alert       
+        })
+    });
+    </script>
+
+    <!-- AJAX: Validar datos por ajax - Antes de Actualizar -->	
+    <script language="javascript">
+    $(document).ready(function(){                         
+        var id_e; var id_c; var titulo;	var estado; var fecha; var hora; var tipo; var cupo; var i_inicio; var i_final;
+        var lugar; var usr; var dis; var org;
+        $("#validar_upd").click(function(){
+            id_e      = $("#id_eventomdf").val();
+            fk_evento = $("#fk_eventomdf").val();			
+            titulo    = $("#titulomdf").val();
+            dis       = $("#disertantemdf").val();
+            org       = $("#organismomdf").val();
+            fecha     = $("#fechamdf").val();			
+            hora      = $("#horamdf").val();			
+            mod       = $("#modalidadmdf").val();			
+            cupo      = $("#cupomdf").val();
+            i_inicio  = $("#insc_iniciomdf").val();			
+            i_final   = $("#insc_finalmdf").val();
+            lugar     = $("#lugarmdf").val();
+            usr       = $("#id_usermdf").val();
+
+            $("#mostrar_validar_upd").delay(15).queue(function(n) {                                                 
+                $.ajax({
+                    type: "POST",
+                    url: "./funciones/mod5_ajax_validar_upd_conferencia.php",                                                                                                                                                                                                    
+                    data: "id_e="+id_e+"&titulo="+titulo+"&fecha="+fecha+"&hora="+hora+"&mod="+mod+"&cupo="+cupo+"&i_inicio="+i_inicio+"&i_final="+i_final+"&lugar="+lugar+"&id_user="+usr+"&id_c="+fk_evento+"&dis="+dis+"&org="+org,
+                    dataType: "html",
+                    error: function(){	        alert("error petición ajax");           		},
+                    success: function(data){ 	$("#mostrar_validar_upd").html(data);  	n();    }
+                });                                           
+            });                                
+        });              
+    });
+    </script>
 
 </head>
 
@@ -392,7 +401,7 @@ $(document).ready(function(){
 
                                         <div class="page-title"></div>
                                         
-                                        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+                                        <nav class="breadcrumb-style-five" aria-label="breadcrumb">
                                             <ol class="breadcrumb">
                                                 <li class="breadcrumb-item"><a href="principal.php" title="Dashboard"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="inner-text"></span></a></li>
                                                 <li class="breadcrumb-item">Conferencias</li>
@@ -913,7 +922,7 @@ $(document).ready(function(){
 	?>  
 
     <!-- CONFIG DATATABLE -->
-<script>
+    <script>
     $('#dt_conferencias').DataTable({
         "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
         "<'table-responsive'tr>" +
@@ -933,33 +942,44 @@ $(document).ready(function(){
         "lengthMenu": [10, 20, 50],
         "pageLength": 5 
     });
-</script>
+    </script>
 
-<!-- Mostrar input Segun selección de tipo de conferencia en el modal Agregar  -->
-<script type="text/javascript">
-	function show_div(selectTag){
-		if(selectTag.value == 'OnLine' ){
-			document.getElementById('div_cupo').hidden = true;
-            document.getElementById('div_lugar').hidden = true;	
-		}else{
-			document.getElementById('div_cupo').hidden = false;
-            document.getElementById('div_lugar').hidden = false;		
-		}	 		
-	}
-</script>
+    <!-- Mostrar input Segun selección de tipo de conferencia en el modal Agregar  -->
+    <script type="text/javascript">
+        function show_div(selectTag){
+            if(selectTag.value == 'OnLine' ){
+                document.getElementById('div_cupo').hidden = true;
+                document.getElementById('div_lugar').hidden = true;	
+            }else{
+                document.getElementById('div_cupo').hidden = false;
+                document.getElementById('div_lugar').hidden = false;		
+            }	 		
+        }
+    </script>
 
-<!-- Mostrar input según valor seleccionado en el modal Modificar  -->
-<script type="text/javascript">
-	function show_divmdf(selectTag){
-		if(selectTag.value == 'OnLine' ){
-			document.getElementById('divcupomdf').hidden = true;
-            document.getElementById('divlugarmdf').hidden = true;	
-		}else{
-			document.getElementById('divcupomdf').hidden = false;
-            document.getElementById('divlugarmdf').hidden = false;		
-		}	 		
-	}
-</script>
+    <!-- Mostrar input según valor seleccionado en el modal Modificar  -->
+    <script type="text/javascript">
+        function show_divmdf(selectTag){
+            if(selectTag.value == 'OnLine' ){
+                document.getElementById('divcupomdf').hidden = true;
+                document.getElementById('divlugarmdf').hidden = true;	
+            }else{
+                document.getElementById('divcupomdf').hidden = false;
+                document.getElementById('divlugarmdf').hidden = false;		
+            }	 		
+        }
+    </script>
+
+    <!-- Pone foco en el primer componente del Modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modalAdd = document.getElementById('modal_add');
+            modalAdd.addEventListener('shown.bs.modal', function () {   document.getElementById('titulo').focus();        });
+            
+            var modalUpd = document.getElementById('modal_mdf');
+            modalUpd.addEventListener('shown.bs.modal', function () {   document.getElementById('titulomdf').focus();     });
+        });
+    </script> 
 
 </body>
 </html>
