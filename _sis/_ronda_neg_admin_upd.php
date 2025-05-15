@@ -200,19 +200,19 @@
                                         <div class="row">
                                             <div class="col-md-2">
                                                 <label>Inscripcion desde: <span class="mandatory">*</span></label>   
-                                                <input type="date" id="dsd_" name="dsd_" class="form-control form-control-sm" value="<?php echo $dsd ?>" tabindex="6" required>
+                                                <input type="date" id="dsd_" name="dsd_" class="form-control form-control-sm" value="<?php echo $dsd ?>" tabindex="4" required>
                                             </div>
                                             <div class="col-md-2">
                                                 <label>Inscripcion hasta: <span class="mandatory">*</span></label>   
-                                                <input type="date" id="hst_" name="hst_" class="form-control form-control-sm" value="<?php echo $hst ?>" tabindex="7" required>
+                                                <input type="date" id="hst_" name="hst_" class="form-control form-control-sm" value="<?php echo $hst ?>" tabindex="5" required>
                                             </div>
                                             <div class="col-md-2">
                                                 <label>Fecha 1: <span class="mandatory">*</span></label>   
-                                                <input type="date" id="f1_" name="f1_" class="form-control form-control-sm" value="<?php echo $arr_[0]['f_dia_1'] ?>" tabindex="4" required>
+                                                <input type="date" id="f1_" name="f1_" class="form-control form-control-sm" value="<?php echo $arr_[0]['f_dia_1'] ?>" tabindex="6" required>
                                             </div>
                                             <div class="col-md-2">
                                                 <label>Fecha 2: </label>   
-                                                <input type="date" id="f2_" name="f2_" class="form-control form-control-sm" value="<?php echo $arr_[0]['f_dia_2'] ?>" tabindex="5">
+                                                <input type="date" id="f2_" name="f2_" class="form-control form-control-sm" value="<?php echo $arr_[0]['f_dia_2'] ?>" tabindex="7">
                                             </div>
                                         </div><br/>                                        
 
@@ -249,13 +249,6 @@
                                 
                                     </div>
                                 </div>
-
-                                <!-- <div class="modal-footer"><center>					
-                                    <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="8">Cancelar</button>		                                    
-                                    <button id="validar_upd" name="validar_upd" type="button" class="btn btn-success" title="Se va a validar si se puede modificar." tabindex="9"> Modificar </button>
-                                    <br/><br/>
-                                    <div id="mostrar_validar_upd" ></div> 
-                                </div></center> -->
 
                                 <div class="modal-footer" style="display: flex; justify-content: center; align-items: center; flex-direction: column;"><center><br/>								
                                     <button type="button" onclick="history.back()" class="btn btn-dark" data-bs-dismiss="modal" tabindex="8"> Volver </button>		                                    
