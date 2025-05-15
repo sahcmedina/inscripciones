@@ -49,9 +49,9 @@
     <!-- AJAX: Validar datos por ajax - Antes de Agregar Usuario -->	
     <script language="javascript">
     $(document).ready(function(){                         
-        var nom; var id_cli;  var ape;  var dni; var email; var tel; var perfil;  var usuario;  var clave;                       
+        var nom; var ape;  var dni; var email; var tel; var perfil;  var usuario;  var clave;                       
         $("#validar_add_user").click(function(){
-            nom = $("#nom").val();			 id_cli= $("#id_cli").val();	        ape = $("#ape").val();				
+            nom = $("#nom").val();			 ape   = $("#ape").val();				
             dni = $("#dni").val();	         email = $("#email").val();		        tel = $("#tel").val();				
             per = $("#perfil").val();	     usu   = $("#usuario").val();			pas = $("#clave").val();				
 
@@ -60,7 +60,7 @@
                     type: "POST",
                     // url: "./funciones/mod2_ajax_validar_add_arato.php",                                                                                                                                                                                                    
                     url: "./funciones/mod1_ajax_validar_add_user.php",                                                                                                                                                                                                    
-                    data: "nom="+nom+"&dni="+dni+"&per="+per+"&id_cli="+id_cli+"&email="+email+"&usu="+usu+"&ape="+ape+"&tel="+tel+"&pas="+pas,     
+                    data: "nom="+nom+"&dni="+dni+"&per="+per+"&email="+email+"&usu="+usu+"&ape="+ape+"&tel="+tel+"&pas="+pas,     
                     dataType: "html",
                     error: function(){	        alert("error petición ajax");                   		},
                     success: function(data){ 	$("#mostrar_validar_add_user").html(data);  	n();    }
@@ -608,8 +608,7 @@ $(document).ready(function(){
                                         <div class="row">
                                             <div class="col-md-2" > 
                                                 <label>Nombre:<span class="mandatory">*</span></label>   
-                                                <input type="text"   id="nom"    name="nom"    class="form-control form-control-sm" required tabindex="1"/>								   	 	
-                                                <input type="hidden" id="id_cli" name="id_cli" value="<?php echo $id_empresa_logueada ?>" />								   	 	
+                                                <input type="text"   id="nom"    name="nom"    class="form-control form-control-sm" required tabindex="1"/>								   	 	                                                								   	 	
                                             </div>
                                             <div class="col-md-2" >
                                                 <label>Apellido:<span class="mandatory">*</span></label>

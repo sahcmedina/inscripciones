@@ -635,26 +635,6 @@ class Usuario {
 		}
 		catch (Exception $e){	echo $e->getMessage();	}
 	}
-	function add_usuario_permiso_admin($id_funcion, $id_perfil){ 		
-		include('conexion_pdo.php');	
-		$uno  = '1';
-		$query= " INSERT INTO usuario_permisos (fk_funcion, fk_usuario_perfil, alta, baja, modificacion, vista) 
-		                 VALUES (:fk_funcion, :fk_usuario_perfil, :alta, :baja, :modificacion, :vista)";
-		try{
-			$sql = $con->prepare($query);
-			$sql->bindParam(':fk_funcion',			$id_funcion);
-			$sql->bindParam(':fk_usuario_perfil',	$id_perfil);
-			$sql->bindParam(':alta',				$uno);
-			$sql->bindParam(':baja',				$uno);
-			$sql->bindParam(':modificacion',		$uno);
-			$sql->bindParam(':vista',				$uno);
-			if($sql->execute())	$return= true;
-			else				$return= false;
-			$sql = null;
-			return $return;										
-		}
-		catch (Exception $e){	echo $e->getMessage();	}
-	}
 	function add_usuario_admin($dni, $login, $pass, $id_cliente){ 
 		include('pass.php');			$Pas_ = new Pass();		
 		include('conexion_pdo.php');				
@@ -679,6 +659,26 @@ class Usuario {
 		}
 		catch (Exception $e){	echo $e->getMessage();	}
 	}
+	function add_usuario_permiso_admin($id_funcion, $id_perfil){ 		
+		include('conexion_pdo.php');	
+		$uno  = '1';
+		$query= " INSERT INTO usuario_permisos (fk_funcion, fk_usuario_perfil, alta, baja, modificacion, vista) 
+		                 VALUES (:fk_funcion, :fk_usuario_perfil, :alta, :baja, :modificacion, :vista)";
+		try{
+			$sql = $con->prepare($query);
+			$sql->bindParam(':fk_funcion',			$id_funcion);
+			$sql->bindParam(':fk_usuario_perfil',	$id_perfil);
+			$sql->bindParam(':alta',				$uno);
+			$sql->bindParam(':baja',				$uno);
+			$sql->bindParam(':modificacion',		$uno);
+			$sql->bindParam(':vista',				$uno);
+			if($sql->execute())	$return= true;
+			else				$return= false;
+			$sql = null;
+			return $return;										
+		}
+		catch (Exception $e){	echo $e->getMessage();	}
+	}	
 	function add_cliente($nombre){ 
 		include('conexion_pdo.php');				
 		$next = $this->next_id_cliente();
