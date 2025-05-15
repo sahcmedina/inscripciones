@@ -35,7 +35,16 @@
     <?php 
 	require_once('./estructura/cabecera.php');
 	require_once('./estructura/librerias_utilizadas.php');
-	?>       
+	?>        
+    
+    <!-- Muestra borde de componentes del Form -->
+    <style>
+        input:focus, select:focus, textarea:focus {
+            border: 2px solid #007bff !important;                   /* Borde azul más grueso */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5) !important;  /* Sombra suave */
+            transition: all 0.3s ease;                                /* Animación suave */
+        }
+    </style>
 
     <!-- AJAX: Validar datos por ajax - Antes de Agregar Usuario -->	
     <script language="javascript">
@@ -597,7 +606,7 @@ $(document).ready(function(){
 
                                     <div class="form-group-sm">                                    
                                         <div class="row">
-                                            <div class="col-md-2" >
+                                            <div class="col-md-2" > 
                                                 <label>Nombre:<span class="mandatory">*</span></label>   
                                                 <input type="text"   id="nom"    name="nom"    class="form-control form-control-sm" required tabindex="1"/>								   	 	
                                                 <input type="hidden" id="id_cli" name="id_cli" value="<?php echo $id_empresa_logueada ?>" />								   	 	
@@ -669,7 +678,7 @@ $(document).ready(function(){
 
                                 <div class="form-group-sm">
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-4">  
                                             <div id="comprobar_existe_perfil"><label>Nombre:</label></div>
                                             <input type="text"   id="p_nombre" name="p_nombre" class="form-control form-control-sm" required> 
                                             <input type="hidden" id="id_cli"   name="id_cli"   value="<?php echo $id_empresa_logueada ?>" > 
@@ -770,7 +779,7 @@ $(document).ready(function(){
                             
                             <div class="modal-header"><h6 class="modal-title"> Modificar clave </h6></div>
 
-                            <!-- Form -->
+                            <!-- Form --> 
                             <form name="edit_clave" id="edit_clave" class="form-horizontal validate" method="post" action="./funciones/usuario_mdf_clave.php" onsubmit='return validar_mdfClave()' enctype="multipart/form-data" >
                                 
                                 <div class="modal-body with-padding">					
@@ -812,7 +821,7 @@ $(document).ready(function(){
                                 
                                 <div class="modal-body with-padding">					
                                     
-                                <div class="form-group-sm">
+                                <div class="form-group-sm">  
                                     <div class="row">
                                         <div class="col-md-3">
                                             <label>Persona:</label><input id="nbre_" name="nbre_" class="form-control form-control-sm" readonly="readonly" />					                                
@@ -1045,11 +1054,28 @@ $(document).ready(function(){
         });
     </script>
 
-<!-- Iconos Feather -->
-<script src="https://unpkg.com/feather-icons"></script>
-<script>
-  feather.replace()
-</script>
+    <!-- Iconos Feather -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+    feather.replace()
+    </script>
+
+    <!-- Pone foco en el primer componente del Modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modalAddPerfil = document.getElementById('modal_add_perfil');
+            modalAddPerfil.addEventListener('shown.bs.modal', function () {   document.getElementById('p_nombre').focus();          });
+            
+            var modalAddUser = document.getElementById('modal_add_usuario');
+            modalAddUser.addEventListener('shown.bs.modal', function () {   document.getElementById('nom').focus();                 });
+            
+            var modalUpdClave = document.getElementById('modal_edit_clave');
+            modalUpdClave.addEventListener('shown.bs.modal', function () {   document.getElementById('clave').focus();              });
+            
+            var modalUpdPerfil = document.getElementById('modal_edit_perfil');
+            modalUpdPerfil.addEventListener('shown.bs.modal', function () {   document.getElementById('nbre_').focus();              });
+        });
+    </script>            
 
 </body>
 </html>
