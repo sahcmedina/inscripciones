@@ -25,16 +25,16 @@ if($dni=='' OR $nombre=='' OR $apellido=='' OR $telefono=='' OR $email=='' OR $e
 switch($op){
 
 	case 'dats_f':
-		$_SESSION['var_retorno_']= 'add_er'; 		 	$_SESSION['msj_retorno_']= 'Faltaron datos, por favor intente de nuevo.'; 	 		break;
+		$a_ico= 'error';      $a_tit= 'Error';	 $a_sub= 'Faltaron datos, por favor intente de nuevo.'; 	 		break;
 	case 'ok':
 		include('../_sis/funciones/mod6_foros.php');	$For = new Foros();
 		$add_ins= $For->add_inscripto($fkevento, $dni, $nombre, $apellido, $telefono, $email, $empresa, $cargo, $localidad);
-		if($add_ins){	$_SESSION['var_retorno_']= 'add_ok'; 	$_SESSION['msj_retorno_']= ''; 	 												}
-		else{			$_SESSION['var_retorno_']= 'add_er'; 	$_SESSION['msj_retorno_']= 'Faltaron datos, por favor intente de nuevo.'; 	 	}
+		if($add_ins){	$a_ico= 'success';    $a_tit= 'Inscripción realizada';	 $a_sub= 'Nos comunicaremos vía email.'; 	 												}
+		else{			$a_ico= 'error';      $a_tit= 'Error';	 $a_sub= 'Ocurrió un error, por favor intente de nuevo.';  	 	}
 		break;
 	default:
 			break;
 }
-
+$_SESSION['alert_tit']= $a_tit;	$_SESSION['alert_sub']= $a_sub;	$_SESSION['alert_ico']= $a_ico;
 // retorno
 ?><script type="text/javascript"> window.location="../index.php"; </script>
