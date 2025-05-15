@@ -24,113 +24,122 @@
     <?php 
 	require_once('./estructura/cabecera.php');
 	require_once('./estructura/librerias_utilizadas.php');
-	?>      
+	?>     
+    
+    <!-- Muestra borde de componentes del Form -->
+    <style>
+        input:focus, select:focus, textarea:focus {
+            border: 2px solid #007bff !important;                   /* Borde azul más grueso */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5) !important;  /* Sombra suave */
+            transition: all 0.3s ease;                                /* Animación suave */
+        }
+    </style>
 
-<!-- PASAR DATOS AL MODAL: Borrar  -->
-<script>
-$(document).ready(function(){  
-	$('#modal_del').on('show.bs.modal', function (event) {    
-		  var button   = $(event.relatedTarget)  // Botón que activó el modal
-		  var id       = button.data('id')   
-		  var nombre   = button.data('nombre')   
-		  var modal    = $(this)
-		  modal.find('.modal-body #id_del').val(id)
-		  modal.find('.modal-body #nombre_del').val(nombre)
-		 
-		  $('.alert').hide();//Oculto alert
-		})
-	});
-</script>
+    <!-- PASAR DATOS AL MODAL: Borrar  -->
+    <script>
+    $(document).ready(function(){  
+        $('#modal_del').on('show.bs.modal', function (event) {    
+            var button   = $(event.relatedTarget)  // Botón que activó el modal
+            var id       = button.data('id')   
+            var nombre   = button.data('nombre')   
+            var modal    = $(this)
+            modal.find('.modal-body #id_del').val(id)
+            modal.find('.modal-body #nombre_del').val(nombre)
+            
+            $('.alert').hide();//Oculto alert
+            })
+        });
+    </script>
 
-<!-- PASAR DATOS AL MODAL: Actualizar  -->
-<script>
-$(document).ready(function(){  
-	$('#modal_upd').on('show.bs.modal', function (event) {    
-		  var button    = $(event.relatedTarget)  // Botón que activó el modal
-		  var id        = button.data('id')  
-		  var nom       = button.data('nombre')   
-		  var nomant    = button.data('nombreant')   
-		  var modal     = $(this)
-		  modal.find('.modal-body #id_').val(id)
-		  modal.find('.modal-body #nombre').val(nom)
-		  modal.find('.modal-body #nombreant').val(nomant)
+    <!-- PASAR DATOS AL MODAL: Actualizar  -->
+    <script>
+    $(document).ready(function(){  
+        $('#modal_upd').on('show.bs.modal', function (event) {    
+            var button    = $(event.relatedTarget)  // Botón que activó el modal
+            var id        = button.data('id')  
+            var nom       = button.data('nombre')   
+            var nomant    = button.data('nombreant')   
+            var modal     = $(this)
+            modal.find('.modal-body #id_').val(id)
+            modal.find('.modal-body #nombre').val(nom)
+            modal.find('.modal-body #nombreant').val(nomant)
 
-		  $('.alert').hide();//Oculto alert
-		})
-	});
-</script>
+            $('.alert').hide();//Oculto alert
+            })
+        });
+    </script>
 
-<!-- AJAX: Validar datos por ajax - Antes de Actualizar -->	
-<script language="javascript">
-$(document).ready(function(){                         
-    var codi; var prov;  var dir;  var tel; var usu;          
-    $("#validar_upd").click(function(){
-		id    = $("#id_").val();			
-		usu   = $("#usuario").val();			
-		nom   = $("#nombre").val();			
-		nomant= $("#nombreant").val();			
+    <!-- AJAX: Validar datos por ajax - Antes de Actualizar -->	
+    <script language="javascript">
+    $(document).ready(function(){                         
+        var codi; var prov;  var dir;  var tel; var usu;          
+        $("#validar_upd").click(function(){
+            id    = $("#id_").val();			
+            usu   = $("#usuario").val();			
+            nom   = $("#nombre").val();			
+            nomant= $("#nombreant").val();			
 
-	  	$("#mostrar_validar_upd").delay(15).queue(function(n) {                                                 
-            $.ajax({
-                type: "POST",
-                url: "./funciones/mod3_productos_ajax_validar_upd.php",                                                                                                                                                                                                    
-                data: "id="+id+"&usuario="+usu+"&nom="+nom+"&nomant="+nomant,     
-              	dataType: "html",
-                error: function(){	        alert("error petición ajax");           		},
-                success: function(data){ 	$("#mostrar_validar_upd").html(data);  	n();    }
-            });                                           
-        });                                
-    });              
-});
-</script>
+            $("#mostrar_validar_upd").delay(15).queue(function(n) {                                                 
+                $.ajax({
+                    type: "POST",
+                    url: "./funciones/mod3_productos_ajax_validar_upd.php",                                                                                                                                                                                                    
+                    data: "id="+id+"&usuario="+usu+"&nom="+nom+"&nomant="+nomant,     
+                    dataType: "html",
+                    error: function(){	        alert("error petición ajax");           		},
+                    success: function(data){ 	$("#mostrar_validar_upd").html(data);  	n();    }
+                });                                           
+            });                                
+        });              
+    });
+    </script>
 
-<!-- AJAX: Validar datos por ajax - Antes de Borrar -->	
-<script language="javascript">
-$(document).ready(function(){                         
-    var id;          
-    $("#validar_del").click(function(){
-		id = $("#id_del").val();			
+    <!-- AJAX: Validar datos por ajax - Antes de Borrar -->	
+    <script language="javascript">
+    $(document).ready(function(){                         
+        var id;          
+        $("#validar_del").click(function(){
+            id = $("#id_del").val();			
 
-	  	$("#mostrar_validar_del").delay(15).queue(function(n) {                                                 
-            $.ajax({
-                type: "POST",
-                url: "./funciones/mod3_productos_ajax_validar_del.php",                                                                                                                                                                                                    
-                data: "id="+id,     
-              	dataType: "html",
-                error: function(){	        alert("error petición ajax");           		},
-                success: function(data){ 	$("#mostrar_validar_del").html(data);  	n();    }
-            });                                           
-        });                                
-    });              
-});
-</script>
+            $("#mostrar_validar_del").delay(15).queue(function(n) {                                                 
+                $.ajax({
+                    type: "POST",
+                    url: "./funciones/mod3_productos_ajax_validar_del.php",                                                                                                                                                                                                    
+                    data: "id="+id,     
+                    dataType: "html",
+                    error: function(){	        alert("error petición ajax");           		},
+                    success: function(data){ 	$("#mostrar_validar_del").html(data);  	n();    }
+                });                                           
+            });                                
+        });              
+    });
+    </script>
 
-<!-- AJAX: Validar datos por ajax - Antes de Agregar -->	
-<script language="javascript">
-$(document).ready(function(){                         
-    var nom; var usu;          
-    $("#validar_add").click(function(){	
-		usu  = $("#usuario").val();				
-		nom  = $("#nom_").val();				
+    <!-- AJAX: Validar datos por ajax - Antes de Agregar -->	
+    <script language="javascript">
+    $(document).ready(function(){                         
+        var nom; var usu;          
+        $("#validar_add").click(function(){	
+            usu  = $("#usuario").val();				
+            nom  = $("#nom_").val();				
 
-	  	$("#mostrar_validar_add").delay(15).queue(function(n) {                                                 
-            $.ajax({
-                type: "POST",
-                url: "./funciones/mod3_productos_ajax_validar_add.php",                                                                                                                                                                                                    
-                data: "usu="+usu+"&nom="+nom,     
-              	dataType: "html",
-                error: function(){	        alert("error petición ajax");           		},
-                success: function(data){ 	$("#mostrar_validar_add").html(data);  	n();    }
-            });                                           
-        });                                
-    });              
-});
-</script>
+            $("#mostrar_validar_add").delay(15).queue(function(n) {                                                 
+                $.ajax({
+                    type: "POST",
+                    url: "./funciones/mod3_productos_ajax_validar_add.php",                                                                                                                                                                                                    
+                    data: "usu="+usu+"&nom="+nom,     
+                    dataType: "html",
+                    error: function(){	        alert("error petición ajax");           		},
+                    success: function(data){ 	$("#mostrar_validar_add").html(data);  	n();    }
+                });                                           
+            });                                
+        });              
+    });
+    </script>
 
-<!-- MSJ: Espere unos segundos, al hacer clic -->
-<script type="text/javascript">
-	function mostrarMsjBtn_del(){ document.getElementById('msjBtn_del').style.display = 'block'; }
-</script>
+    <!-- MSJ: Espere unos segundos, al hacer clic -->
+    <script type="text/javascript">
+        function mostrarMsjBtn_del(){ document.getElementById('msjBtn_del').style.display = 'block'; }
+    </script>
 
 </head>
 
@@ -383,9 +392,9 @@ $(document).ready(function(){
                                 <div class="modal-body with-padding">					
                                     <div class="form-group-sm">                                    
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-5">
                                                 <label>Nombre<span class="mandatory">*</span></label>   
                                                 <input type="text" id="nom_" name="nom_" class="form-control form-control-sm" tabindex="2" required>
                                                 <input type="hidden" id="usuario" name="usuario" value="<?php echo $id_user ?>" >
@@ -420,7 +429,9 @@ $(document).ready(function(){
                                     					
                                     <div class="form-group-sm">
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
+                                        </div>  
+                                        <div class="col-md-5">
                                             <label >Nombre <span class="mandatory">*</span></label>
                                             <input type="text"   id="nombre"     name="nombre"   class="form-control form-control-sm" tabindex="2" required>  
                                             <input type="hidden" id="id_"        name="id_"   >
@@ -486,6 +497,16 @@ $(document).ready(function(){
         });
     </script>
 
+    <!-- Pone foco en el primer componente del Modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modalAdd = document.getElementById('modal_add');
+            modalAdd.addEventListener('shown.bs.modal', function () {   document.getElementById('nom_').focus();          });
+
+            var modalUpd = document.getElementById('modal_upd');
+            modalUpd.addEventListener('shown.bs.modal', function () {   document.getElementById('nombre').focus();        });
+        });
+    </script> 
 
 </body>
 </html>
