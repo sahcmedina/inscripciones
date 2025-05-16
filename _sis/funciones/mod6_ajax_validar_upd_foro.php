@@ -15,7 +15,7 @@ if (isset($_POST["i_final"]))  { $insc_final  = $_POST["i_final"];  } else { $in
 if (isset($_POST["lugar"]))    { $lugar       = $_POST["lugar"]; 	} else { $lugar       = ''; }
 if (isset($_POST["id_user"]))  { $id_user     = $_POST["id_user"]; 	} else { $id_user     = ''; }
 
-//echo ' - '.$id_evento.' - '.$titulo.' - '.$fecha.' - '.$hora.' - '.$modalidad.' - '.$cupo.' - '.$insc_inicio.' - '.$insc_final.' - '.$lugar.' - '.$id_user.' - '.$fk_evento.' - '.$disertante.' - '.$organismo; die();
+//echo $id_evento.' - '.$fk_evento.' - '.$titulo.' - '.$disertante.' - '.$organismo.' - '.$fecha.' - '.$hora.' - '.$modalidad.' - '.$cupo.' - '.$insc_inicio.' - '.$insc_final.' - '.$lugar.' - '.$id_user; die();
 
 // Control: Faltan datos?
 $c1= 'ok';	$er1= '';

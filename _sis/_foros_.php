@@ -11,10 +11,9 @@
 	// ------------------------------ FUNCION ------------------------------ //			
 	include('./funciones/mod6_foros.php'); $For = new Foros();
 	
-    $arr_foros = array(); $arr_orga = array(); 
-	$arr_foros = $For->gets_all_foros();
-    $arr_orga  = $For->gets_all_organismos();
-	$id_user   = $U->get_id( $login);
+    $arr_orga = array(); 
+	$arr_orga = $For->gets_all_organismos();
+	$id_user  = $U->get_id( $login);
 
 ?>
 
@@ -25,6 +24,289 @@
 	require_once('./estructura/cabecera.php');
 	require_once('./estructura/librerias_utilizadas.php');
 	?>  
+
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>-->
+<link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" /> 
+
+<style>
+    input:focus, select:focus, textarea:focus {
+        border: 2px solid #007bff !important;                   /* Borde azul más grueso */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5) !important;  /* Sombra suave */
+        transition: all 0.3s ease;                                /* Animación suave */
+    }
+</style>
+
+<style id="jsbin-css">
+    td.dt-control {
+        text-align:center;
+        color:forestgreen;
+        cursor: pointer;
+    }
+    tr.shown td.dt-control {
+        text-align:center; 
+        color:red;
+    }
+</style>
+
+<!-- Mostrar input Segun selección de tipo de conferencia en el modal Agregar  -->
+<script type="text/javascript">
+	function show_div(selectTag){
+		if(selectTag.value == 'OnLine' ){
+			document.getElementById('div_cupo').hidden = true;
+            document.getElementById('div_lugar').hidden = true;	
+		}else{
+			document.getElementById('div_cupo').hidden = false;
+            document.getElementById('div_lugar').hidden = false;		
+		}	 		
+	}
+</script>
+<!-- Mostrar input según valor seleccionado en el modal Modificar  -->
+<script type="text/javascript">
+	function show_divmdf(selectTag){
+		if(selectTag.value == "OnLine" ){
+			document.getElementById('divcupomdf').hidden = true;
+            document.getElementById('divlugarmdf').hidden = true;	
+		}else{
+            if(selectTag.value == "Presencial" ){
+                document.getElementById('divcupomdf').hidden = false;
+                document.getElementById('divlugarmdf').hidden = false;
+            }
+		}	 		
+	}
+</script>
+
+<script language="javascript">
+
+$(document).ready(function () {
+    listar();
+})
+var listar = function(){
+    // para verificar los permisos del usuario
+    var inputmodf = document.getElementById("permiso_modf");
+    var inputbaja = document.getElementById("permiso_baja");
+    // Obtener el valor
+    var modf = inputmodf.value; // 1: puede modificar 0: no puede modif
+    var baja = inputbaja.value; // 1: puede eliminar  0: no puede elim
+    
+    var table = $('#dt_foros').DataTable({
+        initComplete: function () {
+        var api = this.api();
+        if ( modf==0 ) {
+            // oculto columna del boton para modificar y muestro el boton modificar deshabilitado
+            api.column(5).visible( false );
+            api.column(6).visible( true );
+            }else{
+                api.column(5).visible( true );
+                api.column(6).visible( false );
+            };
+        if ( baja==0 ) {
+            // oculto columna del boton para eliminar y muestro el boton eliminar deshabilitado
+            api.column(7).visible( false );
+            api.column(8).visible( true );
+            }else{
+                api.column(7).visible( true );
+                api.column(8).visible( false );
+            }
+        },
+
+        "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
+        "<'table-responsive'tr>" +
+        "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+        // "destroy": true, sirve para re inicializar el datatable.
+        ajax:{            
+	        "url": "./funciones/mod6_listar_foros.php", 
+	        "dataSrc":""
+    	},	
+        columns: [
+            {
+                className: 'dt-control',
+                orderable: false,
+                data: null,
+                defaultContent: ' ',
+            },
+            { data: 'titulo' },
+            { data: 'estado' },
+            { data: 'fecha'  },
+            { data: 'hora'   },
+            {
+                className: 'text-center',
+                orderable: false,
+                data: null,
+                defaultContent: '<button data-bs-toggle="modal" data-bs-target="#modal_mdf" class="btnEditar btn btn-outline-success btn-icon mb-2 me-4" title="Editar datos del Foro"><i class="bi bi-pencil" style="font-size: 1rem;"></i></button>',
+            },
+            {
+                 className: 'text-center',
+                 orderable: false,
+                 data: null,
+                 defaultContent: '<button data-bs-toggle="modal" data-bs-target="#" class="btnEditar btn btn-outline-success btn-icon mb-2 me-4" title="No tiene permisos para editar" disabled ><i class="bi bi-pencil" style="font-size: 1rem;"></i></button>',
+            },
+            {
+                className: 'text-center',
+                orderable: false,
+                data: null,
+                defaultContent: '<button data-bs-toggle="modal" data-bs-target="#modal_del" class="btnBorrar btn btn-outline-danger btn-icon mb-2 me-4" title="Eliminar Foro"><i class="bi bi-trash" style="font-size: 1rem;"></i></button>',
+            },
+            {
+                className: 'text-center',
+                orderable: false,
+                data: null,
+                defaultContent: '<button data-bs-toggle="modal" data-bs-target="#modal_del" class="btnBorrar btn btn-outline-danger btn-icon mb-2 me-4" title="No tiene permisos para eliminar Foro" disabled ><i class="bi bi-trash" style="font-size: 1rem;"></i></button>',
+            }
+        ],
+        columnDefs: [
+            { targets: 3, // La columna 2 contiene la fecha
+              render: function (data, type, row) {
+                return new Date(data).toLocaleDateString('es-ES'); // Formatear a DD/MM/YYYY
+                }
+            },
+            { targets: 2, // La columna 2 contiene la fecha
+              render: function (data, type, row) {
+                if(data == 1){
+                    if(modf==0){
+                        return '<button data-bs-toggle="modal" data-bs-target="#modal_mdfSta" class="btnEditarSta btn btn-outline-warning btn-icon mb-2 me-4" title="Estado actual: Deshabilitado" disabled >Deshabilitado</i></button>';
+                    }else{
+                        return '<button data-bs-toggle="modal" data-bs-target="#modal_mdfSta" class="btnEditarSta btn btn-outline-warning btn-icon mb-2 me-4" title="Estado actual: Deshabilitado">Deshabilitado</i></button>';
+                    }
+                }else{
+                    if(modf==1){
+                        return '<button data-bs-toggle="modal" data-bs-target="#modal_mdfSta" class="btnEditarSta btn btn-outline-success btn-icon mb-2 me-4" title="Estado actual: Habilitado">Habilitado</button>';    
+                    }else{
+                        return '<button data-bs-toggle="modal" data-bs-target="#modal_mdfSta" class="btnEditarSta btn btn-outline-success btn-icon mb-2 me-4" title="Estado actual: Habilitado" disabled>Habilitado</button>';    
+                    }
+                } }
+            }
+        ],
+        order: [[1, 'asc']],
+        "oLanguage": {
+            "oPaginate": { "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>', "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>' },
+            "sInfo": "Mostrando página _PAGE_ de _PAGES_",
+            "sEmptyTable": "Ningún dato disponible",
+            "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+            "sSearchPlaceholder": "Buscar...",
+            "sLengthMenu": "Results :  _MENU_",
+        },
+        "stripeClasses": [],
+        "lengthMenu": [10, 20, 50],
+        "pageLength": 5,
+
+    });
+
+    obtener_data_editar("#dt_foros tbody", table);
+    obtener_data_borrar("#dt_foros tbody", table);
+    obtener_data_estado("#dt_foros tbody", table);
+
+    $('#dt_foros tbody').on('click', 'td.dt-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row(tr);
+ 
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        } else {
+            // Open this row
+            row.child(format(row.data())).show();
+            tr.addClass('shown');
+        }
+    });
+};
+
+var obtener_data_editar = function(tbody, table){
+    $(tbody).on("click", "button.btnEditar", function(){
+        var data   = table.row($(this).parents("tr")).data();
+        var titulo        = $("#modal_mdf #titulo").val(data.titulo),
+            id_evento     = $("#modal_mdf #id_evento").val(data.id_evento),
+            id_foro       = $("#modal_mdf #id_foro").val(data.id_foro),
+            disertante    = $("#modal_mdf #disertante").val(data.disertante);
+            id_organismo  = $("#modal_mdf #id_organismo").val(data.id_organismo);
+            fecha         = $("#modal_mdf #fecha").val(data.fecha);
+            hora          = $("#modal_mdf #hora").val(data.hora);
+            modalidad     = $("#modal_mdf #modalidad").val(data.modalidad);
+            cupo          = $("#modal_mdf #cupo").val(data.cupo);
+            f_inscrip_dsd = $("#modal_mdf #f_inscrip_dsd").val(data.f_inscrip_dsd);
+            f_inscrip_hst = $("#modal_mdf #f_inscrip_hst").val(data.f_inscrip_hst);
+            lugar         = $("#modal_mdf #lugar").val(data.lugar);
+            //estado        = $("#modal_mdf #estado").val(data.estado);
+    });
+};
+
+var obtener_data_borrar = function(tbody, table){
+    $(tbody).on("click", "button.btnBorrar", function(){
+        var data = table.row($(this).parents("tr")).data();
+        var id_evento  = $("#modal_del #id_evento").val(data.id_evento),
+            id_foro    = $("#modal_del #id_foro").val(data.id_foro),
+            titulo_del = $("#modal_del #titulo_del").val(data.titulo);
+    });
+}
+
+var obtener_data_estado = function(tbody, table){
+    $(tbody).on("click", "button.btnEditarSta", function(){
+        var data   = table.row($(this).parents("tr")).data();
+        var titulo        = $("#modal_mdfSta #titulo").val(data.titulo),
+            id_evento     = $("#modal_mdfSta #id_evento").val(data.id_evento),
+            id_foro       = $("#modal_mdfSta #id_foro").val(data.id_foro),
+            fecha         = $("#modal_mdfSta #fecha").val(data.fecha);
+            hora          = $("#modal_mdfSta #hora").val(data.hora);
+            modalidad     = $("#modal_mdfSta #modalidad").val(data.modalidad);
+            cupo          = $("#modal_mdfSta #cupo").val(data.cupo);
+            estado        = $("#modal_mdfSta #estado").val(data.estado);
+    });
+};
+    
+/* Formatting function for row details - modify as you need */
+function format(d) {
+    // `d` is the original data object for the row
+    return (
+        '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+        '<tr>' +
+        '<td>Modalidad:</td>' +
+        '<td>' +
+        d.modalidad +
+        '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td>Cupo:</td>' +
+        '<td>' +
+        d.cupo +
+        '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td>Lugar:</td>' +
+        '<td>' +
+        d.lugar +
+        '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td>Inicio Inscripción:</td>' +
+        '<td>' +
+        d.f_inscrip_dsd +
+        '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td>Fin Inscripción:</td>' +
+        '<td>' +
+        d.f_inscrip_hst +
+        '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td>Disertante:</td>' +
+        '<td>' +
+        d.disertante +
+        '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td>Organismo:</td>' +
+        '<td>' +
+        d.organismo +
+        '</td>' +
+        '</tr>' +
+        '</table>'
+    );
+}
+
+</script>
+
 <!-- Muestra input de cupo y lugar segun elija online o presencial -->
 <script language="javascript">
 $(document).ready(function(){
@@ -47,17 +329,17 @@ $(document).ready(function(){
 $(document).ready(function(){    
     var titulo; var dis; var org; var fecha; var hora; var mod; var cupo; var i_inicio; var i_final; var lugar; var usr;                   
     $("#validar_add").click(function(){
-		titulo   = $("#titulo").val();
-        dis      = $("#disertante").val();
-        org      = $("#organismo").val();
-        fecha    = $("#fecha").val();
-        hora     = $("#hora").val();
-        mod      = $("#modalidad").val();
-        cupo     = $("#cupo").val();
-        i_inicio = $("#insc_inicio").val();
-        i_final  = $("#insc_final").val();
-        lugar    = $("#lugar").val();
-        usr      = $("#id_user").val();
+		titulo   = $("#modal_add #titulo").val();
+        dis      = $("#modal_add #disertante").val();
+        org      = $("#modal_add #organismo").val();
+        fecha    = $("#modal_add #fecha").val();
+        hora     = $("#modal_add #hora").val();
+        mod      = $("#modal_add #modalidad").val();
+        cupo     = $("#modal_add #cupo").val();
+        i_inicio = $("#modal_add #insc_inicio").val();
+        i_final  = $("#modal_add #insc_final").val();
+        lugar    = $("#modal_add #lugar").val();
+        usr      = $("#modal_add #id_user").val();
         $("#mostrar_validar_add").delay(15).queue(function(n) {                                                 
             $.ajax({
                 type: "POST",
@@ -72,49 +354,14 @@ $(document).ready(function(){
 });
 </script>
 
-<!-- Pasar datos al modal para MOSTRARLOS -->
-<script>
-$(document).ready(function(){  
-	$('#modal_view').on('show.bs.modal', function (event) {    
-		var button = $(event.relatedTarget)  // Botón que activó el modal
-		var id          = button.data('id')    
-		var titulo      = button.data('titulo')
-        var disertante  = button.data('disertante')
-        var organismo   = button.data('organismo')
-		var fecha       = button.data('fecha')
-		var hora        = button.data('hora')
-		var insc_inicio = button.data('insc_inicio')  
-		var insc_final  = button.data('insc_final')
-		var cupo        = button.data('cupo')    
-		var estado      = button.data('estado')
-		var modalidad   = button.data('modalidad')
-        var lugar       = button.data('lugar')
-			var modal = $(this)
-		modal.find('.modal-body #id').val(id)
-		modal.find('.modal-body #titulo').val(titulo)
-        modal.find('.modal-body #disertante').val(disertante)
-        modal.find('.modal-body #organismo').val(organismo)
-		modal.find('.modal-body #fecha').val(fecha)
-		modal.find('.modal-body #hora').val(hora)
-		modal.find('.modal-body #insc_inicio').val(insc_inicio)
-		modal.find('.modal-body #insc_final').val(insc_final)
-		modal.find('.modal-body #cupo').val(cupo)
-		modal.find('.modal-body #estado').val(estado)
-		modal.find('.modal-body #modalidad').val(modalidad)   
-		modal.find('.modal-body #lugar').val(lugar)
-		$('.alert').hide();//Oculto alert       
-	})
-});
-</script>
-
 <!-- AJAX: Validar datos por ajax - Antes de Cambiar el estado -->	
 <script language="javascript">
 $(document).ready(function(){                         
     var id; var state;          
     $("#validar_upd_sta").click(function(){
-		id    = $("#id_sta").val();			
-		state = $("#estado_sta").val();
-        id_usr= $("#id_usr_sta").val();			
+		id    = $("#modal_mdfSta #id_foro").val();			
+		state = $("#modal_mdfSta #estado").val();
+        id_usr= $("#modal_mdfSta #id_usr").val();			
 		
 	  	$("#mostrar_validar_upd_sta").delay(15).queue(function(n) {                                                 
             $.ajax({
@@ -130,124 +377,32 @@ $(document).ready(function(){
 });
 </script>
 
-<!-- PASAR DATOS AL MODAL: Mostrar para confirmar cambio de estado -->
-<script>
-$(document).ready(function(){  
-	$('#modal_mdfSta').on('show.bs.modal', function (event) {    
-		  var button   = $(event.relatedTarget)  // Botón que activó el modal
-		  var id_sta      = button.data('id_sta')   
-		  var titulo_sta  = button.data('titulo_sta')
-          var estado_sta  = button.data('estado_sta')   
-		  var mostrar_sta = button.data('mostrar_sta')
-          var fecha_sta   = button.data('fecha_sta')   
-		  var hora_sta    = button.data('hora_sta')
-          var modalidad_sta    = button.data('modalidad_sta')   
-		  var cupo_sta    = button.data('cupo_sta')   
-		  var modal    = $(this)
-		  modal.find('.modal-body #id_sta').val(id_sta)
-		  modal.find('.modal-body #titulo_sta').val(titulo_sta)
-          modal.find('.modal-body #estado_sta').val(estado_sta)
-		  modal.find('.modal-body #mostrar_sta').val(mostrar_sta)
-          modal.find('.modal-body #fecha_sta').val(fecha_sta)
-		  modal.find('.modal-body #hora_sta').val(hora_sta)
-          modal.find('.modal-body #modalidad_sta').val(modalidad_sta)
-		  modal.find('.modal-body #cupo_sta').val(cupo_sta) 
-		 
-		  $('.alert').hide();//Oculto alert
-		})
-	});
-</script>
-
-<!-- PASAR DATOS AL MODAL:  Para Actualizar Foro -->
-<script>
-$(document).ready(function(){  
-	$('#modal_mdf').on('show.bs.modal', function (event) {    
-		var button = $(event.relatedTarget)  // Botón que activó el modal
-		var id_eventomdf   = button.data('id_eventomdf')
-        var fk_eventomdf   = button.data('fk_eventomdf')    
-		var titulomdf      = button.data('titulomdf')
-        var disertantemdf  = button.data('disertantemdf')
-        var idorganismomdf   = button.data('idorganismomdf')
-		var fechamdf       = button.data('fechamdf')
-		var horamdf        = button.data('horamdf')
-		var insc_iniciomdf = button.data('insc_iniciomdf')  
-		var insc_finalmdf  = button.data('insc_finalmdf')
-		var cupomdf        = button.data('cupomdf')    
-		var modalidadmdf   = button.data('modalidadmdf')
-        var lugarmdf       = button.data('lugarmdf')
-			var modal = $(this)
-		modal.find('.modal-body #id_eventomdf').val(id_eventomdf)
-        modal.find('.modal-body #fk_eventomdf').val(fk_eventomdf)
-		modal.find('.modal-body #titulomdf').val(titulomdf)
-        modal.find('.modal-body #disertantemdf').val(disertantemdf)
-        modal.find('.modal-body #idorganismomdf').val(idorganismomdf)
-		modal.find('.modal-body #fechamdf').val(fechamdf)
-		modal.find('.modal-body #horamdf').val(horamdf)
-		modal.find('.modal-body #insc_iniciomdf').val(insc_iniciomdf)
-		modal.find('.modal-body #insc_finalmdf').val(insc_finalmdf)
-		modal.find('.modal-body #cupomdf').val(cupomdf)
-		modal.find('.modal-body #modalidadmdf').val(modalidadmdf)   
-		modal.find('.modal-body #lugarmdf').val(lugarmdf)
-
-        $("#div_select_org_mdf").delay(10).queue(function(n) { 
-		  	$.ajax({
-		  		type: "POST",
-		  		url:  "./funciones/mod6_ajax_llenar_tabla_organismos.php",
-		  		data: "id_org="+idorganismomdf,
-		  		dataType: "html",
-		  		error: function(){
-		  			alert("error petición ajax");
-		  		},
-		  		success: function(data){                                                      
-		  			$("#div_select_org_mdf").html(data);
-		  			n();
-		  		}
-		  	});                                           
-		});
-
-        var modalidad_; 
-        modalidad_= $("#modalidadmdf").val();
-        if(modalidad_ == 'OnLine'){
-           document.getElementById('divcupomdf').hidden = true;
-           document.getElementById('divlugarmdf').hidden = true;
-        }else{
-            if (modalidad_ == 'Presencial'){
-                document.getElementById('divcupomdf').hidden = false;
-                document.getElementById('divlugarmdf').hidden = false;
-            }
-         };
-
-		$('.alert').hide();//Oculto alert       
-	})
-});
-</script>
-
 <!-- AJAX: Validar datos por ajax - Antes de Actualizar -->	
 <script language="javascript">
 $(document).ready(function(){                         
-    var id_e; var id_f; var titulo;	var estado; var fecha; var hora; var tipo; var cupo; var i_inicio; var i_final;
-    var lugar; var usr; var dis; var org;
+    var id_e; var id_f; var titulo; var dis; var org; var fecha; var hora; var mod; var cupo; var i_inicio; var i_final;
+    var lugar; var usr;   
     $("#validar_upd").click(function(){
-		id_e      = $("#id_eventomdf").val();
-        fk_evento = $("#fk_eventomdf").val();			
-		titulo    = $("#titulomdf").val();
-        dis       = $("#disertantemdf").val();
-        org       = $("#organismomdf").val();
-        fecha     = $("#fechamdf").val();			
-		hora      = $("#horamdf").val();			
-		mod       = $("#modalidadmdf").val();			
-		cupo      = $("#cupomdf").val();
-        i_inicio  = $("#insc_iniciomdf").val();			
-		i_final   = $("#insc_finalmdf").val();
-        lugar     = $("#lugarmdf").val();
-        usr       = $("#id_usermdf").val();
+		id_e      = $("#modal_mdf #id_evento").val();
+        id_f      = $("#modal_mdf #id_foro").val();			
+		titulo    = $("#modal_mdf #titulo").val();
+        dis       = $("#modal_mdf #disertante").val();
+        org       = $("#modal_mdf #id_organismo").val();
+        fecha     = $("#modal_mdf #fecha").val();			
+		hora      = $("#modal_mdf #hora").val();			
+		mod       = $("#modal_mdf #modalidad").val();			
+		cupo      = $("#modal_mdf #cupo").val();
+        i_inicio  = $("#modal_mdf #f_inscrip_dsd").val();			
+		i_final   = $("#modal_mdf #f_inscrip_hst").val();
+        lugar     = $("#modal_mdf #lugar").val();
+        usr       = $("#modal_mdf #id_user").val();
 
 	  	$("#mostrar_validar_upd").delay(15).queue(function(n) {                                                 
             $.ajax({
                 type: "POST",
                 url: "./funciones/mod6_ajax_validar_upd_foro.php",                                                                                                                                                                                                    
-                data: "id_e="+id_e+"&titulo="+titulo+"&fecha="+fecha+"&hora="+hora+"&mod="+mod+"&cupo="+cupo+"&i_inicio="+i_inicio+"&i_final="+i_final+"&lugar="+lugar+"&id_user="+usr+"&id_f="+fk_evento+"&dis="+dis+"&org="+org,
-              	dataType: "html",
+                data: "id_e="+id_e+"&id_f="+id_f+"&titulo="+titulo+"&dis="+dis+"&org="+org+"&fecha="+fecha+"&hora="+hora+"&mod="+mod+"&cupo="+cupo+"&i_inicio="+i_inicio+"&i_final="+i_final+"&lugar="+lugar+"&id_user="+usr,
+                dataType: "html",
                 error: function(){	        alert("error petición ajax");           		},
                 success: function(data){ 	$("#mostrar_validar_upd").html(data);  	n();    }
             });                                           
@@ -256,33 +411,14 @@ $(document).ready(function(){
 });
 </script>
 
-<!-- PASAR DATOS AL MODAL: Borrar Foro -->
-<script>
-$(document).ready(function(){  
-	$('#modal_del').on('show.bs.modal', function (event) {    
-		  var button   = $(event.relatedTarget)  // Botón que activó el modal
-		  var id_del_evento= button.data('id_del_evento')
-          var id_del_foro  = button.data('id_del_foro')   
-		  var titulo_del   = button.data('titulo_del')   
-		  var modal    = $(this)
-		  modal.find('.modal-body #id_del_evento').val(id_del_evento)
-          modal.find('.modal-body #id_del_foro').val(id_del_foro)
-		  modal.find('.modal-body #titulo_del').val(titulo_del) 
-		 
-		  $('.alert').hide();//Oculto alert
-		})
-	});
-</script>
-
 <!-- AJAX: Validar datos por ajax - Antes de Borrar el Foro -->	
 <script language="javascript">
 $(document).ready(function(){                         
-    var id_e; var id_f;          
+    var id_e; var id_f; var baja;          
     $("#validar_del").click(function(){
-		id_e = $("#id_del_evento").val();
-        id_f = $("#id_del_foro").val();			
-
-	  	$("#mostrar_validar_del").delay(15).queue(function(n) {                                                 
+		id_e = $("#modal_del #id_evento").val();
+        id_f = $("#modal_del #id_foro").val();
+        $("#mostrar_validar_del").delay(15).queue(function(n) {                                                 
             $.ajax({
                 type: "POST",
                 url: "./funciones/mod6_ajax_validar_del_foro.php",                                                                                                                                                                                                    
@@ -295,8 +431,6 @@ $(document).ready(function(){
     });              
 });
 </script>
-
-
 
 </head>
 
@@ -441,14 +575,14 @@ $(document).ready(function(){
                                     <div class="modal-body with-padding">					
                                         <div class="form-group-sm">
                                             <div class="row">
-                                                <center><label style="color:red;font: size 30px;"><i class="bi bi-exclamation-triangle" style="font-size: 1rem;"></i>  ¿ Está seguro de Elimnar este Foro ? </label></center>
+                                                <center><label style="color:red;font: size 30px;"><i class="bi bi-exclamation-triangle" style="font-size: 1rem;"></i>  ¿ Está seguro de Eliminar este Foro ? </label></center>
                                             </div><br>
                                             <div class="row" align="center">
                                                 <div class="col-md-12">
                                                     <label>Tema</label>
                                                     <input type="text"   id="titulo_del" name="titulo_del" class="form-control form-control-sm" tabindex="1" readonly >	 
-                                                    <input type="hidden" id="id_del_evento" name="id_del_evento" >
-                                                    <input type="hidden" id="id_del_foro"   name="id_del_foro" >
+                                                    <input type="hidden" id="id_evento" name="id_evento" >
+                                                    <input type="hidden" id="id_foro"   name="id_foro" >
                                                 </div>	
                                             </div>								
                                         </div><br /> 
@@ -549,84 +683,6 @@ $(document).ready(function(){
                         </div>
                     </div>
 
-                    <!-- Modal: Ver mas datos -->
-                    <div id="modal_view" class="modal animated fadeInDown" tabindex="-1" role="dialog" >
-                        <div class="modal-dialog modal-xl">
-                            <div class="modal-content">
-                                <div class="modal-header"><h6 class="modal-title"><i class="bi bi-info-circle" style="font-size: 1rem;"></i> Ver datos del Foro </h6></div>
-                                <form name="view_foro" id="view_foro" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
-                                    <div class="modal-body with-padding">					
-                                        <div class="form-group-sm">
-                                            <div class="row">
-                                                <div class="col-md-10">
-                                                    <label>Tema<span class="mandatory">*</span></label>   
-                                                    <input type="text" id="titulo" name="titulo" class="form-control form-control-sm" tabindex="1" readonly>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <label>Estado<span class="mandatory">*</span></label>   
-                                                    <input type="text" id="estado" name="estado" title="Indica si se muestra o no esta conferencia en la página" class="form-control form-control-sm" tabindex="2" readonly>
-                                                </div>
-                                            </div>  <br>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Disertante<span class="mandatory">*</span></label>
-                                                    <input type="text" id="disertante" name="disertante" class="form-control form-control-sm" tabindex="3" readonly>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label>Organismo Organizador<span class="mandatory">*</span></label>
-                                                    <input type="text" id="organismo"  name="organismo"  class="form-control form-control-sm" tabindex="4" readonly>
-                                                </div>
-                                            </div> <br>                                  
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <label>Fecha<span class="mandatory">*</span></label>   
-                                                    <input type="date" id="fecha" name="fecha" class="form-control form-control-sm" tabindex="5" readonly>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label>Hora<span class="mandatory">*</span></label>   
-                                                    <input type="time" id="hora" name="hora" class="form-control form-control-sm" tabindex="6" readonly>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label>Modalidad<span class="mandatory">*</span></label>   
-                                                    <input type="text" id="modalidad" name="modalidad" class="form-control form-control-sm" tabindex="7" readonly>
-                                                </div>
-                                                <div class="col-md-3" id="div_cupo" name="div_cupo">
-                                                    <label>Cupo<span class="mandatory">*</span></label>   
-                                                    <input type="text" id="cupo" name="cupo" class="form-control form-control-sm" tabindex="8" readonly>
-                                                </div>
-                                            </div> <br>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <label>Periodo de Inscripción</label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label>Inicio<span class="mandatory">*</span></label>
-                                                    <input type="date" id="insc_inicio" name="insc_inicio" class="form-control form-control-sm" tabindex="9" readonly>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label>Final<span class="mandatory">*</span></label>
-                                                    <input type="date" id="insc_final"  name="insc_final"  class="form-control form-control-sm" tabindex="10" readonly>
-                                                </div>
-                                            </div> <br>
-                                            <div class="row" id="div_lugar" name="div_lugar">
-                                                <div class="col-md-12">
-                                                    <label>Lugar<span class="mandatory">*</span></label>   
-                                                    <input type="text" id="lugar" name="lugar" class="form-control form-control-sm" tabindex="11" readonly>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>	
-                                    <div class="modal-footer d-flex center-content-end">					
-                                        <center><button class="btn btn-dark" data-bs-dismiss="modal" tabindex="12">Cancelar</button></center>
-                                        <br>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Modal: Modificar Estado -->
                     <div id="modal_mdfSta" class="modal animated fadeInDown" tabindex="-1" role="dialog">
                         <div class="modal-dialog modal-xl">
@@ -636,40 +692,37 @@ $(document).ready(function(){
                                     <div class="modal-body with-padding">
                                         <div class="form-group-sm">
                                             <div class="row">
-                                                <div class="col-md-4"></div>
-                                                <div class="col-md-4">
-                                                    <center><div class="input-group md-4">
-                                                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-exclamation-triangle" style="font-size: 1rem;"></i></span>
-                                                        <input type="text" id="mostrar_sta" name="mostrar_sta" class="form-control form-control-sm" aria-label="notification" aria-describedby="basic-addon1" tabindex="1" readonly>
-                                                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-exclamation-triangle" style="font-size: 1rem;"></i></span>
-                                                    </div></center>
+                                                <div class="col-md-3"></div>
+                                                <div class="col-md-6">
+                                                    <center><label style="color:red;font: size:100px;"><i class="bi bi-exclamation-triangle" style="font-size: 1rem;"></i>  ¿ Está seguro de cambiar el Estado de este Foro ?  <i class="bi bi-exclamation-triangle" style="font-size: 1rem;"></i></label></center>
                                                 </div>
+                                                <div class="col-md-3"></div>
                                             </div> <br>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label>Titulo<span class="mandatory">*</span></label>   
-                                                    <input type="text" id="titulo_sta" name="titulo_sta" class="form-control form-control-sm" tabindex="2" readonly>
-                                                    <input type="hidden" id="estado_sta" name="estado_sta" >
-                                                    <input type="hidden" id="id_sta" name="id_sta" >
-                                                    <input type="hidden" id="id_usr_sta"     name="id_usr_sta" value="<?php echo $id_user; ?>" >
+                                                    <input type="text" id="titulo" name="titulo" class="form-control form-control-sm" tabindex="2" readonly>
+                                                    <input type="hidden" id="estado"  name="estado" >
+                                                    <input type="hidden" id="id_foro" name="id_foro" >
+                                                    <input type="hidden" id="id_usr"  name="id_usr" value="<?php echo $id_user; ?>" >
                                                 </div>
                                             </div>  <br>                                  
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <label>Fecha<span class="mandatory">*</span></label>   
-                                                    <input type="date" id="fecha_sta" name="fecha_sta" class="form-control form-control-sm" tabindex="3" readonly>
+                                                    <input type="date" id="fecha" name="fecha" class="form-control form-control-sm" tabindex="3" readonly>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label>Hora<span class="mandatory">*</span></label>   
-                                                    <input type="time" id="hora_sta" name="hora_sta" class="form-control form-control-sm" tabindex="4" readonly>
+                                                    <input type="time" id="hora" name="hora" class="form-control form-control-sm" tabindex="4" readonly>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label>Tipo<span class="mandatory">*</span></label>   
-                                                    <input type="text" id="modalidad_sta" name="modalidad_sta" class="form-control form-control-sm" tabindex="5" readonly>
+                                                    <input type="text" id="modalidad" name="modalidad" class="form-control form-control-sm" tabindex="5" readonly>
                                                 </div>
                                                 <div class="col-md-3" >
                                                     <label>Cupo<span class="mandatory">*</span></label>   
-                                                    <input type="text" id="cupo_sta" name="cupo_sta" class="form-control form-control-sm" tabindex="6" readonly>
+                                                    <input type="text" id="cupo" name="cupo" class="form-control form-control-sm" tabindex="6" readonly>
                                                 </div>
                                             </div> <br>
                                         </div>
@@ -708,81 +761,25 @@ $(document).ready(function(){
                     </div>
 
                     <div class="row layout-top-spacing">                    
-                    
+                            <input type="hidden" id="permiso_modf" name="permiso_modf" value="<?php echo $modf; ?>">
+                            <input type="hidden" id="permiso_baja" name="permiso_baja" value="<?php echo $baja; ?>">
                         <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
                         
                             <div class="widget-content widget-content-area br-8">
                                 <table id="dt_foros" class="table dt-table-hover" style="width:100%">
-                                    
-                                    <?php
-                                        $tabla= "<thead><tr class=\"rowHeaders\">			
-                                                <th style='text-align:center'> id   	</th>
-                                                <th style='text-align:center'> Título	</th>
-                                                <th style='text-align:center'> Fecha 	</th>
-                                                <th style='text-align:center'> Hora 	</th>
-                                                <th style='text-align:center'> Estado 	</th>
-                                                <th style='text-align:center'> Acciones </th>";
-                                        $tabla.="</tr></thead><tbody>";			
-                                        echo $tabla;
-                                        for($j=0 ; is_array($arr_foros) && $j<count($arr_foros) ; $j++){
-                                            $cur  = $arr_foros[$j];
-                                            if($cur['estado']== '1'){ $msj_mostrar= 'No se Muestra'; }else{ $msj_mostrar= 'Si se Muestra'; }
-                                        
-                                            $btn_del = ' <button data-bs-toggle="modal" data-bs-target="#modal_del" 
-                                                            data-id_del_evento="'.$cur['id_evento'].'" data-id_del_foro="'.$cur['id_foro'].'"
-                                                            data-titulo_del="'.$cur['titulo'].'" 
-                                                            class="btn btn-outline-danger btn-icon mb-2 me-4" title="Eliminar Foro" >
-                                                            <i class="bi bi-trash" style="font-size: 1rem;"></i>
-                                                            </button>';
-
-                                            $btn_mdf = '<button data-bs-toggle="modal" data-bs-target="#modal_mdf" 
-                                                           data-id_eventomdf="'.$cur['id_evento'].'" data-fk_eventomdf="'.$cur['fk_evento'].'" data-titulomdf="'.$cur['titulo'].'" data-fechamdf="'.$cur['fecha'].'" data-horamdf="'.$cur['hora'].'"
-                                                           data-modalidadmdf="'.$cur['modalidad'].'" data-cupomdf="'.$cur['cupo'].'" data-insc_iniciomdf="'.$cur['f_inscrip_dsd'].'"
-                                                           data-insc_finalmdf="'.$cur['f_inscrip_hst'].'" data-lugarmdf="'.$cur['lugar'].'" 
-                                                           data-disertantemdf="'.$cur['disertante'].'" data-idorganismomdf="'.$cur['id_organismo'].'"
-                                                           class="btn btn-outline-success btn-icon mb-2 me-4" title="Editar datos del Foro">
-                                                           <i class="bi bi-pencil" style="font-size: 1rem;"></i>
-                                                           </button>';
-                                                           
-                                            $btn_view = '<button data-bs-toggle="modal" data-bs-target="#modal_view" 
-                                                           data-id="'.$cur['id'].'" data-titulo="'.$cur['titulo'].'" data-fecha="'.$cur['fecha'].'" data-hora="'.$cur['hora'].'" 
-                                                           data-insc_inicio="'.$cur['f_inscrip_dsd'].'" data-insc_final="'.$cur['f_inscrip_hst'].'" data-lugar="'.$cur['lugar'].'"
-                                                           data-estado="'.$msj_mostrar.'" data-modalidad="'.$cur['modalidad'].'" data-cupo="'.$cur['cupo'].'" data-disertante="'.$cur['disertante'].'"
-                                                           data-organismo="'.$cur['organismo'].'" 
-                                                           class="btn btn-outline-primary btn-icon mb-2 me-4" title="Ver mas Datos del Foro">
-                                                           <i class="bi bi-eye" style="font-size: 1rem;"></i>
-                                                           </button>';
-
-                                            if ($cur['estado']==1){
-                                                $clase= 'class="btn btn-light-warning mb-2 me-4"'; $msj='Deshabilitada';
-                                            }else{
-                                                $clase= 'class="btn btn-light-success mb-2 me-4"'; $msj='Habilitada';
-                                            }
-
-                                            $btn_state= '<button data-bs-toggle="modal" data-bs-target="#modal_mdfSta"'.$clase.' 
-                                                         data-id_sta="'.$cur['id_foro'].'" data-titulo_sta="'.$cur['titulo'].'" data-estado_sta="'.$cur['estado'].'" data-mostrar_sta="Actualmente '.$msj_mostrar.'"
-                                                         data-fecha_sta="'.$cur['fecha'].'" data-hora_sta="'.$cur['hora'].'" data-modalidad_sta="'.$cur['modalidad'].'" data-cupo_sta="'.$cur['cupo'].'"
-                                                         title="Modificar estado del Foro">'.$msj.'
-                                                         </button>';
-
-                                            if($baja == '1') { $btn_del_mostrar= $btn_del; } else {  $btn_del_mostrar= ''; }
-                                            if($modf == '1') { $btn_mdf_mostrar= $btn_mdf; $btn_sta_mostrar= $btn_state; } 
-                                            else             { $btn_mdf_mostrar= ''; 
-                                                               $btn_sta_mostrar= '<button data-bs-toggle="modal"'.$clase.' title="Estado del Foro">'.$msj.'</button>';}
-
-                                            echo "<tr class=\"cellColor" . ($j%2) . "\" align=\"center\" id=\"tr$j\">\n"
-                                            . '<td style="text-align:center">'. $cur['id']    	."</td>\n"
-                                            . '<td style="text-align:center">'. $cur['titulo']  ."</td>\n"
-                                            . '<td style="text-align:center">'.'<i class="bi bi-calendar-event" style="font-size: 1rem;"></i>  '.
-                                                date('d/m/Y', strtotime($cur['fecha']))."</td>\n"
-                                            . '<td style="text-align:center">'.'<i class="bi bi-clock" style="font-size: 1rem;"></i>  '. 
-                                                date('H:i', strtotime($cur['hora']))   ."</td>\n"
-                                            . '<td style="text-align:center">'. $btn_sta_mostrar  ."</td>\n"
-                                            . '<td style="text-align:center">'. $btn_view.$btn_mdf_mostrar.$btn_del_mostrar."</td>\n"
-                                            . "</tr>\n";
-                                        }
-                                        echo "</tbody>";
-                                    ?>   
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Titulo</th>
+                                            <th>Estado</th>
+                                            <th>Fecha</th>
+                                            <th>Hora</th>
+                                            <th aling='center'>Modificar</th>
+                                            <th aling='center'>Modificar</th>
+                                            <th aling='center'>Eliminar</th>
+                                            <th aling='center'>Eliminar</th>
+                                        </tr>
+                                    </thead>
                                 </table>
                             </div>
                         </div>
@@ -803,38 +800,46 @@ $(document).ready(function(){
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label>Tema<span class="mandatory">*</span></label>   
-                                                    <input type="text" id="titulomdf" name="titulomdf" class="form-control form-control-sm" tabindex="1" required>
-                                                    <input type="hidden" id="id_eventomdf"   name="id_eventomdf">
-                                                    <input type="hidden" id="fk_eventomdf"   name="fk_eventomdf">
-                                                    <input type="hidden" id="id_usermdf" name="id_usermdf" value="<?php echo $id_user; ?>" >
+                                                    <input type="text" id="titulo" name="titulo" class="form-control form-control-sm" tabindex="1" required>
+                                                    <input type="hidden" id="id_evento"   name="id_evento">
+                                                    <input type="hidden" id="id_foro"   name="id_foro">
+                                                    <input type="hidden" id="id_user" name="id_user" value="<?php echo $id_user; ?>" >
                                                 </div>
                                             </div><br>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label>Disertante<span class="mandatory">*</span></label>
-                                                    <input type="text" id="disertantemdf" name="disertantemdf" class="form-control form-control-sm" tabindex="2" required>
+                                                    <input type="text" id="disertante" name="disertante" class="form-control form-control-sm" tabindex="2" required>
                                                 </div>
-                                                <div class="col-md-6" id="div_select_org_mdf"></div>
+                                                <div class="col-md-6" id="div_select_org_mdf"> 
+                                                    <label>Organismo Organizador<span class="mandatory">*</span></label>
+                                                    <select id="id_organismo" name="id_organismo" class="form-select form-control-sm" tabindex="3" required >
+	                                                    <?php
+                                                        for ($i = 0; $i < count($arr_orga); $i++)
+			                                                echo '<option value="'.$arr_orga[$i]['id'].'"'.'>' .$arr_orga[$i]['organismo']. "</option>\n";
+	                                                    ?>
+                                                    </select>
+                                                </div>	
                                             </div> <br>                                  
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <label>Fecha<span class="mandatory">*</span></label>   
-                                                    <input type="date" id="fechamdf" name="fechamdf" class="form-control form-control-sm" tabindex="4" required>
+                                                    <input type="date" id="fecha" name="fecha" class="form-control form-control-sm" tabindex="4" required>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label>Hora<span class="mandatory">*</span></label>   
-                                                    <input type="time" id="horamdf" name="horamdf" class="form-control form-control-sm" tabindex="5" required>
+                                                    <input type="time" id="hora" name="hora" class="form-control form-control-sm" tabindex="5" required>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <label>Modalidad<span class="mandatory">*</span></label>   
-                                                    <select id="modalidadmdf" name="modalidadmdf" class="form-select form-control-sm" onChange="show_divmdf(this)" tabindex="6" required>
+                                                    <select id="modalidad" name="modalidad" class="form-select form-control-sm" onChange="show_divmdf(this)" tabindex="6" required>
                                                         <option value="OnLine">OnLine</option>
                                                         <option value="Presencial">Presencial</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-3" id="divcupomdf" >
                                                     <label>Cupo<span class="mandatory">*</span></label>   
-                                                    <input type="number" id="cupomdf" name="cupomdf" class="form-control form-control-sm" tabindex="7" required>
+                                                    <input type="number" id="cupo" name="cupo" class="form-control form-control-sm" tabindex="7" required>
                                                 </div>
                                             </div> <br>
                                             <div class="row">
@@ -845,17 +850,17 @@ $(document).ready(function(){
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label>Inicio<span class="mandatory">*</span></label>
-                                                    <input type="date" id="insc_iniciomdf" name="insc_iniciomdf" class="form-control form-control-sm" tabindex="8" required>
+                                                    <input type="date" id="f_inscrip_dsd" name="f_inscrip_dsd" class="form-control form-control-sm" tabindex="8" required>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>Final<span class="mandatory">*</span></label>
-                                                    <input type="date" id="insc_finalmdf"  name="insc_finalmdf"  class="form-control form-control-sm" tabindex="9" required>
+                                                    <input type="date" id="f_inscrip_hst"  name="f_inscrip_hst"  class="form-control form-control-sm" tabindex="9" required>
                                                 </div>
                                             </div> <br>
                                             <div class="row" >
                                                 <div class="col-md-12" id="divlugarmdf" >
                                                     <label>Lugar<span class="mandatory">*</span></label>   
-                                                    <input type="text" id="lugarmdf" name="lugarmdf" class="form-control form-control-sm" tabindex="10" required>
+                                                    <input type="text" id="lugar" name="lugar" class="form-control form-control-sm" tabindex="10" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -870,8 +875,6 @@ $(document).ready(function(){
                             </div>
                         </div>
                     </div>
-
-                    
                 </div>
 
             </div>
@@ -886,67 +889,21 @@ $(document).ready(function(){
     </div>
     <!-- END MAIN CONTAINER -->
 
-
     <!-- SCRIPT ----------------------------------------------------------------------------------->
-    <!-- SCRIPT ----------------------------------------------------------------------------------->
-    <!-- SCRIPT ----------------------------------------------------------------------------------->
-
     <?php 
 	    require_once('./estructura/librerias_utilizadas_body.php');
-	?>  
-
-    <!-- CONFIG DATATABLE -->
-<script>
-    $('#dt_foros').DataTable({
-        "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
-        "<'table-responsive'tr>" +
-        "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
-        "columnDefs": [ {
-			"targets": [0],
-			"visible": false
-		 } ],
-        "oLanguage": {
-            "oPaginate": { "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>', "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>' },
-            "sInfo": "Mostrando página _PAGE_ de _PAGES_",
-            "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
-            "sSearchPlaceholder": "Buscar...",
-            "sLengthMenu": "Results :  _MENU_",
-        },
-        "stripeClasses": [],
-        "lengthMenu": [10, 20, 50],
-        "pageLength": 5 
-    });
-</script>
-
-<!-- Mostrar input Segun selección de tipo de conferencia en el modal Agregar  -->
-<script type="text/javascript">
-	function show_div(selectTag){
-		if(selectTag.value == 'OnLine' ){
-			document.getElementById('div_cupo').hidden = true;
-            document.getElementById('div_lugar').hidden = true;	
-		}else{
-			document.getElementById('div_cupo').hidden = false;
-            document.getElementById('div_lugar').hidden = false;		
-		}	 		
-	}
-</script>
-<!-- Mostrar input según valor seleccionado en el modal Modificar  -->
-<script type="text/javascript">
-	function show_divmdf(selectTag){
-		if(selectTag.value == "OnLine" ){
-			document.getElementById('divcupomdf').hidden = true;
-            document.getElementById('divlugarmdf').hidden = true;	
-		}else{
-            if(selectTag.value == "Presencial" ){
-                document.getElementById('divcupomdf').hidden = false;
-                document.getElementById('divlugarmdf').hidden = false;
-            }
-		}	 		
-	}
-</script>
-
-
-
+	?>
+    
+     <!-- Pone foco en el primer componente del Modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modalAdd = document.getElementById('modal_add');
+            modalAdd.addEventListener('shown.bs.modal', function () {   document.getElementById('titulo').focus();        });
+            
+            var modalUpd = document.getElementById('modal_mdf');
+            modalUpd.addEventListener('shown.bs.modal', function () {   document.getElementById('titulo').focus();     });
+        });
+    </script> 
 
 </body>
 </html>
