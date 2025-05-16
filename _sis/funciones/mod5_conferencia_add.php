@@ -14,7 +14,7 @@ if (isset($_SESSION['var_insc_inicio'])){ $insc_inicio= $_SESSION['var_insc_inic
 if (isset($_SESSION['var_insc_final'])) { $insc_final = $_SESSION['var_insc_final']; } else { $insc_final = ''; }
 if (isset($_SESSION['var_lugar'])) 		{ $lugar      = $_SESSION['var_lugar'];      } else { $lugar      = ''; }
 
-// echo $lugar.' - '.$titulo.' - '.$fecha.' - '.$hora.' - '.$modalidad.' - '.$insc_inicio.' - '.$insc_final.' - '.$disertante.' - '.$organismo; die();
+//echo 'CONF'.$lugar.' - '.$titulo.' - '.$fecha.' - '.$hora.' - '.$modalidad.' - '.$insc_inicio.' - '.$insc_final.' - '.$disertante.' - '.$organismo; die();
 
 $opc= 'ok';
 if($titulo=='' OR $fecha=='' OR $hora=='' OR $modalidad=='' OR $insc_inicio=='' OR $insc_final=='' OR $disertante=='' OR $organismo=='' ) $opc= 'er';

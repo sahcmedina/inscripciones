@@ -120,14 +120,14 @@ class Conferencias {
 		catch (Exception $e){ echo $e->getMessage(); 		}
 		finally{				$sql = null;				}
 	}
-	         
+	        
 	function upd_cambia_estado($id, $estado_nuevo, $f_update, $id_user){
 		include('conexion_pdo.php');
 		$query_= " UPDATE eventos_conferencias SET 
 					estado     = :estado, 
 					f_update   = :f_update, 
 					fk_usuario = :fk_usuario 
-				   WHERE id  = :id ";
+				   WHERE id= :id ";
 		try{
 			$sql = $con->prepare($query_);
 			$sql->bindParam(':id',       $id);

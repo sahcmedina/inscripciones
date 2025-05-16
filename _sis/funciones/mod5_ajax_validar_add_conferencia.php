@@ -13,9 +13,7 @@ if (isset($_POST["i_inicio"]))   { $insc_inicio = $_POST["i_inicio"];   } else {
 if (isset($_POST["i_final"]))    { $insc_final  = $_POST["i_final"];    } else { $insc_final  = ''; }
 if (isset($_POST["lugar"]))      { $lugar       = $_POST["lugar"];      } else { $lugar       = ''; }
 
-
-// echo $lugar.' - '.$titulo.' - '.$fecha.' - '.$hora.' - '.$modalidad.' - '.$insc_inicio.' - '.$insc_final.' - '.$disertante.' - '.$organismo; die();
-
+// echo '-'.$titulo.'-'.$disertante.'-'.$organismo.'-'.$fecha.'-'.$hora.'-'.$modalidad.'-'.$cupo.'-'.$insc_inicio.'-'.$insc_final.'-'.$lugar; die();
 
 // Control: Faltan datos?
 $c1= 'ok';	$er1= '';

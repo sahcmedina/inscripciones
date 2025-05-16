@@ -5,12 +5,14 @@ if (isset($_SESSION["var_id_user"])) 	  { $id_user      = $_SESSION["var_id_user
 if (isset($_SESSION["var_id"])) 		  { $id           = $_SESSION["var_id"];     	   } else {  $id          = ''; }
 if (isset($_SESSION["var_estado_nuevo"])) { $estado_nuevo = $_SESSION["var_estado_nuevo"]; } else {  $estado_nuevo= ''; }
 
+//echo 'ACA-'.$id_user.'-'.$id.'-'.$estado_nuevo; die();
+
 $opc= 'ok';
 if($id=='' OR $estado_nuevo=='' OR $id_user=='') {$opc= 'er';}
 
 switch($opc){
     case 'ok':	
-        include_once('./mod5_conferencias.php');	$Con = new Conferencias();
+        include_once('mod5_conferencias.php');	$Con = new Conferencias();
         date_default_timezone_set('America/Argentina/San_Juan');
         $f_update = date("Y-m-d H:i:s"); 
         $upd = $Con->upd_cambia_estado($id, $estado_nuevo, $f_update, $id_user);

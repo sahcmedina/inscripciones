@@ -5,6 +5,8 @@ if (isset($_POST["idusr"])) { $id_user      = $_POST["idusr"]; } else { $id_user
 if (isset($_POST["id"]))    { $id           = $_POST["id"];    } else { $id           = '';	}
 if (isset($_POST["state"])) { $estado_actual= $_POST["state"]; } else { $estado_actual= ''; }
 
+//echo '-'.$id_user.'-'.$id.'-'.$estado_actual; die();
+
 // Control: Faltan datos?
 $c1= 'ok';	$er1= '';
 if($id=='' OR $estado_actual=='' OR $id_user=='' ){	$c1= 'er';	$er1= 'Faltan datos. '; }
