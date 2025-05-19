@@ -27,6 +27,23 @@ class RondaNegocios {
 		catch (Exception $e){	echo $e->getMessage();		}
 		finally{				$sql = null;				}
 	}
+	function gets_inscrip_x_id($id, $c_v){
+		include('conexion_pdo.php');
+		$query_= " SELECT i.*, p.nombre As prov 
+		            FROM eventos_ronda_neg_inscrip AS i 
+					INNER JOIN provincia AS p ON p.id= i.fk_prov
+					WHERE i.fk_rn = :id AND i.c_v= :c_v ";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':id',  $id);
+			$sql->bindParam(':c_v', $c_v);
+			$sql->execute();
+			$res = $sql->fetchAll();
+			return $res;
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
 
 	function get_last_id_rn(){
 		include('conexion_pdo.php');
