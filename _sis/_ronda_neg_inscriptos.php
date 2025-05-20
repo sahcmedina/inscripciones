@@ -7,10 +7,16 @@
 	$alta    = $datos_f[0]['alta'];
 	$baja    = $datos_f[0]['baja'];
 	$modf    = $datos_f[0]['modificacion'];
+
+    if(count($datos_f)== 0){ 
+        $a_ico= 'error';                   $a_tit= 'No tiene permisos a la función.';	   $a_sub= '';					
+        $_SESSION['alert_ico']= $a_ico;    $_SESSION['alert_tit']= $a_tit;	               $_SESSION['alert_sub']= $a_sub;	 
+        ?><script type="text/javascript"> window.location="../_sis/principal.php"; </script><?php 
+        die();
+    }
 	
 	// ------------------------------ FUNCION ------------------------------ //			
-	include('./funciones/mod5_conferencias.php');         $Con = new Conferencias();
-	include_once('./funciones/mod3_ronda_neg.php');       $RondaNeg  = new RondaNegocios();
+	include_once('./funciones/mod3_ronda_neg.php');       $RondaNeg= new RondaNegocios();
 	
     $arr_   = array();
 	$arr_   = $RondaNeg->gets();
@@ -26,6 +32,7 @@
 	require_once('./estructura/cabecera.php');
 	require_once('./estructura/librerias_utilizadas.php');
 	?>
+    
     
     <!-- AJAX: BUSCAR -->	
     <script language="javascript">
@@ -52,7 +59,7 @@
 
 </head>
 
-<body class="alt-menu layout-boxed">
+<body class="alt-menu layout-boxed">    
 
     <!-- NOTIFICACIONES - SWEET ALERT -->
     <?php 
@@ -288,14 +295,18 @@
     <script type="text/javascript">
         function show_divmdf(selectTag){
             if(selectTag.value == 'OnLine' ){
-                document.getElementById('divcupomdf').hidden = true;
+                document.getElementById('divcupomdf').hidden  = true;
                 document.getElementById('divlugarmdf').hidden = true;	
             }else{
-                document.getElementById('divcupomdf').hidden = false;
+                document.getElementById('divcupomdf').hidden  = false;
                 document.getElementById('divlugarmdf').hidden = false;		
             }	 		
         }
     </script>
+
+    <?php 
+	    require_once('./estructura/buscador_barra.php');
+	?> 
 
 </body>
 </html>

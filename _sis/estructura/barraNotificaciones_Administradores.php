@@ -15,6 +15,7 @@
 		<!-- LOGO -->
 		<!-- LOGO -->
 		<!-- LOGO -->
+		 
 		<ul class="navbar-item theme-brand flex-row  text-center">
 			<li class="nav-item theme-logo">
 				<a href="./principal.php">
@@ -29,15 +30,26 @@
 		<!-- BUSQUEDA -->
 		<!-- BUSQUEDA -->
 		<!-- BUSQUEDA -->
+		
+		<!-- Muestra borde de componentes del Form -->
+		<style>
+			input:focus, select:focus, textarea:focus {
+				border: 2px solid #007bff !important;                   /* Borde azul más grueso */
+				box-shadow: 0 0 5px rgba(0, 123, 255, 0.5) !important;  /* Sombra suave */
+				transition: all 0.3s ease;                                /* Animación suave */
+			}
+		</style>
+
 		<div class="search-animated toggle-search">
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
 			<form class="form-inline search-full form-inline search" role="search">
-				<div class="search-bar">
-					<input type="text" class="form-control search-form-control  ml-lg-auto" placeholder="Search...">
+				<div class="search-wrapper">
+					<input id="autoComplete" type="text" class="form-control search-form-control ml-lg-auto" placeholder="Buscar...">
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x search-close"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 				</div>
+				<div id="resultados" class="mt-1"></div>
 			</form>
-			<!-- <span class="badge badge-secondary">Ctrl + /</span> -->
+			<span class="badge badge-secondary">Ctrl + M</span>
 		</div>
 
 		<!-- DERECHA: idioma / tema / notificaciones / perfil -->
@@ -60,6 +72,7 @@
 			<!-- TEMA -->
 			<!-- TEMA -->
 			<!-- TEMA -->
+
 			<li class="nav-item theme-toggle-item">
 				<a href="javascript:void(0);" class="nav-link theme-toggle">
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon dark-mode"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
@@ -70,6 +83,7 @@
 			<!-- NOTIFICACIONES -->
 			<!-- NOTIFICACIONES -->
 			<!-- NOTIFICACIONES -->
+
 			<li class="nav-item dropdown notification-dropdown">
 				<a href="javascript:void(0);" class="nav-link dropdown-toggle" id="notificationDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
@@ -168,6 +182,7 @@
 			<!-- PERFIL -->
 			<!-- PERFIL -->
 			<!-- PERFIL -->
+
 			<?php 
 				$arr                = array();
 				$UsuarioLogueado    = $datos[0]['nombre'].' '.$datos[0]['apellido'];

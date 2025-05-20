@@ -3,7 +3,6 @@
 	// ------------------------------ SISTEMA ------------------------------ //
 	require_once('./estructura/cookies_datsUser_msjBienvenida_version.php');
     $id_user = $U->get_id( $login); 
-	// ------------------------------ EMPRESA LOGUEADA --------------------- //
 	
 	// ------------------------------ FUNCIONES GRALES --------------------- //	
 	

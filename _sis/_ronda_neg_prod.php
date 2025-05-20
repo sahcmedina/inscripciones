@@ -7,13 +7,19 @@
 	$alta    = $datos_f[0]['alta'];
 	$baja    = $datos_f[0]['baja'];
 	$modf    = $datos_f[0]['modificacion'];
+
+    if(count($datos_f)== 0){ 
+        $a_ico= 'error';                   $a_tit= 'No tiene permisos a la función.';	   $a_sub= '';					
+        $_SESSION['alert_ico']= $a_ico;    $_SESSION['alert_tit']= $a_tit;	               $_SESSION['alert_sub']= $a_sub;	 
+        ?><script type="text/javascript"> window.location="../_sis/principal.php"; </script><?php 
+        die();
+    }
 	
 	// ------------------------------ FUNCION ------------------------------ //			
 	include_once('./funciones/mod3_productos.php');       $Productos = new Productos();
 
-	$arr_ = array(); 
-	$arr_ = $Productos->gets(); 
-
+	$arr_    = array(); 
+	$arr_    = $Productos->gets(); 
 	$id_user = $U->get_id( $login);
 ?>
 
@@ -506,7 +512,11 @@
             var modalUpd = document.getElementById('modal_upd');
             modalUpd.addEventListener('shown.bs.modal', function () {   document.getElementById('nombre').focus();        });
         });
-    </script> 
+    </script>    
+
+    <?php 
+	    require_once('./estructura/buscador_barra.php');
+	?> 
 
 </body>
 </html>
