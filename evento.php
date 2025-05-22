@@ -6,9 +6,22 @@
   include('_sis/funciones/eventos.php'); 	$Eve = new Eventos();
   $arr_  = array();
   $arr_  = $Eve->gets($id); 
+
   $titulo= $arr_[0]['titulo'];
-  $tipo  = $arr_[0]['tipo'];
-  $fecha = $arr_[0]['fecha'];
+  $lugar = $arr_[0]['lugar'];
+
+  list($aaa, $mmm, $ddd) = explode('-', $arr_[0]['fecha']);
+  $fecha= $ddd.'/'.$mmm.'/'.$aaa;
+
+  list($hhh, $min_, $seg_) = explode(':', $arr_[0]['hora']);
+  $hora= $hhh.':'.$min_;
+
+  switch($arr_[0]['tipo']){
+    case 'RN': $tipo='Ronda de Negocios';   break;
+    case 'RI': $tipo='Ronda de Inversión';  break;
+    case 'C' : $tipo='Conferencias';        break;
+    case 'F' : $tipo='Foros';               break;
+  }
 
   $_SESSION['ses_id_evento']= $id;
 
@@ -76,8 +89,8 @@ box-shadow: 5px 5px 20px 0 rgba(0,0,0,0.4) !important
             <div class="u-container-style u-group u-white u-group-3">
               <div class="u-container-layout u-valign-middle-lg u-valign-middle-md u-valign-middle-sm u-valign-middle-xs u-container-layout-3">
                 <p class="u-text u-text-2">Tipo de Evento: <?php echo $tipo ?><br>
-                  <br>Fecha:&nbsp; <?php echo $fecha ?>   <br>
-                  <br>Lugar:
+                  <br>Fecha:&nbsp; <?php echo $fecha.' ('.$hora.'hs)';  ?>   <br>
+                  <br>Lugar:&nbsp; <?php echo $lugar;  ?>
                 </p>
               </div>
             </div>
