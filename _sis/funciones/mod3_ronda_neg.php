@@ -43,6 +43,18 @@ class RondaNegocios {
 		}
 		catch (Exception $e){	echo $e->getMessage();		}
 		finally{				$sql = null;				}
+	}	
+	function gets_param(){
+		include('conexion_pdo.php');
+		$query_  = " SELECT p.* FROM eventos_ronda_neg_agenda_param p WHERE p.id= 1 ";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->execute();
+			$res = $sql->fetchAll();
+			return $res;
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
 	}
 
 	function get_last_id_rn(){
@@ -285,6 +297,26 @@ class RondaNegocios {
 			$sql->bindParam(':dsd',      $dsd);			
 			$sql->bindParam(':hst',      $hst);		
 			$sql->bindParam(':fk_user',  $user);			
+			if($sql->execute()) return true; else return false ;
+		}
+		catch (Exception $e){ echo $e->getMessage(); 		}
+		finally{				$sql = null;				}
+	}
+	function upd_param($hs, $duracion, $x_dia, $user){
+		include('conexion_pdo.php');		 
+		$id      = 1;
+		$f_update= Date('Y-m-d H:i:s');
+		$query_  = " UPDATE eventos_ronda_neg_agenda_param 
+		             SET primer_reunion= :primer_reunion, duracion= :duracion, x_dia= :x_dia, f_update= :f_update, fk_usuario= :fk_usuario
+		             WHERE id= :id "; 
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':id',                 $id);			
+			$sql->bindParam(':primer_reunion',     $hs);			
+			$sql->bindParam(':duracion',           $duracion);			
+			$sql->bindParam(':x_dia',              $x_dia);				
+			$sql->bindParam(':f_update',           $f_update);				
+			$sql->bindParam(':fk_usuario',         $user);	
 			if($sql->execute()) return true; else return false ;
 		}
 		catch (Exception $e){ echo $e->getMessage(); 		}
