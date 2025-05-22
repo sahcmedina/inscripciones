@@ -35,7 +35,7 @@ $(document).ready(function(){
         $("#resultado_busqueda").delay(700).queue(function(n) {                                                 
             $.ajax({
             type: "POST",
-            url: "./funciones/ajax_buscar_inscriptos.php",
+            url: "./funciones/mod5_y_mod6_ajax_buscar_inscriptos.php",
             data: "b="+consulta+"&e="+evento,
             dataType: "html",
             error: function(){  alert("error petición ajax");        },
