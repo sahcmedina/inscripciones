@@ -67,9 +67,14 @@
 
                   if($i < $knt){
                     $titulo = $arr_[$i]['titulo'];
-                    $fecha  = $arr_[$i]['fecha'];
+                    
+                    list($aaa_, $mmm_, $ddd_) = explode('-', $arr_[$i]['fecha']);
+                    $fecha= $ddd_.'/'.$mmm_.'/'.$aaa_;
+                    list($hhh__, $min__, $seg__) = explode(':', $arr_[$i]['hora']);
+                    $hora= $hhh__.':'.$min__;
+
                     $tipo   = $arr_[$i]['tipo'];
-                    $lugar  = $arr_[$i]['lugar'];
+                    $lugar  = $arr_[$i]['lugar']; if($lugar==''){$lugar='On Line';}
                     $id_1     = $arr_[$i]['id'];
                     $fkevento_1 = $arr_[$i]['fk_evento'];
                     switch($tipo){
@@ -84,7 +89,7 @@
                   <div class="u-container-layout u-similar-container u-valign-bottom-xl u-valign-top-lg u-valign-top-md u-valign-top-sm u-valign-top-xs u-container-layout-1">
                     <h4 class="u-align-center u-text u-text-2"> <?php echo $titulo ?> </h4>
                     <p class="u-align-left u-custom-font u-font-montserrat u-text u-text-default u-text-3"> Tipo de Evento: <?php echo $tipo_ ?> 
-                      <br><?php echo $fecha ?>
+                      <br><?php echo $fecha.' - '.$hora.' hs.'; ?>
                       <br>Lugar: <?php echo $lugar ?>
                     </p>
                       <?php if($tipo == 'C' OR $tipo == 'F'){ ?>
@@ -123,8 +128,13 @@
                     $id_2     = $arr_[$j]['id'];
                     $fkevento_2 = $arr_[$j]['fk_evento'];
                     $titulo_2 = $arr_[$j]['titulo'];
-                    $fecha_2  = $arr_[$j]['fecha'];
-                    $lugar_2  = $arr_[$j]['lugar'];
+                    
+                    list($aaa_2, $mmm_2, $ddd_2) = explode('-', $arr_[$j]['fecha']);
+                    $fecha_2= $ddd_2.'/'.$mmm_2.'/'.$aaa_2;
+                    list($hhh__2, $min__2, $seg__2) = explode(':', $arr_[$j]['hora']);
+                    $hora_2= $hhh__2.':'.$min__2;
+
+                    $lugar_2  = $arr_[$j]['lugar']; if($lugar_2==''){$lugar_2='On Line';}
                     $tipo_2   = $arr_[$j]['tipo'];
                     switch($tipo_2){
                       case 'RN': $tipo_2_= 'Ronda de Negocios';   break;    
@@ -138,7 +148,7 @@
                     <div class="u-container-layout u-similar-container u-valign-bottom-xl u-valign-top-lg u-valign-top-md u-valign-top-sm u-valign-top-xs u-container-layout-1">
                       <h4 class="u-align-center u-text u-text-2"> <?php echo $titulo_2 ?> </h4>
                       <p class="u-align-left u-custom-font u-font-montserrat u-text u-text-default u-text-3"> Tipo de Evento: <?php echo $tipo_2_ ?> 
-                        <br><?php echo $fecha_2 ?>
+                        <br><?php echo $fecha_2.' - '.$hora_2.' hs.'; ?>
                         <br>Lugar: <?php echo $lugar_2 ?>
                       </p>
                       <?php if($tipo_2 == 'C' OR $tipo_2 == 'F'){ ?>

@@ -21,7 +21,7 @@
   }
   
   $titulo= $arr_[0]['titulo'];
-  $lugar = $arr_[0]['lugar'];
+  $lugar = $arr_[0]['lugar']; if($lugar==''){$lugar='On Line';}
     
   list($aaa, $mmm, $ddd) = explode('-', $arr_[0]['fecha']);
   $fecha= $ddd.'/'.$mmm.'/'.$aaa;
