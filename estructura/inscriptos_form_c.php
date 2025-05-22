@@ -1,10 +1,8 @@
 <?php 
 session_start();
-// date_default_timezone_set('America/Argentina/San_Juan');
-// include('carrusel_index.php');	$CI = new Carrusel_Index();
 date_default_timezone_set('America/Argentina/San_Juan');
 //------------------ RECIBO LOS DATOS ----------------------------
-if (isset($_POST['idevento']))  { $idevento  = $_POST['idevento']; } else { $idevento = ''; }
+//if (isset($_POST['idevento']))  { $idevento  = $_POST['idevento']; } else { $idevento = ''; }
 if (isset($_POST['fkevento']))  { $fkevento  = $_POST['fkevento']; } else { $fkevento = ''; }
 
 if (isset($_POST['dni']))       { $dni       = $_POST['dni']; 		} else { $dni       = ''; }
@@ -33,7 +31,7 @@ switch($op){
 		else{	        $a_ico= 'error';      $a_tit= 'Error';	 $a_sub= 'Ocurrió un error, por favor intente de nuevo.'; }
 		break;
 	default:
-			break;
+		break;
 }
 
 $_SESSION['alert_tit']= $a_tit;	$_SESSION['alert_sub']= $a_sub;	$_SESSION['alert_ico']= $a_ico;
