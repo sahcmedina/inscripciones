@@ -3,19 +3,31 @@
   date_default_timezone_set('America/Argentina/San_Juan');
   if (isset($_GET['i']))     	{ $id= $_GET['i']; }    else { $id= '';      }
 
+  if (isset($_POST['id_evento'])) { $id_evento= $_POST['id_evento']; } else { $id_evento= ''; }
+  if (isset($_POST['fk_evento'])) { $fk_evento= $_POST['fk_evento']; } else { $fk_evento= ''; }
+  if (isset($_POST['dni']))       { $dni= $_POST['dni']; }             else { $dni= '';       }
+
   include('_sis/funciones/eventos.php'); 	$Eve = new Eventos();
   $arr_  = array();
-  $arr_  = $Eve->gets($id); 
-
+  
+  if($id!=''){
+    $arr_  = $Eve->gets($id); 
+    $_SESSION['ses_id_evento']= $id;
+  }else { 
+    $arr_  = $Eve->gets($id_evento); 
+    $_SESSION['ses_id_evento']= $id_evento;
+    $_SESSION['ses_fk_evento']= $fk_evento;
+    $_SESSION['ses_dni']= $dni;
+  }
+  
   $titulo= $arr_[0]['titulo'];
   $lugar = $arr_[0]['lugar'];
-
+    
   list($aaa, $mmm, $ddd) = explode('-', $arr_[0]['fecha']);
   $fecha= $ddd.'/'.$mmm.'/'.$aaa;
 
   list($hhh, $min_, $seg_) = explode(':', $arr_[0]['hora']);
   $hora= $hhh.':'.$min_;
-
   switch($arr_[0]['tipo']){
     case 'RN': $tipo='Ronda de Negocios';   break;
     case 'RI': $tipo='Ronda de Inversión';  break;
@@ -23,9 +35,9 @@
     case 'F' : $tipo='Foros';               break;
   }
 
-  $_SESSION['ses_id_evento']= $id;
-
 ?>
+
+
 
 <!DOCTYPE html><html style="font-size: 16px;" lang="es">
   
@@ -120,7 +132,7 @@ box-shadow: 5px 5px 20px 0 rgba(0,0,0,0.4) !important
               <div class="u-container-layout u-container-layout-3">
 
               <?php
-                switch($tipo){
+                switch($arr_[0]['tipo']){
                   case 'RN':  include('./estructura/_form_evento_rn.php');  break;
                   case 'RI':  include('./estructura/_form_evento_ri.php');  break;
                   case 'C' :  include('./estructura/_form_evento_c.php');   break;

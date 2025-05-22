@@ -254,5 +254,34 @@ class Foros {
 		finally{				$sql = null;				}
 	}
 
+	function tf_dni_inscripto_evento($dni, $fk_evento){
+		include('conexion_pdo.php');
+		$query_= " SELECT * FROM foro_inscriptos WHERE dni = :dni AND fk_foro = :fk_foro LIMIT 1 ";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':dni', $dni);
+			$sql->bindParam(':fk_foro', $fk_evento);
+			$sql->execute();
+			$res = $sql->fetchAll();
+			return $res;
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
+	
+	function get_datos_dni_inscripto($dni){
+		include('conexion_pdo.php');
+		$query_= " SELECT * FROM foro_inscriptos WHERE dni = :dni LIMIT 1";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':dni', $dni);
+			$sql->execute();
+			$res = $sql->fetchAll();
+			return $res;
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
+
 }
 ?>

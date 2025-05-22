@@ -10,6 +10,39 @@
   
 ?>
 
+<!-- Modal -->
+<div class="modal fade" id="ModalValidar" name="ModalValidar" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" >Ingrese DNI para validar datos</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form name="form_del_user" id="form_del_user" class="form-horizontal validate" method="post" action="./evento.php" enctype="multipart/form-data" >
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <label for="dni" class="u-label">DNI</label>
+              <input type="text" id="dni" name="dni" class="u-border-1 u-border-custom-color-3 u-border-no-left u-border-no-right u-border-no-top u-custom-font u-font-montserrat u-input u-input-rectangle u-none u-input-3" required="" tabindex="1">
+            </div>
+          </div> <br>
+          <div class="row">
+            <div class="col-md-5">
+              <input type="hidden" id="id_evento" name="id_evento" class="form-control" />
+              <input type="hidden" id="fk_evento" name="fk_evento" class="form-control" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" tabindex="2" >Cerrar</button>
+          <button type="submit" class="btn btn-danger" tabindex="3">Validar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
 <section class="u-carousel u-carousel-duration-1000 u-slide u-block-71ab-1" id="carousel-9f8a" data-interval="5000" data-u-ride="carousel">
 
   <ol class="u-absolute-hcenter u-carousel-indicators u-block-71ab-2">
@@ -37,14 +70,15 @@
                     $fecha  = $arr_[$i]['fecha'];
                     $tipo   = $arr_[$i]['tipo'];
                     $lugar  = $arr_[$i]['lugar'];
-                    $id     = $arr_[$i]['id'];
+                    $id_1     = $arr_[$i]['id'];
+                    $fkevento_1 = $arr_[$i]['fk_evento'];
                     switch($tipo){
                       case 'RN': $tipo_= 'Ronda de Negocios';   break;    
                       case 'RI': $tipo_= 'Ronda de Inversión';  break;    
                       case 'C' : $tipo_= 'Conferencias';        break;    
                       case 'F' : $tipo_= 'Foro';                break;    
                     }
-          
+                
                 ?>
                 <div class="u-container-style u-list-item u-radius u-repeater-item u-shape-round u-white u-list-item-1" data-animation-name="customAnimationIn" data-animation-duration="1500">
                   <div class="u-container-layout u-similar-container u-valign-bottom-xl u-valign-top-lg u-valign-top-md u-valign-top-sm u-valign-top-xs u-container-layout-1">
@@ -53,7 +87,11 @@
                       <br><?php echo $fecha ?>
                       <br>Lugar: <?php echo $lugar ?>
                     </p>
-                    <a href="./evento.php?i=<?php echo $id; ?>" class="u-border-none u-btn u-btn-round u-button-style u-custom-color-3 u-custom-font u-font-montserrat u-radius u-text-body-alt-color u-btn-1">Inscribirme </a>
+                      <?php if($tipo == 'C' OR $tipo == 'F'){ ?>
+                        <button type="button" class="btn u-border-none u-btn u-btn-round u-button-style u-custom-color-3 u-custom-font u-font-montserrat u-radius u-text-body-alt-color u-btn-1" data-bs-toggle="modal" data-bs-target="#ModalValidar" data-idevento="<?php echo $id_1 ?>" data-fkevento="<?php echo $fkevento_1 ?>"> Inscribirme </button>
+                      <?php }else{ ?>
+                      <a href="./evento.php?i=<?php echo $id_1; ?>" class="u-border-none u-btn u-btn-round u-button-style u-custom-color-3 u-custom-font u-font-montserrat u-radius u-text-body-alt-color u-btn-1">Inscribirme </a>
+                      <?php } ?>
                   </div>
                 </div>
 
@@ -83,6 +121,7 @@
 
                   if($j < $knt){
                     $id_2     = $arr_[$j]['id'];
+                    $fkevento_2 = $arr_[$j]['fk_evento'];
                     $titulo_2 = $arr_[$j]['titulo'];
                     $fecha_2  = $arr_[$j]['fecha'];
                     $lugar_2  = $arr_[$j]['lugar'];
@@ -93,7 +132,7 @@
                       case 'C' : $tipo_2_= 'Conferencias';        break;    
                       case 'F' : $tipo_2_= 'Foro';                break;    
                     }
-              
+                  
                   ?>
                   <div class="u-container-style u-list-item u-radius u-repeater-item u-shape-round u-white u-list-item-1" data-animation-name="customAnimationIn" data-animation-duration="1500">
                     <div class="u-container-layout u-similar-container u-valign-bottom-xl u-valign-top-lg u-valign-top-md u-valign-top-sm u-valign-top-xs u-container-layout-1">
@@ -102,7 +141,12 @@
                         <br><?php echo $fecha_2 ?>
                         <br>Lugar: <?php echo $lugar_2 ?>
                       </p>
-                      <a href="./evento.php?i=<?php echo $id_2; ?>" class="u-border-none u-btn u-btn-round u-button-style u-custom-color-3 u-custom-font u-font-montserrat u-radius u-text-body-alt-color u-btn-1">Inscribirme </a>
+                      <?php if($tipo_2 == 'C' OR $tipo_2 == 'F'){ ?>
+                        <button type="button" class="btn u-border-none u-btn u-btn-round u-button-style u-custom-color-3 u-custom-font u-font-montserrat u-radius u-text-body-alt-color u-btn-1" data-bs-toggle="modal" data-bs-target="#ModalValidar" data-idevento="<?php echo $id_2 ?>" data-fkevento="<?php echo $fkevento_2 ?>"> Inscribirme </button></a>
+                      <?php }else{ ?>
+                        <a href="./evento.php?i=<?php echo $id_2; ?>" class="u-border-none u-btn u-btn-round u-button-style u-custom-color-3 u-custom-font u-font-montserrat u-radius u-text-body-alt-color u-btn-1">Inscribirme </a>
+                      <?php } ?>
+                        
                     </div>
                   </div>
 
@@ -130,3 +174,26 @@
   </a>
 
 </section>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+
+<!-- Pasar datos al modal para MOSTRALOS haciendo consulta por ajax -->
+
+<script language="javascript">
+const ModalValidar = document.getElementById('ModalValidar');
+  ModalValidar.addEventListener('show.bs.modal', function (event) {
+    const boton = event.relatedTarget;
+      
+    const idevento = boton.getAttribute('data-idevento');
+    const fkevento = boton.getAttribute('data-fkevento');
+      
+    const id_eventoModal = document.getElementById('id_evento');
+    const fk_eventoModal = document.getElementById('fk_evento');
+      
+    id_eventoModal.value = idevento;
+    fk_eventoModal.value = fkevento;
+  });
+</script>
+
+

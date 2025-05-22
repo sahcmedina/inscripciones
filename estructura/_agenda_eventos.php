@@ -65,7 +65,11 @@
                               <td class="u-table-cell"><?php echo $mes_.' - '.$dia ?></td>
                               <td class="u-table-cell"><?php echo $tipo_           ?></td>
                               <td class="u-table-cell"><?php echo $titulo          ?></td>
-                              <td class="u-table-cell"><a href="./evento.php?i=<?php echo $id; ?>" class="u-border-none u-btn u-btn-round u-button-style u-custom-color-3 u-custom-font u-font-montserrat u-radius u-text-body-alt-color u-btn-1" style="border-radius: 10px !important; font-size: 10px !important;">Inscribirme </a></td>
+                              <?php if($tipo == 'C' OR $tipo == 'F'){ ?>
+                                <td class="u-table-cell"><button type="button" class="btn u-border-none u-btn u-btn-round u-button-style u-custom-color-3 u-custom-font u-font-montserrat u-radius u-text-body-alt-color u-btn-1" style="border-radius: 10px !important; font-size: 10px !important;" data-bs-toggle="modal" data-bs-target="#ModalValidar" data-idevento="<?php echo $arr_2[$i]['id'] ?>" data-fkevento="<?php echo $arr_2[$i]['fk_evento'] ?>"> Inscribirme </button></td>
+                              <?php }else{ ?>
+                                <td class="u-table-cell"><a href="./evento.php?i=<?php echo $id; ?>" class="btn u-border-none u-btn u-btn-round u-button-style u-custom-color-3 u-custom-font u-font-montserrat u-radius u-text-body-alt-color u-btn-1" style="border-radius: 10px !important; font-size: 10px !important;">Inscribirme </a></td>
+                              <?php } ?>
                             </tr>
 
                             <?php } ?>
