@@ -668,7 +668,7 @@ $(document).ready(function(){
                                 </div>	
 
                                 <div class="modal-footer d-flex center-content-end"><center>					
-                                    <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="11">Cancelar</button>		                                    
+                                    <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="11" onclick="reiniciarFormulario()">Cancelar</button>		                                    
                                     <button id="validar_add" name="validar_add" type="button" class="btn btn-success" title="Se va a validar si se puede agregar." tabindex="12" > Agregar </button>
                                     <br /><br />
                                     <div id="mostrar_validar_add" ></div> 
@@ -821,7 +821,7 @@ $(document).ready(function(){
                                         </div>
                                     </div>
                                     <div class="modal-footer"><center>					
-                                    <button type="button" tabindex="11" class="btn btn-dark" onclick="window.location.href='./_conf_conferencias.php'" tabindex="11">Cancelar</button>
+                                        <button type="button" tabindex="11" class="btn btn-dark" onclick="window.location.href='./_conf_conferencias.php'" tabindex="11">Cancelar</button>
                                         <button id="validar_upd" name="validar_upd" type="button" class="btn btn-success" title="Se va a validar si se puede modificar." tabindex="12"> Modificar </button>
                                         <br/><br/>
                                         <div id="mostrar_validar_upd" ></div> 
@@ -940,6 +940,14 @@ $(document).ready(function(){
             modalUpd.addEventListener('shown.bs.modal', function () {   document.getElementById('titulo').focus();     });
         });
     </script> 
+
+    
+    <!-- Reinicio el form para que los input esten vacios -->
+    <script>
+    function reiniciarFormulario() {
+        document.getElementById('add_dep').reset();
+    }
+    </script>
 
     <?php 
 	    require_once('./estructura/buscador_barra.php');

@@ -680,7 +680,7 @@ $(document).ready(function(){
                                         </div>
                                     </div>	
                                     <div class="modal-footer d-flex center-content-end"><center>					
-                                        <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="11">Cancelar</button>		                                    
+                                        <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="11" onclick="reiniciarFormulario()">Cancelar</button>		                                    
                                         <button id="validar_add" name="validar_add" type="button" class="btn btn-success" title="Se va a validar si se puede agregar." tabindex="12" > Agregar </button>
                                         <br /><br />
                                         <div id="mostrar_validar_add" ></div> 
@@ -910,7 +910,14 @@ $(document).ready(function(){
             var modalUpd = document.getElementById('modal_mdf');
             modalUpd.addEventListener('shown.bs.modal', function () {   document.getElementById('titulo').focus();     });
         });
-    </script> 
+    </script>
+    
+    <!-- Reinicio el form para que los input esten vacios -->
+    <script>
+    function reiniciarFormulario() {
+        document.getElementById('addforo').reset();
+    }
+    </script>
 
     <?php 
 	    require_once('./estructura/buscador_barra.php');
