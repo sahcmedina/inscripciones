@@ -348,7 +348,7 @@ $(document).ready(function(){
 
                     <!-- Modal: Agregar -->
                     <div id="modal_add" class="modal animated fadeInDown" tabindex="-1" role="dialog" >
-                    <div class="modal-dialog modal-xl">
+                        <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                             
                             <div class="modal-header"><h6 class="modal-title"> Agregar <?php echo $entidad ?> </h6></div>
@@ -422,7 +422,8 @@ $(document).ready(function(){
                                 </div>	
 
                                 <div class="modal-footer d-flex center-content-end"><center>					
-                                    <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="8">Cancelar</button>		                                    
+                                    <!-- <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="8">Cancelar</button> -->
+                                    <button type="button" tabindex="11" class="btn btn-dark" onclick="window.location.href='./_ronda_neg_admin.php'" tabindex="11" onclick="reiniciarFormulario()">Cancelar</button> 
                                     <button id="validar_add" name="validar_add" type="submit" class="btn btn-success" title="Se va a validar si se puede agregar." tabindex="5" > Agregar </button>
                                     <br /><br />
                                 </div></center>
@@ -668,6 +669,13 @@ $(document).ready(function(){
             var modalAdd = document.getElementById('modal_add');
             modalAdd.addEventListener('shown.bs.modal', function () {   document.getElementById('nom_').focus();        });
         });
+    </script>
+
+    <!-- Reinicio el form para que los input esten vacios -->
+    <script>
+    function reiniciarFormulario() {
+        document.getElementById('add_reg').reset();
+    }
     </script>            
 
     <?php 
