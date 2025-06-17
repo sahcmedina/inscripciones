@@ -259,17 +259,23 @@
                     <!-- CONTENIDO -->
 
                     <!-- FUNCIONES EXTRAS -->
-                    <div class="row layout-top-spacing">
-                        <div class="col-lg-12 mx-auto layout-spacing">                            
-                            <div class="statbox widget box box-shadow">                                
-                                <div class="widget-content widget-content-area text-center">
-                                    <br/>
-                                    <button data-bs-toggle="modal" data-bs-target="#modal_info" class="btn btn-outline-info btn-icon mb-2 me-4" title="Más info.." ><i class="bi bi-exclamation-circle" style="font-size: 1rem;"></i></button>
-                                    <?php if($alta == '1') { ?>
-                                            <button data-bs-toggle="modal" data-bs-target="#modal_add" class="btn btn-outline-success btn-icon mb-2 me-4" title="Agregar un registro" ><i class="bi bi-plus-circle" style="font-size: 1rem;"></i></button>
-                                    <?php } ?> 
-                                    <br/>                               
+                     <br> <br>
+                    <div class="alert custom-alert-3 alert-light-primary alert-dismissible fade show mb-4" role="alert">
+                        <div class="media">
+                            <div class="alert-icon">
+                                <i class="bi bi-list-check" style="font-size: 1,5rem;"></i>
+                            </div>
+                            &nbsp;&nbsp;
+                            <div class="media-body">
+                                <div class="alert-text">
+                                    <strong> <h6> Listado de Productos </h6> </strong> 
                                 </div>
+                            </div>
+                            <div class="alert-btn">
+                                <?php if($alta == '1') { ?>
+                                    <button data-bs-toggle="modal" data-bs-target="#modal_add" class="btn btn-outline-success btn-icon mb-2 me-4 btn-sm" title="Agregar un nuevo Producto" ><i class="bi bi-plus-circle" style="font-size: 1rem;"></i></button>                                        
+                                <?php } ?>
+                                <button data-bs-toggle="modal" data-bs-target="#modal_info" class="btn btn-outline-info btn-icon mb-2 me-4 btn-sm" title="Más info.." ><i class="bi bi-exclamation-circle" style="font-size: 1rem;"></i></button>
                             </div>
                         </div>
                     </div>
@@ -352,30 +358,30 @@
                         <div class="modal-dialog modal-content" >
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Borrar Producto </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"><i class="bi bi-trash" style="font-size: 1rem;"></i> Borrar Producto </h6></div>
 
                             <form name="form_del_reg" id="form_del_reg" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
                                 
                                 <div class="modal-body with-padding">					
                                     <div class="form-group-sm">
                                         <div class="row">
-                                            <center><label style="color:red;font: size 30px;"><i class="icon-warning"></i> ¿ Está seguro ? </label></center>
+                                            <center><label style="color:red;font: size 30px;"><i class="icon-warning"></i> ¿ Está seguro que desea borrar el Producto ? </label></center>
                                         </div><br>
                                         <div class="row" align="center">
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-8">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-10">
                                                 <label>Nombre:</label>
                                                 <input type="text"    id="nombre_del" name="nombre_del" class="form-control form-control-sm" tabindex="1" readonly >	 
                                                 <input type="hidden"  id="id_del"     name="id_del"     >	 
                                             </div>	
-                                            <div class="col-md-2"></div>
+                                            <div class="col-md-1"></div>
                                         </div>								
                                     </div><br /> 
                                 </div>	
 
                                 <div class="modal-footer d-flex center-content-end"><center>					
                                     <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="2">Cancelar</button>		                                    
-                                    <button id="validar_del" name="validar_del" type="button" class="btn btn-danger" title="Se va a validar si se puede modificar." tabindex="3"> Finalizar </button>
+                                    <button id="validar_del" name="validar_del" type="button" class="btn btn-danger" title="Se va a validar si se puede modificar." tabindex="3"> Eliminar </button>
                                     <br /><br />
                                     <div id="mostrar_validar_del" ></div> 
                                 </div></center> 
@@ -388,10 +394,10 @@
 
                     <!-- Modal: Agregar -->
                     <div id="modal_add" class="modal animated fadeInDown" tabindex="-1" role="dialog" >
-                    <div class="modal-dialog modal-xl">
+                        <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Agregar Producto </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"><i class="bi bi-plus-circle" style="font-size: 1rem;"></i> Agregar Producto </h6></div>
 
                             <form name="add_reg" id="add_reg" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
                                 
@@ -427,7 +433,7 @@
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Modificar Producto </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"><i class="bi bi-pencil" style="font-size: 1rem;"></i> Modificar Producto </h6></div>
 
                             <form name="mdf_reg" id="mdf_reg" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
                                 

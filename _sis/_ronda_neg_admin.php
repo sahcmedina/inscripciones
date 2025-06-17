@@ -264,17 +264,23 @@ $(document).ready(function(){
                     <!-- CONTENIDO -->
 
                     <!-- FUNCIONES EXTRAS -->
-                    <div class="row layout-top-spacing">
-                        <div class="col-lg-12 mx-auto layout-spacing">                            
-                            <div class="statbox widget box box-shadow">                                
-                                <div class="widget-content widget-content-area text-center">
-                                    <br/>
-                                    <button data-bs-toggle="modal" data-bs-target="#modal_info" class="btn btn-outline-info btn-icon mb-2 me-4" title="Más info.." ><i class="bi bi-exclamation-circle" style="font-size: 1rem;"></i></button>
-                                    <?php if($alta == '1') { ?>
-                                            <button data-bs-toggle="modal" data-bs-target="#modal_add" class="btn btn-outline-success btn-icon mb-2 me-4" title="Agregar un registro" ><i class="bi bi-plus-circle" style="font-size: 1rem;"></i></button>
-                                    <?php } ?> 
-                                    <br/>                               
+                    <br><br>
+                    <div class="alert custom-alert-3 alert-light-primary alert-dismissible fade show mb-4" role="alert">
+                        <div class="media">
+                            <div class="alert-icon">
+                                <i class="bi bi-list-check" style="font-size: 1,5rem;"></i>
+                            </div>
+                            &nbsp;&nbsp;
+                            <div class="media-body">
+                                <div class="alert-text">
+                                    <strong> <h6> Listado de Rondas de Negocios </h6> </strong> 
                                 </div>
+                            </div>
+                            <div class="alert-btn">
+                                <?php if($alta == '1') { ?>
+                                    <button data-bs-toggle="modal" data-bs-target="#modal_add" class="btn btn-outline-success btn-icon mb-2 me-4 btn-sm" title="Agregar un nuevo Foro" ><i class="bi bi-plus-circle" style="font-size: 1rem;"></i></button>                                        
+                                <?php } ?>
+                                <button data-bs-toggle="modal" data-bs-target="#modal_info" class="btn btn-outline-info btn-icon mb-2 me-4 btn-sm" title="Más info.." ><i class="bi bi-exclamation-circle" style="font-size: 1rem;"></i></button>
                             </div>
                         </div>
                     </div>
@@ -291,7 +297,7 @@ $(document).ready(function(){
                                 <div class="modal-body with-padding">					
                                     <div class="form-group-sm">
                                         <div class="row">
-                                            <label><i class="icon-warning"></i> La función permite administrar los diferentes Productos que serviran de guiar para crear las agendas entre empresas compradoras y empresas vendedoras del producto en cuestion. </label>
+                                            <label><i class="icon-warning"></i> La función permite administrar Rondas de Negocios. Altas, bajas y modificaciones de la RN que se mostrar en la web para que los interesados se inscriban ya sea como comprador o como vendedor. </label>
                                             <br/><br/>                                            
                                         </div><br>							
                                     </div><br /> 
