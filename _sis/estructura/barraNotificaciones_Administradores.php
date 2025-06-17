@@ -184,15 +184,20 @@
 			<!-- PERFIL -->
 
 			<?php 
+				
 				$arr                = array();
-				$UsuarioLogueado    = $datos[0]['nombre'].' '.$datos[0]['apellido'];
-				$URL_img            = './foto_perfil/'.$datos[0]['id'].'.png';
+				$arr         = $U->gets_datos_persona($login);
+				
+				// $UsuarioLogueado    = $datos[0]['nombre'].' '.$datos[0]['apellido'];
+				$UsuarioLogueado    = $arr[0]['nombre'].' '.$arr[0]['apellido'];
+				// $URL_img            = './foto_perfil/'.$datos[0]['id'].'.png';
+				$URL_img            = './foto_perfil/'.$arr[0]['id'].'.png';
 				if (!file_exists($URL_img)){ 
 					$UsuarioLogueado_img= '<img src="./foto_perfil/999.png" alt="avatar" class="rounded-circle">';
 				}else{
-					$UsuarioLogueado_img= '<img src="./foto_perfil/'.$datos[0]['id'].'.png" alt="avatar" class="rounded-circle">';
+					$UsuarioLogueado_img= '<img src="./foto_perfil/'.$arr[0]['id'].'.png" alt="avatar" class="rounded-circle">';
 				}
-				$arr         = $U->gets_datos_persona($login);
+				//$arr         = $U->gets_datos_persona($login);
 				$fk_perfil   = $arr[0]['fk_perfil'];
 			?>
 

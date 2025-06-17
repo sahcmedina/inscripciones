@@ -582,7 +582,6 @@ $(document).ready(function(){
                     </div>
                     
                     <!-- CONTENIDO -->
-
                     <!-- FUNCIONES EXTRAS -->
                     <div class="row layout-top-spacing">
                         <div class="col-lg-12 mx-auto layout-spacing">                            
@@ -605,7 +604,7 @@ $(document).ready(function(){
                     <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Agregar Usuario </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"><i class="bi bi-plus-circle" style="font-size: 1rem;"></i> Agregar Usuario </h6></div>
 
                             <form name="add_user" id="add_user" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
                                 
@@ -676,7 +675,7 @@ $(document).ready(function(){
                     <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Agregar Perfil </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"><i class="bi bi-plus-circle" style="font-size: 1rem;"></i> Agregar Perfil </h6></div>
 
                             <form name="add_perfil" id="add_perfil" class="form-horizontal validate" method="post" action="./funciones/usuario_perfil_add.php" enctype="multipart/form-data" >
                                 
@@ -747,7 +746,7 @@ $(document).ready(function(){
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Modificar Permisos a Perfil </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"><i class="bi bi-pencil" style="font-size: 1rem;"></i> Modificar Permisos a Perfil </h6></div>
 
                             <form name="form_mdf_permiso_perfil" id="form_mdf_permiso_perfil" class="form-horizontal validate" method="post" action="./_admin_usuarios_permisos_perfil.php" enctype="multipart/form-data" >
                                 
@@ -783,7 +782,7 @@ $(document).ready(function(){
                         <div class="modal-dialog modal-md">
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Modificar clave </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"><i class="bi bi-pencil" style="font-size: 1rem;"></i> Modificar clave </h6></div>
 
                             <!-- Form --> 
                             <form name="edit_clave" id="edit_clave" class="form-horizontal validate" method="post" action="./funciones/usuario_mdf_clave.php" onsubmit='return validar_mdfClave()' enctype="multipart/form-data" >
@@ -820,7 +819,7 @@ $(document).ready(function(){
                     <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Modificar Perfil de Usuario </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"><i class="bi bi-pencil" style="font-size: 1rem;"></i> Modificar Perfil de Usuario </h6></div>
 
                             <!-- Form -->
                             <form name="edit_perfil" id="edit_perfil" class="form-horizontal validate"  method="post"  action="./funciones/usuario_edit_perfil.php" enctype="multipart/form-data" >
@@ -865,7 +864,7 @@ $(document).ready(function(){
                         <div class="modal-dialog modal-md">
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Borrar Usuario </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"><i class="bi bi-trash" style="font-size: 1rem;"></i> Borrar Usuario </h6></div>
 
 
                             <form name="form_del_user" id="form_del_user" class="form-horizontal validate" method="post" action="./funciones/usuario_del.php" onsubmit='return validar_mdfClave()' enctype="multipart/form-data" >
@@ -902,7 +901,7 @@ $(document).ready(function(){
                         <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Información </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"><i class="bi bi-info-circle" style="font-size: 1rem;"></i> Información </h6></div>
 
                             <form name="form_del_user" id="form_del_user" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
                                 

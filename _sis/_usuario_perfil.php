@@ -2,6 +2,7 @@
 	require_once('./estructura/cookies_datsUser_msjBienvenida_version.php');
     $rutaImagen = './foto_perfil/'.$datos[0]['id'].'.png';
     $_SESSION['img_perfil'] = $datos[0]['id'];
+    $nbre_perfil = $datos[0]['nombre'].''.$datos[0]['apellido'];
 ?>
 
 <!DOCTYPE html><html lang="es">
@@ -14,6 +15,18 @@
 	?>       
 
 </head>
+
+<style>
+.img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: flex; /* Para centrar la imagen */
+    justify-content: center; /* Centrar la imagen horizontalmente */
+    align-items: center; /* Centrar la imagen verticalmente */
+}
+</style>
 
 <body class="alt-menu layout-boxed">
 
@@ -139,25 +152,44 @@
                                 <br/>
 
                                 <div class="modal-content">
-                                <form name="add_dep" id="add_dep" class="form-horizontal validate" method="post" action="./funciones/usuario_mdf_foto_perfil.php" enctype="multipart/form-data" >
+                                <div class="row">
+                                    <!-- <div class="col-md-6 "></div>       -->
+                                    <div class="col-md-12 "> <center>
+                                        <?php if ($rutaImagen != ''){ ?>
+                                            <img id="imgPreview" class="img" src="<?php echo $rutaImagen; ?>" >
+                                        <?php } else { ?>
+                                            <img id="imgPreview" class="img" >
+                                        <?php }?>
+                                        </center>
+                                    </div> <br>
+                                </div><br>    
                                 
+                                <form name="add_dep" id="add_dep" class="form-horizontal validate" method="post" action="./funciones/usuario_mdf_foto_perfil.php" enctype="multipart/form-data" >
                                     <div class="row">
-                                            <div class="col-xl-5 col-lg-12 col-md-4">
-                                            </div>      
+                                        <div class="col-xl-3 col-md-12 col-md-1"></div>
+                                        <div class="col-xl-9 col-md-12 col-md-10">
+                                            <label for=""> Si desea cambiar la foto de perfil, haga clic en "Seleccionar Archivo" y luego en "Modificar" </label>
+                                        </div>
+                                    </div>        
+                                    <div class="row">
+                                            <div class="col-xl-5 col-lg-12 col-md-4"></div>      
                                             <div class="col-xl-2 col-lg-12 col-md-4">
                                                 <div class="profile-image  mt-4 pe-md-4">                        
                                                     <div class="img-uploader-content">            
-                                                    <input type="file" name="url_" id="url_" accept="image/png, image/jpeg, image/gif"/>
-                                                    <!-- <input type="file" class="filepond" name="url_" id="url_" accept="image/png, image/jpeg, image/gif"/> -->
+                                                        <input type="file" name="url_" id="url_" accept="image/png, image/jpeg, image/gif" onchange="previewImage(event, '#imgPreview')"/>
                                                     </div>                        
                                                 </div><br/>
                                             </div>
                                     </div>
 
 									<div class="modal-footer d-flex justify-content-center"><br /><br /><br />
-										<button type="submit" id="validar_add" name="validar_add" class="btn btn-success" title="Se va a cambiar la foto de perfil." tabindex="3">Modificar</button>
-									</div>
-                                
+                                        <center>
+                                            <button type="button" id="cancelar_add" name="cancelar_add" class="btn btn-dark" onclick="window.location.href='./principal.php'">Cancelar</button>
+                                            <button type="submit" id="validar_add" name="validar_add" class="btn btn-success" onclick="javascript:this.form.submit();this.disabled= true;mostrarMsjBtn_add_p1()" title="Se va a cambiar la foto de perfil.">Modificar</button>
+                                            <br> <br>
+                                            <div id="msjBtn_add_p1" style="display:none;" ><img src="images/loading.gif" width="35px" height="35px" alt="loading"/><?php echo "<font color=grey><b><i>"."Por favor, espere unos segundos.."."</b></i></font>"; ?></div>       
+                                        </center>
+                                    </div><br>
                                 </form>
 
                                 </div>
@@ -240,7 +272,15 @@
     });
     </script>
 
-    
+    <script src="./funciones/mostrar_img_perfil.js"></script>
+
+    <!-- MSJ: Espere unos segundos -->
+<script type="text/javascript">
+	function mostrarMsjBtn_add_p1(){ 
+        document.getElementById('msjBtn_add_p1').style.display = 'block'; // muestra el la frase aguerde....
+        document.getElementById('cancelar_add').style.display = 'none'; // boton cancelar lo hago desaparecer
+    }
+</script>
 
 </body>
 </html>

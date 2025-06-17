@@ -26,4 +26,4 @@ if (isset($_FILES['url_']) && $_FILES['url_']['error'] == 0) {
 }
 
 $_SESSION['alert_tit']= $a_tit;	$_SESSION['alert_sub']= $a_sub;	$_SESSION['alert_ico']= $a_ico;
-?><script type="text/javascript"> window.location="../_usuario_perfil.php";  </script> 
+?><script type="text/javascript"> window.location="../principal.php";  </script> 
