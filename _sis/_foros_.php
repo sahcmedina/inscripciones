@@ -44,6 +44,17 @@
     }
 </style>
 
+<style>
+    .btn-export {
+        margin-top: 1px;
+        margin-bottom: 1px;
+        margin-left: 20px; /* Separar hacia la derecha */
+        margin-right: 10px; /* Espacio entre el botón de exportar y el selector */
+        background-color: #65b688 !important;
+		color: white !important;
+    }
+</style>
+
 <style id="jsbin-css">
     td.dt-control {
         text-align:center;
@@ -117,10 +128,24 @@ var listar = function(){
             }
         },
 
-        "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
-        "<'table-responsive'tr>" +
-        "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+        "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l <'col-sm-6 col-md-3 d-flex'B>><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
+               "<'table-responsive'tr>" +
+               "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
         // "destroy": true, sirve para re inicializar el datatable.
+        buttons: {
+            buttons: [
+                { extend: 'excel', 
+                  className: 'btn btn-success btn-sm btn-export', 
+                  text: '<i class="bi bi-file-earmark-excel"></i> Excel',
+                  filename: 'Reporte_de_todos_los_Foros',
+                  title: '', // se borra el titulo que aparece en la primer fila del excel
+                  // determinar cuales columnas son las que quiero exportar
+                  exportOptions:{
+                    columns: [ 1, 2, 3, 4, 9, 10, 11, 12, 13, 14, 15 ] //exporto solo esas columnas
+                  }  
+                }
+            ]
+        },
         ajax:{            
 	        "url": "./funciones/mod6_listar_foros.php", 
 	        "dataSrc":""
@@ -159,7 +184,14 @@ var listar = function(){
                 orderable: false,
                 data: null,
                 defaultContent: '<button data-bs-toggle="modal" data-bs-target="#modal_del" class="btnBorrar btn btn-outline-danger btn-icon mb-2 me-4" title="No tiene permisos para eliminar Foro" disabled ><i class="bi bi-trash" style="font-size: 1rem;"></i></button>',
-            }
+            },
+            { data: 'modalidad', visible: false },
+            { data: 'cupo', visible: false },
+            { data: 'lugar', visible: false },
+            { data: 'f_inscrip_dsd', visible: false },
+            { data: 'f_inscrip_hst', visible: false },
+            { data: 'disertante', visible: false },
+            { data: 'organismo', visible: false }
         ],
         columnDefs: [
             { targets: 3, // La columna 2 contiene la fecha
@@ -195,7 +227,7 @@ var listar = function(){
         },
         "stripeClasses": [],
         "lengthMenu": [10, 20, 50],
-        "pageLength": 5,
+        "pageLength": 10,
 
     });
 
@@ -785,6 +817,13 @@ $(document).ready(function(){
                                             <th aling='center'>Modificar</th>
                                             <th aling='center'>Eliminar</th>
                                             <th aling='center'>Eliminar</th>
+                                            <th>Modalidad</th>
+                                            <th>Cupo</th>
+                                            <th>Lugar</th>
+                                            <th>Desde</th>
+                                            <th>Hasta</th>
+                                            <th>Disertante</th>
+                                            <th>Organismo</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -925,4 +964,7 @@ $(document).ready(function(){
 
 </body>
 </html>
-
+<script src="./src/plugins/src/table/datatable/button-ext/dataTables.buttons.min.js"></script>
+<script src="./src/plugins/src/table/datatable/button-ext/jszip.min.js"></script>
+<script src="./src/plugins/src/table/datatable/button-ext/buttons.html5.min.js"></script>
+<script src="./src/plugins/src/table/datatable/button-ext/buttons.print.min.js"></script>

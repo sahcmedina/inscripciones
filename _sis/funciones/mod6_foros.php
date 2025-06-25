@@ -283,5 +283,20 @@ class Foros {
 		finally{				$sql = null;				}
 	}
 
+	function get_nombre_evento_segun_id($id){
+		include('conexion_pdo.php');
+		$query_= " SELECT titulo FROM eventos WHERE fk_evento = :fk_evento";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':fk_evento', $id);
+			$sql->execute();
+			$res = $sql->fetch();
+			$sql = null;
+			return $res['titulo'];
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
+
 }
 ?>

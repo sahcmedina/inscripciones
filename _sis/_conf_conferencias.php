@@ -32,14 +32,25 @@
 	require_once('./estructura/librerias_utilizadas.php');
 	?>      
 
-<link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" /> 
+<link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
 
-    <!-- Muestra borde de componentes del Form -->
+<!-- Muestra borde de componentes del Form -->
 <style>
     input:focus, select:focus, textarea:focus {
         border: 2px solid #007bff !important;                   /* Borde azul más grueso */
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5) !important;  /* Sombra suave */
         transition: all 0.3s ease;                                /* Animación suave */
+    }
+</style>
+
+<style>
+    .btn-export {
+        margin-top: 1px;
+        margin-bottom: 1px;
+        margin-left: 20px; /* Separar hacia la derecha */
+        margin-right: 10px; /* Espacio entre el botón de exportar y el selector */
+        background-color: #65b688 !important;
+		color: white !important;
     }
 </style>
 
@@ -88,11 +99,24 @@ var listar = function(){
                 api.column(8).visible( false );
             }
         },
-
-        "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
-        "<'table-responsive'tr>" +
-        "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
-        // "destroy": true, sirve para re inicializar el datatable.
+    // l representa el selector, B los botones, f el filtro, r el proceso de renderizado, t la tabla, i la información, p la paginación.
+        "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l <'col-sm-6 col-md-3 d-flex'B>><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" + 
+               "<'table-responsive'tr>" +
+               "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+        buttons: {
+            buttons: [
+                { extend: 'excel', 
+                  className: 'btn btn-success btn-sm btn-export', 
+                  text: '<i class="bi bi-file-earmark-excel"></i> Excel',
+                  filename: 'Reporte_de_todas_las_Conferencias',
+                  title: '', // se borra el titulo que aparece en la primer fila del excel
+                  // determinar cuales columnas son las que quiero exportar
+                  exportOptions:{
+                    columns: [ 1, 2, 3, 4, 9, 10, 11, 12, 13, 14, 15 ] //exporto solo esas columnas
+                  }  
+                }
+            ]
+        },
         ajax:{            
 	        "url": "./funciones/mod5_listar_conferencias.php", 
 	        "dataSrc":""
@@ -131,7 +155,14 @@ var listar = function(){
                 orderable: false,
                 data: null,
                 defaultContent: '<button data-bs-toggle="modal" data-bs-target="#modal_del" class="btnBorrar btn btn-outline-danger btn-icon mb-2 me-4" title="No tiene permisos para eliminar Conferencias" disabled ><i class="bi bi-trash" style="font-size: 1rem;"></i></button>',
-            }
+            },
+            { data: 'modalidad', visible: false },
+            { data: 'cupo', visible: false },
+            { data: 'lugar', visible: false },
+            { data: 'f_inscrip_dsd', visible: false },
+            { data: 'f_inscrip_hst', visible: false },
+            { data: 'disertante', visible: false },
+            { data: 'organismo', visible: false }
         ],
         columnDefs: [
             { targets: 3, // La columna 2 contiene la fecha
@@ -167,7 +198,7 @@ var listar = function(){
         },
         "stripeClasses": [],
         "lengthMenu": [10, 20, 50],
-        "pageLength": 5,
+        "pageLength": 10,
 
     });
 
@@ -530,7 +561,7 @@ $(document).ready(function(){
                         <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Información </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"><i class="bi bi-info-circle" style="font-size: 1rem;"></i> Información </h6></div>
 
                                 <div class="modal-body with-padding">					
                                     <div class="form-group-sm">
@@ -872,6 +903,13 @@ $(document).ready(function(){
                                             <th aling='center'>Modificar</th>
                                             <th aling='center'>Eliminar</th>
                                             <th aling='center'>Eliminar</th>
+                                            <th>Modalidad</th>
+                                            <th>Cupo</th>
+                                            <th>Lugar</th>
+                                            <th>Desde</th>
+                                            <th>Hasta</th>
+                                            <th>Disertante</th>
+                                            <th>Organismo</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -953,6 +991,11 @@ $(document).ready(function(){
 	    require_once('./estructura/buscador_barra.php');
 	?> 
 
+
+
 </body>
 </html>
-
+<script src="./src/plugins/src/table/datatable/button-ext/dataTables.buttons.min.js"></script>
+<script src="./src/plugins/src/table/datatable/button-ext/jszip.min.js"></script>
+<script src="./src/plugins/src/table/datatable/button-ext/buttons.html5.min.js"></script>
+<script src="./src/plugins/src/table/datatable/button-ext/buttons.print.min.js"></script>
