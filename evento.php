@@ -13,6 +13,7 @@
   if($id!=''){
     $arr_  = $Eve->gets($id); 
     $_SESSION['ses_id_evento']= $id;
+    $_SESSION['ses_fk_evento']= $arr_[0]['fk_evento'];
   }else { 
     $arr_  = $Eve->gets($id_evento); 
     $_SESSION['ses_id_evento']= $id_evento;
