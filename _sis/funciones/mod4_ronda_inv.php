@@ -39,7 +39,7 @@ class RondaInversiones {
 	}
 	        
 	function add($user, $nombre, $lugar, $f1, $f2, $f_insc_dsd, $f_insc_hst, $hora){
-		include('conexion_pdo.php'); 
+		include('conexion_pdo.php');
 		$hoy  = Date('Y-m-d H:i:s');
 		$query= "INSERT INTO eventos_ronda_inv (nombre, lugar, hora, f_dia_1, f_dia_2, f_inscrip_dsd, f_inscrip_hst, f_create, fk_usuario) 
 		         VALUES (:nombre, :lugar, :hora, :f_dia_1, :f_dia_2, :f_inscrip_dsd, :f_inscrip_hst, :f_create, :fk_usuario)";
@@ -262,7 +262,7 @@ class RondaInversiones {
 
 	function gets_sectores_segun_ri($fk_id){
 		include('conexion_pdo.php');
-		$query_= " SELECT sel.id_sect AS id, s.nombre FROM eventos_ronda_inv_sectores AS S
+		$query_= " SELECT sel.id_sect AS id, s.nombre FROM eventos_ronda_inv_sectores AS s
 				   INNER JOIN eventos_ronda_inv_sectores_select AS sel
 				   ON sel.id_sect = s.id
 				   WHERE sel.id_ri = :id_ri ";
