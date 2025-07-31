@@ -232,6 +232,29 @@ class RondaInversiones {
 		finally{				$sql = null;				}
 	}
 
+	function upd_evento($tipo, $id, $user, $nombre, $lugar, $f1, $dsd, $hst, $hora){
+		include('conexion_pdo.php');		 
+		$query_  = " UPDATE eventos 
+		             SET titulo= :nombre, fecha= :f1, hora= :hora, lugar= :lugar, 
+					     f_inscrip_dsd= :dsd, f_inscrip_hst= :hst, fk_usuario= :fk_user
+		             WHERE fk_evento= :id AND tipo= :tipo"; 
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':id',       $id);			
+			$sql->bindParam(':tipo',     $tipo);			
+			$sql->bindParam(':nombre',   $nombre);			
+			$sql->bindParam(':f1',       $f1);				
+			$sql->bindParam(':hora',     $hora);				
+			$sql->bindParam(':lugar',    $lugar);	
+			$sql->bindParam(':dsd',      $dsd);			
+			$sql->bindParam(':hst',      $hst);		
+			$sql->bindParam(':fk_user',  $user);			
+			if($sql->execute()) return true; else return false ;
+		}
+		catch (Exception $e){ echo $e->getMessage(); 		}
+		finally{				$sql = null;				}
+	}
+
 	function del($id){
 		include('conexion_pdo.php');				
 		$query_  = " DELETE FROM eventos_ronda_inv WHERE id= :id "; 
@@ -293,28 +316,26 @@ class RondaInversiones {
 		finally{				$sql = null;		}
 	}
 	
-
-	//-------------------------------------------------------------------------------
-
-	
-	
-	function gets_inscrip_x_id($id, $c_v){
+	function gets_inscrip_x_id($id, $i_o){
 		include('conexion_pdo.php');
 		$query_= " SELECT i.*, p.nombre As prov 
-		            FROM eventos_ronda_neg_inscrip AS i 
+		            FROM eventos_ronda_inv_inscrip AS i 
 					INNER JOIN provincia AS p ON p.id= i.fk_prov
-					WHERE i.fk_rn = :id AND i.c_v= :c_v ";
+					WHERE i.fk_ri = :id AND i.i_o= :i_o ";
 		try{
 			$sql = $con->prepare($query_);
 			$sql->bindParam(':id',  $id);
-			$sql->bindParam(':c_v', $c_v);
+			$sql->bindParam(':i_o', $i_o);
 			$sql->execute();
 			$res = $sql->fetchAll();
 			return $res;
 		}
 		catch (Exception $e){	echo $e->getMessage();		}
 		finally{				$sql = null;				}
-	}	
+	}
+
+	//-------------------------------------------------------------------------------
+
 	function gets_param(){
 		include('conexion_pdo.php');
 		$query_  = " SELECT p.* FROM eventos_ronda_neg_agenda_param p WHERE p.id= 1 ";
@@ -327,28 +348,7 @@ class RondaInversiones {
 		catch (Exception $e){	echo $e->getMessage();		}
 		finally{				$sql = null;				}
 	}
-	function upd_evento($tipo, $id, $user, $nombre, $lugar, $f1, $dsd, $hst, $hora){
-		include('conexion_pdo.php');		 
-		$query_  = " UPDATE eventos 
-		             SET titulo= :nombre, fecha= :f1, hora= :hora, lugar= :lugar, 
-					     f_inscrip_dsd= :dsd, f_inscrip_hst= :hst, fk_usuario= :fk_user
-		             WHERE fk_evento= :id AND tipo= :tipo"; 
-		try{
-			$sql = $con->prepare($query_);
-			$sql->bindParam(':id',       $id);			
-			$sql->bindParam(':tipo',     $tipo);			
-			$sql->bindParam(':nombre',   $nombre);			
-			$sql->bindParam(':f1',       $f1);				
-			$sql->bindParam(':hora',     $hora);				
-			$sql->bindParam(':lugar',    $lugar);	
-			$sql->bindParam(':dsd',      $dsd);			
-			$sql->bindParam(':hst',      $hst);		
-			$sql->bindParam(':fk_user',  $user);			
-			if($sql->execute()) return true; else return false ;
-		}
-		catch (Exception $e){ echo $e->getMessage(); 		}
-		finally{				$sql = null;				}
-	}
+	
 	function upd_param($hs, $duracion, $x_dia, $user){
 		include('conexion_pdo.php');		 
 		$id      = 1;

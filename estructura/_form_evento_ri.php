@@ -81,6 +81,7 @@ $arr_sectores= $RI->gets_sectores_segun_ri($fk_id);
               <input type="checkbox" name="chek[]" id="chek[]" value="<?php echo $arr_sectores[$i]['id'] ?>" class="u-field-input" data-calc="" >
               <label class="u-field-label"> <?php echo $arr_sectores[$i]['nombre'] ?>  </label>
               <input type="hidden"  id="id" name="id" value="<?php echo $id ?>">
+              <input type="hidden"  id="fk_id" name="fk_id" value="<?php echo $fk_id ?>">
           </div>
         <?php } ?>
 

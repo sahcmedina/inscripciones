@@ -10,6 +10,7 @@ if (isset($_POST['resp']))  { $resp    = $_POST['resp']; } else { $resp    = '';
 if (isset($_POST['tel']))   { $tel     = $_POST['tel'];  } else { $tel     = ''; }
 if (isset($_POST['email'])) { $email   = $_POST['email'];} else { $email   = ''; }
 if (isset($_POST['id']))    { $id      = $_POST['id']; 	 } else { $id      = ''; }
+if (isset($_POST['fk_id'])) { $fk_id   = $_POST['fk_id'];} else { $fk_id   = ''; }
 
 // Control: datos faltantes
 $op = 'ok';
@@ -31,7 +32,7 @@ switch($op){
 
 			// add inscrip
 			$id_inscrip= 0;
-			$add       = $RI->add_inscrip($id, $emp, $cuit, $resp, $tel, $i_o, $prov, $email);
+			$add       = $RI->add_inscrip($fk_id, $emp, $cuit, $resp, $tel, $i_o, $prov, $email);
 			$id_inscrip= $RI->get_last_id_inscrip();
 
 			// add productos
