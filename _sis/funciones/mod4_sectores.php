@@ -4,7 +4,7 @@ class Sectores {
 
 	function gets(){
 		include('conexion_pdo.php');
-		$query_  = " SELECT r.* FROM ronda_inv_sectores r ";
+		$query_  = " SELECT r.* FROM eventos_ronda_inv_sectores r ";
 		try{
 			$sql = $con->prepare($query_);
 			$sql->execute();
@@ -17,7 +17,7 @@ class Sectores {
 
 	function tf_existe_nombre($nombre){
 		include('conexion_pdo.php');
-		$query_  = " SELECT count(*) as cant FROM ronda_inv_sectores WHERE nombre = :nombre "; 
+		$query_  = " SELECT count(*) as cant FROM eventos_ronda_inv_sectores WHERE nombre = :nombre "; 
         try{
 			$sql = $con->prepare($query_);
 			$sql->bindParam(':nombre', $nombre);
@@ -34,7 +34,7 @@ class Sectores {
 		include('conexion_pdo.php'); 
 		$hoy  = Date('Y-m-d H:i:s');
 		$nada = '0000-00-00 00:00:00';
-		$query= "INSERT INTO ronda_inv_sectores (nombre, f_create, f_update, fk_user) 
+		$query= "INSERT INTO eventos_ronda_inv_sectores (nombre, f_create, f_update, fk_user) 
 		         VALUES (:nombre, :f_create, :f_update, :fk_user)";
 		try{
 			$sql = $con->prepare($query);
@@ -50,7 +50,7 @@ class Sectores {
 
 	function del($id){
 		include('conexion_pdo.php');				
-		$query_  = " DELETE FROM ronda_inv_sectores WHERE id= :id "; 
+		$query_  = " DELETE FROM eventos_ronda_inv_sectores WHERE id= :id "; 
 		try{
 			$sql = $con->prepare($query_);
 			$sql->bindParam(':id',  $id);
@@ -65,7 +65,7 @@ class Sectores {
 	function upd($id, $user, $nombre){
 		include('conexion_pdo.php');		
 		$hoy     = Date('Y-m-d H:i:s');		
-		$query_  = " UPDATE ronda_inv_sectores SET nombre = :nombre, f_update= :f_update, fk_user= :fk_user
+		$query_  = " UPDATE eventos_ronda_inv_sectores SET nombre = :nombre, f_update= :f_update, fk_user= :fk_user
 		             WHERE id= :id "; 
 		try{
 			$sql = $con->prepare($query_);
