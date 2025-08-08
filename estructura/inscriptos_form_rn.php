@@ -37,7 +37,7 @@ switch($op){
 			// add productos
 			for($i=0 ; $i<count($arr_prod) ; $i++){
 				$prod    = $arr_prod[$i];
-				$add_prod= $RN->add_inscrip_prod($id_inscrip, $prod);
+				$add_prod= $RN->add_inscrip_prod($id, $id_inscrip, $c_v, $prod);
 			}
 
 			if($id_inscrip!= 0){	$a_ico= 'success';    $a_tit= 'Inscripción realizada';	 $a_sub= 'Nos comunicaremos vía email.';	 										}

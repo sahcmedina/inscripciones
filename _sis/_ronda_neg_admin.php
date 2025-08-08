@@ -3,7 +3,7 @@
 
 	// consultar permisos del usuario (logueado) a la funcion
 	$datos_f = array();
-	$datos_f = $U->get_permisos('9',$datos[0]['fk_perfil']);
+	$datos_f = $U->get_permisos('19',$datos[0]['fk_perfil']);
 	$alta    = $datos_f[0]['alta'];
 	$baja    = $datos_f[0]['baja'];
 	$modf    = $datos_f[0]['modificacion'];
@@ -80,77 +80,129 @@
         });
     </script>
 
-<!-- AJAX: Validar datos por ajax - Antes de Actualizar -->	
-<script language="javascript">
-$(document).ready(function(){                         
-    var codi; var prov;  var dir;  var tel; var usu;          
-    $("#validar_upd").click(function(){
-		id    = $("#id_").val();			
-		usu   = $("#usuario").val();			
-		nom   = $("#nombre").val();			
-		nomant= $("#nombreant").val();			
+    <!-- PASAR DATOS AL MODAL: Upd Estado -->
+    <script>
+    $(document).ready(function(){  
+        $('#modal_upd_estado').on('show.bs.modal', function (event) {    
+            var button    = $(event.relatedTarget)  // Botón que activó el modal
+            var id        = button.data('id')  
+            var nom       = button.data('nombre') 
+            var lugar     = button.data('lugar') 
+            var estado    = button.data('estado') 
+            var modal     = $(this)
+            modal.find('.modal-body #id').val(id)
+            modal.find('.modal-body #nombre').val(nom)
+            modal.find('.modal-body #lugar').val(lugar)
+            modal.find('.modal-body #estado').val(estado)
 
-	  	$("#mostrar_validar_upd").delay(15).queue(function(n) {                                                 
-            $.ajax({
-                type: "POST",
-                url: "./funciones/mod3_productos_ajax_validar_upd.php",                                                                                                                                                                                                    
-                data: "id="+id+"&usuario="+usu+"&nom="+nom+"&nomant="+nomant,     
-              	dataType: "html",
-                error: function(){	        alert("error petición ajax");           		},
-                success: function(data){ 	$("#mostrar_validar_upd").html(data);  	n();    }
-            });                                           
-        });                                
-    });              
-});
-</script>
+            $('.alert').hide();//Oculto alert
+            })
+        });
+    </script>
 
-<!-- AJAX: Validar datos por ajax - Antes de Borrar -->	
-<script language="javascript">
-$(document).ready(function(){                         
-    var id;          
-    $("#validar_del").click(function(){
-		id = $("#id_del").val();			
+    <!-- AJAX: Validar datos por ajax - Antes de Cambiar el estado -->	
+    <script language="javascript">
+    $(document).ready(function(){                         
+        var id, state, id_usr;          
+        $("#validar_upd_estado").click(function(){
+            id    = $("#id").val();			
+            nombre= $("#nombre").val();
+            lugar = $("#lugar").val();			
+            id_usr= $("#id_usr").val();			
+            estado= $("#estado").val();			
+            
+            $("#mostrar_validar_upd_estado").delay(15).queue(function(n) {                                                 
+                $.ajax({
+                    type: "POST",
+                    url: "./funciones/mod3_ronda_neg_ajax_validar_upd_estado.php",                                                                                                                                                                                                    
+                    data: "id="+id+"&nombre="+nombre+"&lugar="+lugar+"&id_usr="+id_usr+"&estado="+estado,     
+                    dataType: "html",
+                    error: function(){	        alert("error petición ajax");                   		},
+                    success: function(data){ 	$("#mostrar_validar_upd_estado").html(data);  	n();    }
+                });                                           
+            });                                
+        });              
+    });
+    </script>
 
-	  	$("#mostrar_validar_del").delay(15).queue(function(n) {                                                 
-            $.ajax({
-                type: "POST",
-                url: "./funciones/mod3_ronda_neg_ajax_validar_del.php",                                                                                                                                                                                                    
-                data: "id="+id,     
-              	dataType: "html",
-                error: function(){	        alert("error petición ajax");           		},
-                success: function(data){ 	$("#mostrar_validar_del").html(data);  	n();    }
-            });                                           
-        });                                
-    });              
-});
-</script>
+    <!-- AJAX: Validar datos por ajax - Antes de Actualizar -->	
+    <script language="javascript">
+    $(document).ready(function(){                         
+        var codi; var prov;  var dir;  var tel; var usu;          
+        $("#validar_upd").click(function(){
+            id    = $("#id_").val();			
+            usu   = $("#usuario").val();			
+            nom   = $("#nombre").val();			
+            nomant= $("#nombreant").val();			
 
-<!-- AJAX: Validar datos por ajax - Antes de Agregar -->	
-<script language="javascript">
-$(document).ready(function(){                         
-    var nom; var usu;          
-    $("#validar_add").click(function(){	        
-		usu = $("#usuario").val();		    lug= $("#lug_").val();	        f2= $("#f2").val();	                            f_insc_hst= $("#f_insc_hst").val();		
-		nom = $("#nom_").val();		        f1 = $("#f1").val();		    f_insc_dsd= $("#f_insc_dsd").val();		        chek= $("#chek").val();		
+            $("#mostrar_validar_upd").delay(15).queue(function(n) {                                                 
+                $.ajax({
+                    type: "POST",
+                    url: "./funciones/mod3_productos_ajax_validar_upd.php",                                                                                                                                                                                                    
+                    data: "id="+id+"&usuario="+usu+"&nom="+nom+"&nomant="+nomant,     
+                    dataType: "html",
+                    error: function(){	        alert("error petición ajax");           		},
+                    success: function(data){ 	$("#mostrar_validar_upd").html(data);  	n();    }
+                });                                           
+            });                                
+        });              
+    });
+    </script>
 
-	  	$("#mostrar_validar_add").delay(15).queue(function(n) {                                                 
-            $.ajax({
-                type: "POST",
-                url: "./funciones/mod3_ronda_neg_ajax_validar_add.php",                                                                                                                                                                                                    
-                data: "usu="+usu+"&nom="+nom+"&lug="+lug+"&f1="+f1+"&f2="+f2+"&f_insc_dsd="+f_insc_dsd+"&f_insc_hst="+f_insc_hst+"&chek="+chek,     
-              	dataType: "html",
-                error: function(){	        alert("error petición ajax");           		},
-                success: function(data){ 	$("#mostrar_validar_add").html(data);  	n();    }
-            });                                           
-        });                                
-    });              
-});
-</script>
+    <!-- AJAX: Validar datos por ajax - Antes de Borrar -->	
+    <script language="javascript">
+    $(document).ready(function(){                         
+        var id;          
+        $("#validar_del").click(function(){
+            id = $("#id_del").val();			
 
-<!-- MSJ: Espere unos segundos, al hacer clic -->
-<script type="text/javascript">
-	function mostrarMsjBtn_del(){ document.getElementById('msjBtn_del').style.display = 'block'; }
-</script>
+            $("#mostrar_validar_del").delay(15).queue(function(n) {                                                 
+                $.ajax({
+                    type: "POST",
+                    url: "./funciones/mod3_ronda_neg_ajax_validar_del.php",                                                                                                                                                                                                    
+                    data: "id="+id,     
+                    dataType: "html",
+                    error: function(){	        alert("error petición ajax");           		},
+                    success: function(data){ 	$("#mostrar_validar_del").html(data);  	n();    }
+                });                                           
+            });                                
+        });              
+    });
+    </script>
+
+    <!-- AJAX: Validar datos por ajax - Antes de Agregar -->	
+    <script language="javascript">
+    $(document).ready(function(){ 
+        $("#validar_add").on('click', function(e){
+            e.preventDefault();
+        
+            var nom, usu, lug, f1, f2, f_insc_dsd, f_insc_hst, hs;       
+            var chek = [];
+            $("input[name='chek[]']:checked").each(function() {
+                chek.push($(this).val());
+            });    
+
+            usu = $("#usuario").val();		    lug= $("#lug_").val();	        f2= $("#f2").val();	                            f_insc_hst= $("#f_insc_hst").val();		
+            nom = $("#nom_").val();		        f1 = $("#f1").val();		    f_insc_dsd= $("#f_insc_dsd").val();	            hs= $("#hs").val();	       
+            $("#mostrar_validar_add").delay(15).queue(function(n) {                                                 
+                $.ajax({
+                    type: "POST",
+                    url: "./funciones/mod3_ronda_neg_ajax_validar_add.php",                                                                                                                                                                                                    
+                    data: "usu="+usu+"&nom="+nom+"&lug="+lug+"&f1="+f1+"&f2="+f2+"&f_insc_dsd="+f_insc_dsd+"&f_insc_hst="+f_insc_hst+"&hs="+hs+"&chek="+chek,     
+                    dataType: "html",
+                    error: function(){	        alert("error petición ajax");           		},
+                    success: function(data){ 	$("#mostrar_validar_add").html(data);  	n();    }
+                });                                           
+            });             
+        });
+    });
+    </script>
+
+    <!-- MSJ: Espere unos segundos, al hacer clic -->
+    <script type="text/javascript">
+        function mostrarMsjBtn_del(){ document.getElementById('msjBtn_del').style.display = 'block'; }
+        function mostrarMsjBtn_add(){ document.getElementById('msjBtn_add').style.display = 'block'; }
+    </script>
 
 </head>
 
@@ -297,7 +349,9 @@ $(document).ready(function(){
                                 <div class="modal-body with-padding">					
                                     <div class="form-group-sm">
                                         <div class="row">
-                                            <label><i class="icon-warning"></i> La función permite administrar Rondas de Negocios. Altas, bajas y modificaciones de la RN que se mostrar en la web para que los interesados se inscriban ya sea como comprador o como vendedor. </label>
+                                            <label><i class="icon-warning"></i> * La función permite administrar Rondas de Negocios. Altas, bajas y modificaciones de la RN que se van a mostrar en la web para que los interesados se inscriban, ya sea como comprador o como vendedor. </label>
+                                            <br/><br/> 
+                                            <label><i class="icon-warning"></i> * Se puede <b>cambiar el estado</b> a las RN. Esto permite habilitar / deshabilitar la inscripcion en la web, mas allá de las fechas elegidas. </label>
                                             <br/><br/>                                            
                                         </div><br>							
                                     </div><br /> 
@@ -428,10 +482,12 @@ $(document).ready(function(){
                                 </div>	
 
                                 <div class="modal-footer d-flex center-content-end"><center>					
-                                    <!-- <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="8">Cancelar</button> -->
-                                    <button type="button" tabindex="11" class="btn btn-dark" onclick="window.location.href='./_ronda_neg_admin.php'" tabindex="11" onclick="reiniciarFormulario()">Cancelar</button> 
-                                    <button id="validar_add" name="validar_add" type="submit" class="btn btn-success" title="Se va a validar si se puede agregar." tabindex="5" > Agregar </button>
+                                    <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="8">Cancelar</button>
+                                    <!-- <button type="button" tabindex="11" class="btn btn-dark" onclick="window.location.href='./_ronda_neg_admin.php'" tabindex="11" onclick="reiniciarFormulario()">Cancelar</button>  -->
+                                    <button id="validar_add" name="validar_add" type="submit" class="btn btn-success" title="Se va a validar si se puede agregar." tabindex="9" > Agregar </button>
                                     <br /><br />
+                                    <div id="msjBtn_add" style='display:none;' ><img src="images/loading.gif" width="30px" height="30px" alt="loading"/><?php echo '   <font color=grey><b><i>'.'Por favor, espere unos segundos..'.'</b></i></font>'; ?></div>
+                                    <div id="mostrar_validar_add" ></div>
                                 </div></center>
 
                             </form>
@@ -475,93 +531,44 @@ $(document).ready(function(){
                             </div>
                         </div>
                     </div>
-
-                    <!-- Modal: Modificar OLD -->
-                    <div id="modal_upd_OLD" class="modal animated fadeInDown" tabindex="-1" role="dialog">
+                    
+                    <!-- Modal: Modificar Estado -->
+                    <div id="modal_upd_estado" class="modal animated fadeInDown" tabindex="-1" role="dialog">
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
-                            
-                            <div class="modal-header"><h6 class="modal-title"> Modificar <?php echo $entidad ?> </h6></div>
-
-                            <form name="mdf_reg" id="mdf_reg" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
-                                
-                                <div class="modal-body with-padding">                                    					
-                                    <div class="form-group-sm">
-
-                                    <div class="row">
-                                            <div class="col-md-5">
-                                                <label>Nombre: <span class="mandatory">*</span></label>   
-                                                <input type="text" id="nombre"    name="nombre" class="form-control form-control-sm" tabindex="1" required>
-                                                <input type="hidden" id="usuario" name="usuario" value="<?php echo $id_user ?>" >
-                                                <input type="hidden" id="id_"     name="id_" >
-                                            </div>
-                                            <div class="col-md-5"> 
-                                                <label>Lugar: <span class="mandatory">*</span></label>   
-                                                <input type="text" id="lugar_" name="lugar_" class="form-control form-control-sm" tabindex="2" required>
-                                            </div> 
-                                            <div class="col-md-2"> 
-                                                <label>Hs: <span class="mandatory">*</span></label>   
-                                                <input type="time" id="hs_" name="hs_" class="form-control form-control-sm" tabindex="3" required>
-                                            </div> 
-                                        </div><br/>
-
-                                        <div class="row">
-                                            <div class="col-md-2">
-                                                <label>Fecha 1: <span class="mandatory">*</span></label>   
-                                                <input type="date" id="f1_" name="f1_" class="form-control form-control-sm" tabindex="4" required>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label>Fecha 2: </label>   
-                                                <input type="date" id="f2_" name="f2_" class="form-control form-control-sm" tabindex="5">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label>Inscripcion desde: <span class="mandatory">*</span></label>   
-                                                <input type="date" id="dsd_" name="dsd_" class="form-control form-control-sm" tabindex="6" required>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label>Inscripcion hasta: <span class="mandatory">*</span></label>   
-                                                <input type="date" id="hst_" name="hst_" class="form-control form-control-sm" tabindex="7" required>
-                                            </div>
-                                        </div><br/>                                        
-
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <label>Productos: (al menos 1)</label>   
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-10">
-                                                <div class="row">
-                                                    <?php foreach($arr_prod as $j => $cur): ?>
-                                                        <div class="col-md-6 mb-2">
-                                                            <div class="form-check">                                                                
-                                                                <input 
-                                                                    type="checkbox" name="chek[]" id="chek[]" value="<?php echo $cur['id'] ?>" 
-                                                                    class="form-check-input"
-                                                                >
-                                                                <label class="form-check-label">  <?php echo $cur['nombre'] ?>  </label>
-                                                            </div>
-                                                        </div>
-                                                    <?php endforeach; ?>
+                                <div class="modal-header"><h6 class="modal-title"><i class="bi bi-repeat" style="font-size: 1rem;"></i> Modificar Estado  </h6></div>
+                                <form name="mdfsta" id="mdfsta" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
+                                    <div class="modal-body with-padding">
+                                        <div class="form-group-sm">
+                                            <div class="row">
+                                                <div class="col-md-3"></div>
+                                                <div class="col-md-6">
+                                                    <center><label style="color:red;font: size:100px;"><i class="bi bi-exclamation-triangle" style="font-size: 1rem;"></i>  ¿ Está seguro ?  <i class="bi bi-exclamation-triangle" style="font-size: 1rem;"></i></label></center>
                                                 </div>
-                                            </div>
+                                                <div class="col-md-3"></div>
+                                            </div> <br>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>Nombre<span class="mandatory">*</span></label>   
+                                                    <input type="text"   id="nombre"  name="nombre" class="form-control form-control-sm" tabindex="1" readonly>
+                                                    <input type="hidden" id="estado"  name="estado" >
+                                                    <input type="hidden" id="id"      name="id" >
+                                                    <input type="hidden" id="id_usr"  name="id_usr" value="<?php echo $id_user; ?>" >
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>Lugar<span class="mandatory">*</span></label>   
+                                                    <input type="text"   id="lugar"  name="lugar" class="form-control form-control-sm" tabindex="2" readonly>
+                                                </div>
+                                            </div><br> 
                                         </div>
-
-                                
                                     </div>
-                                </div>
-
-                                <div class="modal-footer"><center>					
-                                    <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="8">Cancelar</button>		                                    
-                                    <button id="validar_upd" name="validar_upd" type="button" class="btn btn-success" title="Se va a validar si se puede modificar." tabindex="9"> Modificar </button>
-                                    <br/><br/>
-                                    <div id="mostrar_validar_upd" ></div> 
-                                </div></center>
-
-                            </form>
-                            
+                                    <div class="modal-footer"><center>					
+                                        <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="3">Cancelar</button>		                                    
+                                        <button id="validar_upd_estado" name="validar_upd_estado" type="button" class="btn btn-success" title="Se va a validar si se puede modificar." tabindex="4"> Cambiar Estado </button>
+                                        <br/><br/>
+                                        <div id="mostrar_validar_upd_estado" ></div></center>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -577,8 +584,10 @@ $(document).ready(function(){
                                     <?php
                                         $tabla= "<thead><tr class=\"rowHeaders\">			
                                                 <th style='text-align:center'> Nombre		</th>
+                                                <th style='text-align:center'> Estado		</th>
                                                 <th style='text-align:center'> Lugar		</th>
-                                                <th style='text-align:center'> Fecha 1		</th>
+                                                <th style='text-align:center'> Día 1		</th>
+                                                <th style='text-align:center'> Día 2		</th>
                                                 <th style='text-align:center'> Productos	</th>
                                                 <th style='text-align:center'> Acciones		</th>";
                                         $tabla.="</tr></thead><tbody>";			
@@ -606,16 +615,44 @@ $(document).ready(function(){
                                                            <i class="bi bi-search" style="font-size: 1rem;"></i>
                                                            </button>';
 
+                                            if($cur['estado']== 2){ // Habilitado
+                                                if($modf==1)    $btn_estado = '<button data-bs-toggle="modal" data-bs-target="#modal_upd_estado" 
+                                                           data-id="'.$cur['id'].'" data-nombre="'.$cur['nombre'].'" data-lugar="'.$cur['lugar'].'" data-estado="'.$cur['estado'].'"  
+                                                           class="btn btn-outline-success btn-icon mb-2 me-4" title="haga clic para deshabilitar">
+                                                           Habilitado
+                                                           </button>';
+                                                else            $btn_estado = '<button data-bs-toggle="modal" data-bs-target="#"                                                           
+                                                           class="btn btn-outline-success btn-icon mb-2 me-4" disabled>
+                                                           Habilitado
+                                                           </button>';
+                                            }
+
+                                            if($cur['estado']== 1){ // Deshabilitado
+                                                if($modf==1)    $btn_estado = '<button data-bs-toggle="modal" data-bs-target="#modal_upd_estado" 
+                                                           data-id="'.$cur['id'].'" data-nombre="'.$cur['nombre'].'" data-lugar="'.$cur['lugar'].'" data-estado="'.$cur['estado'].'"                                                          
+                                                           class="btn btn-outline-danger btn-icon mb-2 me-4" title="haga clic para habilitar">
+                                                           Deshabilitado
+                                                           </button>';
+                                                else            $btn_estado = '<button data-bs-toggle="modal" data-bs-target="#"                                                           
+                                                           class="btn btn-outline-danger btn-icon mb-2 me-4" disabled>
+                                                           Deshabilitado
+                                                           </button>';
+                                            }
+
                                             $list_prod = $RondaNeg->get_prod_en_RN($cur['id']);
 
                                             if($baja == '1') { $btn_del_mostrar= $btn_del; } else {  $btn_del_mostrar= ''; }
                                             if($modf == '1') { $btn_mdf_mostrar= $btn_mdf; } else {  $btn_mdf_mostrar= ''; }
 
+                                            if($cur['f_dia_2'] == '1900-01-01') $f_dia_2= '-'; else $f_dia_2= $cur['f_dia_2'];
+
                                             echo "<tr class=\"cellColor" . ($j%2) . "\" align=\"center\" id=\"tr$j\">\n"
                                             . '<td style="text-align:center">'. $cur['nombre']  	."</td>\n"
+                                            . '<td style="text-align:center">'. $btn_estado  	    ."</td>\n"
                                             . '<td style="text-align:center">'. $cur['lugar']  	    ."</td>\n"
                                             . '<td style="text-align:center">'. $cur['f_dia_1']  	."</td>\n"
-                                            . '<td style="text-align:center">'. $list_prod  	    ."</td>\n"
+                                            . '<td style="text-align:center">'. $f_dia_2         	."</td>\n"
+                                            . '<td style="text-align:left; width: 20px;"  >'. $list_prod  	    ."</td>\n"
                                             . '<td style="text-align:center">'. $btn_mdf_mostrar . $btn_del_mostrar . "</td>\n"
                                             . "</tr>\n";
                                         }
@@ -654,18 +691,36 @@ $(document).ready(function(){
     <script>
         $('#dt_').DataTable({
             "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
-        "<'table-responsive'tr>" +
-        "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+                "<'table-responsive'tr>" +
+                "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
             "oLanguage": {
-                "oPaginate": { "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>', "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>' },
+                "oPaginate": { 
+                    "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>', 
+                    "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>' 
+                },
                 "sInfo": "Mostrando página _PAGE_ de _PAGES_",
                 "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
                 "sSearchPlaceholder": "Buscar...",
-               "sLengthMenu": "Results :  _MENU_",
+                "sLengthMenu": "Results :  _MENU_",
             },
             "stripeClasses": [],
             "lengthMenu": [5, 10, 20, 50],
-            "pageLength": 5 
+            "pageLength": 5,
+            "autoWidth": false, // Importante para que respete los anchos definidos
+            "columnDefs": [
+                // {   "targets": 0,  "width": "15%"   },
+                // {   "targets": 1,  "width": "15%"   },
+                // {   "targets": 2,  "width": "10%"   },
+                {   "targets": 5, 
+                    "width": "40%",
+                    "render": function(data) {
+                        // Para contenido multilínea
+                        return '<div style="white-space: normal; word-wrap: break-word;">'+data+'</div>';
+                    }
+                },
+                // Continúa con las demás columnas según necesites
+                {   "targets": "_all",     "width": "auto"     }
+            ]
         });
     </script>
 
@@ -679,9 +734,9 @@ $(document).ready(function(){
 
     <!-- Reinicio el form para que los input esten vacios -->
     <script>
-    function reiniciarFormulario() {
-        document.getElementById('add_reg').reset();
-    }
+        function reiniciarFormulario() {
+            document.getElementById('add_reg').reset();
+        }
     </script>            
 
     <?php 

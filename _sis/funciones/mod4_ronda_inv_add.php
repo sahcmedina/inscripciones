@@ -11,11 +11,16 @@ if (isset($_POST["f_insc_dsd"]))  	{ $f_insc_dsd= $_POST["f_insc_dsd"]; } else {
 if (isset($_POST["f_insc_hst"]))  	{ $f_insc_hst= $_POST["f_insc_hst"]; } else { $f_insc_hst= ''; }
 if (isset($_POST["hs"]))  	        { $hs        = $_POST["hs"];         } else { $hs        = ''; }
 if (isset($_POST["chek"]))      	{ $chek      = $_POST["chek"];       } else { $chek      = ''; }
+
 $op = 'ok';
 
 // Control: Faltan datos?
 $c1= 'ok';	$er1= '';
-if($user=='' OR $nom=='' OR $lug=='' OR $f1=='' OR $hs=='' OR $f_insc_dsd=='' OR $f_insc_hst=='' OR count($chek)==0){	$c1= 'er';	$er1= 'Faltan datos. '; }
+if($user=='' OR $nom=='' OR $lug=='' OR $f1=='' OR $hs=='' OR $f_insc_dsd=='' OR $f_insc_hst=='' ){	$c1= 'er';	$er1= 'Faltan datos. '; }
+
+//verifico que haya seleccionado al menos un sector
+$c3= 'ok';	$er3= '';
+if(!is_array($chek) OR count($chek)==0){ $c3= 'er';	$er3= 'Falta sector'; }
 
 // Control: El nombre existe?
 $c2= 'ok';	$er2= '';
@@ -23,12 +28,12 @@ $existe = $RI->tf_existe_nombre($nom);
 if($existe){ $c2= 'er';  $er2= 'Repite nombre. ';	}
 
 // Validacion
-if($c1== 'er' OR $c2== 'er'){	$op = 'er';	 }
+if($c1== 'er' OR $c2== 'er' OR $c3== 'er'){	$op = 'er';	 }
 
 switch($op){
 
 	case 'er':
-			$a_tit= 'Error al Agregar';	  $a_sub= 'Errores: '.$er1.$er2;   $a_ico= 'error';	
+			$a_tit= 'Error al Agregar';	  $a_sub= 'Errores: '.$er1.$er2.$er3;   $a_ico= 'error';	
 			break;
 
 	case 'ok':

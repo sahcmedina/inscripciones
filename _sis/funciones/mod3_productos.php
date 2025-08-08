@@ -14,6 +14,21 @@ class Productos {
 		catch (Exception $e){	echo $e->getMessage();		}
 		finally{				$sql = null;				}
 	}
+	function gets_evento($id_rn){
+		include('conexion_pdo.php');
+		$query_  = " SELECT p.* 
+		             FROM eventos_ronda_neg_productos p INNER JOIN eventos_ronda_neg_productos_select ps ON p.id = ps.id_prod
+		             WHERE ps.id_rn= :id_rn ";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':id_rn', $id_rn);
+			$sql->execute();
+			$res = $sql->fetchAll();
+			return $res;
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
 
 	function tf_existe_nombre($nombre){
 		include('conexion_pdo.php');
@@ -33,7 +48,7 @@ class Productos {
 	function add($user, $nombre){
 		include('conexion_pdo.php'); 
 		$hoy  = Date('Y-m-d H:i:s');
-		$nada = '0000-00-00 00:00:00';
+		$nada = '1900-01-01 00:00:00';
 		$query= "INSERT INTO eventos_ronda_neg_productos (nombre, f_create, f_update, fk_user) 
 		         VALUES (:nombre, :f_create, :f_update, :fk_user)";
 		try{

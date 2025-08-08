@@ -67,9 +67,7 @@ class RondaNegocios {
 			$sql = null;
 			return $res['ult_id'];
 		}
-		catch (Exception $e){			
-			echo $e->getMessage();
-		}
+		catch (Exception $e){	echo $e->getMessage();		}
 	}
 	function get_last_id_inscrip(){
 		include('conexion_pdo.php');
@@ -133,13 +131,28 @@ class RondaNegocios {
 		catch (Exception $e){	echo $e->getMessage(); 	}		
 		finally             {	$sql = null;			}
 	}
+	function tf_existe_match($id_rn){
+		include('conexion_pdo.php');
+		$query_  = " SELECT COUNT(*) as cant FROM eventos_ronda_neg_union_cv WHERE fk_rn= :fk_rn ";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':fk_rn',   $id_rn);
+			$sql->execute();
+			$res = $sql->fetch();
+			if ($res['cant']>0) return true;
+			else				return false;
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
 
 	function add($user, $nombre, $lugar, $f1, $f2, $f_insc_dsd, $f_insc_hst, $hora){
 		include('conexion_pdo.php'); 
 		$hoy  = Date('Y-m-d H:i:s');
+		$state= 2; // habilitado
 		$nada = '0000-00-00 00:00:00';
-		$query= "INSERT INTO eventos_ronda_neg (nombre, lugar, hora, f_dia_1, f_dia_2, f_inscrip_dsd, f_inscrip_hst, f_create, fk_usuario) 
-		         VALUES (:nombre, :lugar, :hora, :f_dia_1, :f_dia_2, :f_inscrip_dsd, :f_inscrip_hst, :f_create, :fk_usuario)";
+		$query= "INSERT INTO eventos_ronda_neg (nombre, lugar, hora, f_dia_1, f_dia_2, f_inscrip_dsd, f_inscrip_hst, f_update, fk_usuario, estado) 
+		         VALUES (:nombre, :lugar, :hora, :f_dia_1, :f_dia_2, :f_inscrip_dsd, :f_inscrip_hst, :f_update, :fk_usuario, :estado)";
 		try{
 			$sql = $con->prepare($query);
 			$sql->bindParam(':nombre', 	        $nombre);
@@ -149,8 +162,9 @@ class RondaNegocios {
 			$sql->bindParam(':f_dia_2', 	    $f2);
 			$sql->bindParam(':f_inscrip_dsd', 	$f_insc_dsd);
 			$sql->bindParam(':f_inscrip_hst', 	$f_insc_hst);
-			$sql->bindParam(':f_create', 	    $hoy);
+			$sql->bindParam(':f_update', 	    $hoy);
 			$sql->bindParam(':fk_usuario',      $user);
+			$sql->bindParam(':estado',          $state);
 			if($sql->execute()) return true; else return false ;
 		}
 		catch (Exception $e){ echo $e->getMessage(); 		}
@@ -215,28 +229,43 @@ class RondaNegocios {
 		catch (Exception $e){ echo $e->getMessage(); 		}
 		finally{				$sql = null;				}
 	}
-	function add_inscrip_prod($id_rn, $id_prod){
+	function add_inscrip_prod($id_rn, $id_inscrip, $c_v, $id_prod){
 		include('conexion_pdo.php'); 
 		$hoy  = Date('Y-m-d H:i:s');
-		$query= "INSERT INTO eventos_ronda_neg_inscrip_prod (fk_insc, fk_prod, f_create) 
-		         VALUES (:fk_insc, :fk_prod, :f_create)";
+		$query= "INSERT INTO eventos_ronda_neg_inscrip_prod (fk_rn, fk_insc, participacion, fk_prod, f_create) 
+		         VALUES (:fk_rn, :fk_insc, :participacion, :fk_prod, :f_create)";
 		try{
 			$sql = $con->prepare($query);
-			$sql->bindParam(':fk_insc', 	 $id_rn);
-			$sql->bindParam(':fk_prod', 	 $id_prod);
-			$sql->bindParam(':f_create',     $hoy);
+			$sql->bindParam(':fk_rn',    	  $id_rn);
+			$sql->bindParam(':fk_insc', 	  $id_inscrip);
+			$sql->bindParam(':participacion', $c_v);
+			$sql->bindParam(':fk_prod', 	  $id_prod);
+			$sql->bindParam(':f_create',      $hoy);
 			if($sql->execute()) return true; else return false ;
 		}
 		catch (Exception $e){ echo $e->getMessage(); 		}
 		finally{				$sql = null;				}
 	}
 
-	function del($id){
+	function del_ronda($id_rn){
 		include('conexion_pdo.php');				
 		$query_  = " DELETE FROM eventos_ronda_neg WHERE id= :id "; 
 		try{
 			$sql = $con->prepare($query_);
-			$sql->bindParam(':id',  $id);
+			$sql->bindParam(':id',  $id_rn);
+			if($sql->execute())	$return= true;
+			else				$return= false;
+			return $return;
+		}
+		catch (Exception $e){ echo $e->getMessage();}
+		finally{				$sql = null;		}
+	}
+	function del_evento($id_rn){
+		include('conexion_pdo.php');				
+		$query_  = " DELETE FROM eventos WHERE fk_evento= :fk_evento "; 
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':fk_evento',  $id_rn);
 			if($sql->execute())	$return= true;
 			else				$return= false;
 			return $return;
@@ -260,9 +289,10 @@ class RondaNegocios {
 
 	function upd($id, $user, $nombre, $lugar, $f1, $f2, $dsd, $hst, $hora){
 		include('conexion_pdo.php');	
+		$hoy     = Date('Y-m-d H:i:s');
 		$query_  = " UPDATE eventos_ronda_neg 
 		             SET nombre= :nombre, fk_usuario= :fk_user, lugar= :lugar, f_dia_1= :f1, f_dia_2= :f2,
-					     f_inscrip_dsd= :dsd, f_inscrip_hst= :hst, hora= :hora
+					     f_inscrip_dsd= :dsd, f_inscrip_hst= :hst, hora= :hora, f_update= :f_update
 		             WHERE id= :id "; 
 		try{
 			$sql = $con->prepare($query_);
@@ -275,6 +305,7 @@ class RondaNegocios {
 			$sql->bindParam(':dsd',      $dsd);			
 			$sql->bindParam(':hst',      $hst);			
 			$sql->bindParam(':hora',     $hora);			
+			$sql->bindParam(':f_update', $hoy);			
 			if($sql->execute()) return true; else return false ;
 		}
 		catch (Exception $e){ echo $e->getMessage(); 		}
@@ -322,5 +353,171 @@ class RondaNegocios {
 		catch (Exception $e){ echo $e->getMessage(); 		}
 		finally{				$sql = null;				}
 	}
+	function upd_estado($id, $estado, $f_update, $user){
+		include('conexion_pdo.php');
+		$query_= " UPDATE eventos_ronda_neg SET estado= :estado, f_update= :f_update, fk_usuario= :fk_usuario WHERE id  = :id ";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':id',         $id);
+			$sql->bindParam(':estado',     $estado);
+			$sql->bindParam(':f_update',   $f_update);
+			$sql->bindParam(':fk_usuario', $user);
+			if($sql->execute())	$return= true;
+			else				$return= false;								
+			return $return;	
+		}
+		catch (Exception $e){ echo $e->getMessage(); 		}
+		finally{				$sql = null;				}
+	}
+
+	// -------------------------------------------------------------------------------------------------------------------------------
+	// Creacion de Agenda  -----------------------------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------------------------------------------------
+
+	function gets_emp_cv_prod($id_rn){ 
+		include('conexion_pdo.php');
+		$query_  = " SELECT insc.* FROM eventos_ronda_neg_inscrip_prod insc WHERE insc.fk_rn= :id_rn";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':id_rn',    $id_rn);
+			$sql->execute();
+			$res = $sql->fetchAll();
+			return $res;
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
+	function gets_productos($id_rn){ 
+		include('conexion_pdo.php');
+		$query_  = " SELECT * FROM eventos_ronda_neg_productos_select WHERE id_rn= :id_rn";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':id_rn',    $id_rn);
+			$sql->execute();
+			$res = $sql->fetchAll();
+			return $res;
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
+	function gets_cv_prod($particip, $id_prod, $id_rn){
+		include('conexion_pdo.php');
+		$query_  = " SELECT fk_insc FROM eventos_ronda_neg_inscrip_prod WHERE fk_prod= :id_prod AND fk_rn= :id_rn AND participacion= :particip";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':id_prod',  $id_prod);
+			$sql->bindParam(':id_rn',    $id_rn);
+			$sql->bindParam(':particip', $particip);
+			$sql->execute();
+			$res = $sql->fetchAll();
+			return $res;
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
+
+	function get_cant($id_prod, $particip, $id_rn){
+		include('conexion_pdo.php');
+		$query_  = " SELECT count(*) as cant FROM eventos_ronda_neg_inscrip_prod WHERE fk_prod= :fk_prod AND fk_rn= :id_rn AND participacion= :particip ";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':fk_prod',  $id_prod);
+			$sql->bindParam(':id_rn',    $id_rn);
+			$sql->bindParam(':particip', $particip);
+			$sql->execute();
+			$res = $sql->fetch();
+			return $res['cant'];
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
+	function get_cant_total($particip, $id_rn){
+		include('conexion_pdo.php');
+		$query_  = " SELECT count(*) as cant FROM eventos_ronda_neg_inscrip_prod 
+		             WHERE fk_rn= :id_rn AND participacion= :particip ";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':id_rn',    $id_rn);
+			$sql->bindParam(':particip', $particip);
+			$sql->execute();
+			$res = $sql->fetch();
+			return $res['cant'];
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
+	function tf_existe_par_cv($id_emp_c, $id_emp_v, $id_rn){
+		include('conexion_pdo.php');		
+		$query_  = " SELECT count(*) as cant FROM eventos_ronda_neg_union_cv WHERE emp_c= :emp_c AND emp_v= :emp_v AND fk_rn= :id_rn "; 
+        try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':emp_c',   $id_emp_c);
+			$sql->bindParam(':emp_v',   $id_emp_v);
+			$sql->bindParam(':id_rn',   $id_rn);
+			$sql->execute();
+			$res = $sql->fetch();
+			if ($res['cant']>0) return true;
+			else				return false;
+		}
+		catch (Exception $e){	echo $e->getMessage(); 	}		
+		finally             {	$sql = null;			}
+	}
+	function add_par_cv($id_emp_c, $id_emp_v, $id_rn){            
+		include('conexion_pdo.php');
+		$visto   = '0';
+		$query_  = "INSERT INTO eventos_ronda_neg_union_cv (fk_rn, emp_c, emp_v, visto) 
+		            VALUES (:fk_rn, :emp_c, :emp_v, :visto)";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':fk_rn',   $id_rn);
+			$sql->bindParam(':emp_c',   $id_emp_c);	
+			$sql->bindParam(':emp_v', 	$id_emp_v);			
+			$sql->bindParam(':visto', 	$visto);			
+			if($sql->execute()) return true; else return false ;
+		}
+		catch (Exception $e){ echo $e->getMessage(); 		}
+		finally{				$sql = null;				}
+	}
+	function gets_compran($id_rn){
+		include('conexion_pdo.php');
+		$query_  = " SELECT DISTINCT(emp_c) as c FROM eventos_ronda_neg_union_cv WHERE fk_rn= :fk_rn ORDER BY emp_c ASC ";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':fk_rn',   $id_rn);
+			$sql->execute();
+			$res = $sql->fetchAll();
+			return $res;
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
+	function gets_venden($id_rn){
+		include('conexion_pdo.php');
+		$query_  = " SELECT DISTINCT(emp_v) as v FROM eventos_ronda_neg_union_cv WHERE fk_rn= :fk_rn ORDER BY emp_v ASC ";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':fk_rn',   $id_rn);
+			$sql->execute();
+			$res = $sql->fetchAll();
+			return $res;
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
+	function gets_empC_para_empV($id_rn, $emp_v){
+		include('conexion_pdo.php');
+		$query_  = " SELECT emp_c FROM eventos_ronda_neg_union_cv WHERE emp_v = :emp_v AND fk_rn= :fk_rn ORDER BY emp_c ASC ";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':emp_v',  $emp_v);
+			$sql->bindParam(':fk_rn',  $id_rn);
+			$sql->execute();
+			$res = $sql->fetchAll();
+			return $res;
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
+
 }
 ?>

@@ -47,6 +47,29 @@
             transition: all 0.3s ease;                                /* Animación suave */
         }
     </style>
+    <style>
+    .btn-export {
+        margin-top: 1px;
+        margin-bottom: 1px;
+        margin-left: 5px; /* Separar hacia la derecha */
+        margin-right: 5px; /* Espacio entre el botón de exportar y el selector */
+        background-color: #65b688 !important;
+	    color: white !important;
+    }
+    .btn-cantidad {
+        margin-top: 1px;
+        margin-bottom: 1px;
+        margin-left: 5px; /* Separar hacia la derecha */
+        margin-right: 5px; /* Espacio entre el botón de exportar y el selector */
+        background-color: #e6f4ff !important;
+	    color: black !important;
+    }
+    .btn-cantidad:hover {
+        background-color: #f0f0f0;
+        color: blue;
+        border-color: blue;
+    }
+</style>
 
     <!-- PASAR DATOS AL MODAL: Borrar  -->
     <script>
@@ -340,7 +363,8 @@ $(document).ready(function(){
                                 </div>	
 
                                 <div class="modal-footer d-flex center-content-end"><center>					
-                                    <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="2">Cancelar</button>		                                    
+                                    <button type="button" class="btn btn-dark" onclick="window.location.href='./_ronda_inv_admin.php'" tabindex="2" onclick="reiniciarFormulario()"> Cancelar </button>    
+                                <!-- <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="2">Cancelar</button>		                                     -->
                                     <button id="validar_del" name="validar_del" type="button" class="btn btn-danger" title="Se va a validar si se puede modificar." tabindex="3"> Eliminar </button>
                                     <br /><br />
                                     <div id="mostrar_validar_del" ></div> 
@@ -464,7 +488,8 @@ $(document).ready(function(){
                                 </div>	
 
                                 <div class="modal-footer"><center>	
-                                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal"> Cerrar </button>
+                                    <button type="button" class="btn btn-dark" onclick="window.location.href='./_ronda_inv_admin.php'" tabindex="11" onclick="reiniciarFormulario()"> Cerrar </button> 
+                                    <!-- <button type="button" class="btn btn-dark" data-bs-dismiss="modal"> Cerrar </button> -->
                                     <button type="submit" id="upd_perf" name="upd_perf" class="btn btn-success" onclick="javascript:this.form.submit();this.disabled= true;mostrarMsjBtn_mdfPermisos()" title="Presione el botón para modificar los permisos." > Siguiente </button>                                    
                                     <br /><br />
                                     <div id="msjBtn_mdfPermisos" style='display:none;' ><img src="images/loading.gif" width="30px" height="30px" alt="loading"/><?php echo '   <font color=grey><b><i>'.'Por favor, espere unos segundos..'.'</b></i></font>'; ?></div>
@@ -558,14 +583,50 @@ $(document).ready(function(){
 
     <?php 
 	    require_once('./estructura/librerias_utilizadas_body.php');
-	?>  
+	?>
+    
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="./src/plugins/src/table/datatable/button-ext/dataTables.buttons.min.js"></script>
+    <script src="./src/plugins/src/table/datatable/button-ext/jszip.min.js"></script>
+    <script src="./src/plugins/src/table/datatable/button-ext/buttons.html5.min.js"></script>
+    <script src="./src/plugins/src/table/datatable/button-ext/buttons.print.min.js"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
 
     <!-- CONFIG DATATABLE -->
     <script>
         $('#dt_').DataTable({
-            "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
-        "<'table-responsive'tr>" +
-        "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+            "dom": "<'dt--top-section'<'row'<'col-sm-6 col-sm-3 d-flex justify-content-sm-start justify-content-center'l <'col-sm-12 col-md-6 d-flex'B>><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" + 
+            "<'table-responsive'tr>" +
+            "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+            buttons: {
+                buttons: [
+                    { text: 'Total de RI: '+<?php echo count($arr_); ?>, 
+                      className: 'btn btn-sm btn-cantidad'  
+                    },
+                    { extend: 'excel', 
+                        className: 'btn btn-success btn-sm btn-export', 
+                        title: '',
+                        filename: function () {
+                            var nombre = '<?php echo 'Completo_de_RI'; ?>';
+                            return 'Listado_'+nombre;
+                        },
+                        exportOptions:{
+                            columns: [ 0, 1, 2, 3 ] //exporto solo esas columnas
+                        }
+                    },
+                    { extend: 'print', 
+                        className: 'btn btn-success btn-sm btn-export', 
+                        title: '', 
+                        filename: function () {
+                            var nombre = '<?php echo 'Completo_de_RI'; ?>';
+                            return 'Listado_'+nombre;
+                        },
+                        exportOptions:{
+                            columns: [ 0, 1, 2, 3 ] //exporto solo esas columnas
+                        } 
+                    }
+                ]
+            },
             "oLanguage": {
                 "oPaginate": { "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>', "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>' },
                 "sInfo": "Mostrando página _PAGE_ de _PAGES_",
@@ -575,7 +636,19 @@ $(document).ready(function(){
             },
             "stripeClasses": [],
             "lengthMenu": [5, 10, 20, 50],
-            "pageLength": 5 
+            "pageLength": 10,
+            "autoWidth": false, // Importante para que respete los anchos definidos
+            "columnDefs": [
+                {   "targets": 3, 
+                    "width": "50%",
+                    "render": function(data) {
+                        // Para contenido multilínea
+                        return '<div style="white-space: normal; word-wrap: break-word;">'+data+'</div>';
+                    }
+                },
+                // Continúa con las demás columnas según necesites
+                {   "targets": "_all",     "width": "auto"     }
+            ] 
         });
     </script>
 

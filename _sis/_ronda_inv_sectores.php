@@ -439,8 +439,9 @@ $(document).ready(function(){
                                 </div>
 
                                 <div class="modal-footer"><center>					
-                                    <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="5">Cancelar</button>		                                    
-                                    <button id="validar_upd" name="validar_upd" type="button" class="btn btn-success" title="Se va a validar si se puede modificar." tabindex="6"> Modificar </button>
+                                    <button type="button" class="btn btn-dark" onclick="window.location.href='./_ronda_inv_sectores.php'" tabindex="3" onclick="reiniciarFormulario()"> Cancelar </button>    
+                                <!-- <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="5">Cancelar</button> -->
+                                    <button id="validar_upd" name="validar_upd" type="button" class="btn btn-success" title="Se va a validar si se puede modificar." tabindex="4"> Modificar </button>
                                     <br/><br/>
                                     <div id="mostrar_validar_upd" ></div> 
                                 </div></center>

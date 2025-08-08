@@ -3,7 +3,7 @@
 
 	// consultar permisos del usuario (logueado) a la funcion
 	$datos_f = array();
-	$datos_f = $U->get_permisos('9',$datos[0]['fk_perfil']);
+	$datos_f = $U->get_permisos('10',$datos[0]['fk_perfil']);
 	$alta    = $datos_f[0]['alta'];
 	$baja    = $datos_f[0]['baja'];
 	$modf    = $datos_f[0]['modificacion'];
@@ -18,6 +18,7 @@
 	// ------------------------------ FUNCION ------------------------------ //			
 	include_once('./funciones/mod3_productos.php');               $Productos = new Productos(); 
 	include_once('./funciones/mod3_ronda_neg.php');               $RondaNeg  = new RondaNegocios();
+    include_once('./funciones/mod3_rn_agenda.php');	              $RondAg    = new RN_Agenda();
 
     $arr_durac= array('15', '20','25','30');
 	$arr_p    = array(); 
@@ -70,6 +71,38 @@
         });
     </script>
 
+    <!-- PASAR DATOS AL MODAL: Procesar Agenda  -->
+    <script>
+    $(document).ready(function(){  
+        $('#modal_procesar').on('show.bs.modal', function (event) {    
+            var button   = $(event.relatedTarget)  // Botón que activó el modal
+            var id       = button.data('id')   
+            var nombre   = button.data('nombre')   
+            var modal    = $(this)
+            modal.find('.modal-body #id_proc').val(id)
+            modal.find('.modal-body #nombre_proc').val(nombre)
+            
+            $('.alert').hide();//Oculto alert
+            })
+        });
+    </script>
+
+    <!-- PASAR DATOS AL MODAL: Ver Agenda  -->
+    <script>
+    $(document).ready(function(){  
+        $('#modal_ver').on('show.bs.modal', function (event) {    
+            var button   = $(event.relatedTarget)  // Botón que activó el modal
+            var id       = button.data('id')   
+            var nombre   = button.data('nombre')   
+            var modal    = $(this)
+            modal.find('.modal-body #id_ver').val(id)
+            modal.find('.modal-body #nombre_ver').val(nombre)
+            
+            $('.alert').hide();//Oculto alert
+            })
+        });
+    </script>
+
     <!-- AJAX: Validar datos por ajax - Antes de Actualizar -->	
     <script language="javascript">
     $(document).ready(function(){                         
@@ -94,7 +127,7 @@
     });
     </script>
 
-    <!-- AJAX: Validar datos por ajax - Antes de Borrar -->	
+    <!-- AJAX: Validar datos por ajax - Antes de Borrar Proceso -->	
     <script language="javascript">
     $(document).ready(function(){                         
         var id;          
@@ -104,7 +137,7 @@
             $("#mostrar_validar_del").delay(15).queue(function(n) {                                                 
                 $.ajax({
                     type: "POST",
-                    url: "./funciones/mod3_productos_ajax_validar_del.php",                                                                                                                                                                                                    
+                    url: "./funciones/mod3_ronda_neg_ajax_validar_del_procAg.php",                                                                                                                                                                                                    
                     data: "id="+id,     
                     dataType: "html",
                     error: function(){	        alert("error petición ajax");           		},
@@ -131,6 +164,50 @@
                     dataType: "html",
                     error: function(){	        alert("error petición ajax");           		},
                     success: function(data){ 	$("#mostrar_validar_add").html(data);  	n();    }
+                });                                           
+            });                                
+        });              
+    });
+    </script>
+
+    <!-- AJAX: Validar datos por ajax - Antes de Procesar -->	
+    <script language="javascript">
+    $(document).ready(function(){                         
+        var id;          
+        $("#validar_proc").click(function(){
+            usu= $("#usuario").val();		
+            id = $("#id_proc").val();			
+
+            $("#mostrar_validar_proc").delay(15).queue(function(n) {                                                 
+                $.ajax({
+                    type: "POST",
+                    url: "./funciones/mod3_rn_agenda_ajax_validar_proc.php",                                                                                                                                                                                                    
+                    data: "id="+id+"&usu="+usu,     
+                    dataType: "html",
+                    error: function(){	        alert("error petición ajax");           		    },
+                    success: function(data){ 	$("#mostrar_validar_proc").html(data);  	n();    }
+                });                                           
+            });                                
+        });              
+    });
+    </script>
+
+    <!-- AJAX: Validar datos por ajax - Antes de Ver -->	
+    <script language="javascript">
+    $(document).ready(function(){                         
+        var id;          
+        $("#validar_ver").click(function(){
+            usu= $("#usuario").val();		
+            id = $("#id_ver").val();			
+
+            $("#mostrar_validar_ver").delay(15).queue(function(n) {                                                 
+                $.ajax({
+                    type: "POST",
+                    url: "./funciones/mod3_rn_agenda_ajax_validar_ver.php",                                                                                                                                                                                                    
+                    data: "id="+id+"&usu="+usu,     
+                    dataType: "html",
+                    error: function(){	        alert("error petición ajax");                   },
+                    success: function(data){ 	$("#mostrar_validar_ver").html(data);  	n();    }
                 });                                           
             });                                
         });              
@@ -311,13 +388,91 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Modal: Ver -->
+                    <div id="modal_ver" class="modal animated fadeInDown" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-content" >
+                            <div class="modal-content">
+                            
+                            <div class="modal-header"><h6 class="modal-title"> Ver Agenda </h6></div>
+
+                            <form name="form_ver" id="form_ver" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
+                                
+                                <div class="modal-body with-padding">					
+                                    <div class="form-group-sm">
+                                        
+                                        <div class="row" align="center">
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-8">
+                                                <label>Nombre:</label>
+                                                <input type="text"    id="nombre_ver" name="nombre_ver" class="form-control form-control-sm" tabindex="1" readonly >	 
+                                                <input type="hidden"  id="id_ver"     name="id_ver"     >	 
+                                                <input type="hidden"  id="usuario"    name="usuario" value="<?php echo $id_user ?>" >
+                                            </div>	
+                                            <div class="col-md-2"></div>
+                                        </div>								
+                                    </div><br /> 
+                                </div>	
+
+                                <div class="modal-footer d-flex center-content-end"><center>					
+                                    <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="2">Cancelar</button>		                                    
+                                    <button id="validar_ver" name="validar_ver" type="button" class="btn btn-success" title="Haga click para ver agenda" tabindex="3"> Ver </button>
+                                    <br /><br />
+                                    <div id="mostrar_validar_ver" ></div> 
+                                </div></center> 
+                                    
+                            </form>
+
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Modal: Procesar -->
+                    <div id="modal_procesar" class="modal animated fadeInDown" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-content" >
+                            <div class="modal-content">
+                            
+                            <div class="modal-header"><h6 class="modal-title"> Procesar Agenda </h6></div>
+
+                            <form name="form_procesar" id="form_procesar" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
+                                
+                                <div class="modal-body with-padding">					
+                                    <div class="form-group-sm">
+                                        <div class="row">
+                                            <center><label style="color:red;font: size 30px;"><i class="icon-warning"></i> ¿ Está seguro ? </label></center>
+                                        </div><br>
+                                        <div class="row" align="center">
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-8">
+                                                <label>Nombre:</label>
+                                                <input type="text"    id="nombre_proc" name="nombre_proc" class="form-control form-control-sm" tabindex="1" readonly >	 
+                                                <input type="hidden"  id="id_proc"     name="id_proc"     >	 
+                                                <input type="hidden"  id="usuario"     name="usuario" value="<?php echo $id_user ?>" >
+                                            </div>	
+                                            <div class="col-md-2"></div>
+                                        </div>								
+                                    </div><br /> 
+                                </div>	
+
+                                <div class="modal-footer d-flex center-content-end"><center>					
+                                    <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="2">Cancelar</button>		                                    
+                                    <button id="validar_proc" name="validar_proc" type="button" class="btn btn-success" title="Se va a validar si se puede procesar." tabindex="3"> Correr proceso </button>
+                                    <br /><br />
+                                    <div id="mostrar_validar_proc" ></div> 
+                                </div></center> 
+                                    
+                            </form>
+
+                            </div>
+                        </div>
+                    </div>
                     
                     <!-- Modal: Borrar -->
                     <div id="modal_del" class="modal animated fadeInDown" tabindex="-1" role="dialog">
                         <div class="modal-dialog modal-content" >
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Borrar Producto </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"> Borrar Proceso </h6></div>
 
                             <form name="form_del_reg" id="form_del_reg" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
                                 
@@ -340,7 +495,7 @@
 
                                 <div class="modal-footer d-flex center-content-end"><center>					
                                     <button class="btn btn-dark" data-bs-dismiss="modal" tabindex="2">Cancelar</button>		                                    
-                                    <button id="validar_del" name="validar_del" type="button" class="btn btn-danger" title="Se va a validar si se puede modificar." tabindex="3"> Finalizar </button>
+                                    <button id="validar_del" name="validar_del" type="button" class="btn btn-danger" title="Se va a validar si se puede borrar." tabindex="3"> Finalizar </button>
                                     <br /><br />
                                     <div id="mostrar_validar_del" ></div> 
                                 </div></center> 
@@ -451,9 +606,9 @@
                                     
                                     <?php
                                         $tabla= "<thead><tr class=\"rowHeaders\">			
+                                                <th style='text-align:center'> Nombre		    </th>
                                                 <th style='text-align:center'> Fecha 1		    </th>
                                                 <th style='text-align:center'> Fecha 2		    </th>
-                                                <th style='text-align:center'> Nombre		    </th>
                                                 <th style='text-align:center'> Inscripciones	</th>
                                                 <th style='text-align:center'> Borrar		    </th>
                                                 <th style='text-align:center'> Procesar		    </th>
@@ -461,16 +616,39 @@
                                         $tabla.="</tr></thead><tbody>";			
                                         echo $tabla;
                                         for($j=0 ; is_array($arr_) && $j<count($arr_) ; $j++){
-                                            $cur  = $arr_[$j];
+                                            $cur     = $arr_[$j];
                                         
-                                            $btn_del = ' <button data-bs-toggle="modal" data-bs-target="#modal_del" 
+                                            $btn_del = '<button data-bs-toggle="modal" data-bs-target="#modal_del" 
                                                             data-id="'.$cur['id'].'" data-nombre="'.$cur['nombre'].'"
-                                                            class="btn btn-outline-danger btn-icon mb-2 me-4" title="Borrar registro" >
+                                                            class="btn btn-outline-danger btn-icon mb-2 me-4" title="Borrar proceso" >
                                                             <i class="bi bi-trash" style="font-size: 1rem;"></i>
-                                                            </button>';
+                                                        </button>';
+                                                    
+                                            $btn_pro = '<button data-bs-toggle="modal" data-bs-target="#modal_procesar" 
+                                                            data-id="'.$cur['id'].'" data-nombre="'.$cur['nombre'].'"
+                                                            class="btn btn-outline-success btn-icon mb-2 me-4" title="Correr proceso" >
+                                                            <i class="bi bi-magic" style="font-size: 1rem;"></i>
+                                                        </button>';
+                                                    
+                                            $btn_ver = '<button data-bs-toggle="modal" data-bs-target="#modal_ver" 
+                                                            data-id="'.$cur['id'].'" data-nombre="'.$cur['nombre'].'"
+                                                            class="btn btn-outline-info btn-icon mb-2 me-4" title="Ver agenda" >
+                                                            <i class="bi bi-search" style="font-size: 1rem;"></i>
+                                                        </button>';
 
                                             if($baja == '1') { $btn_del_mostrar= $btn_del; } else {  $btn_del_mostrar= ''; }
-                                            if($modf == '1') { $btn_mdf_mostrar= $btn_mdf; } else {  $btn_mdf_mostrar= ''; }
+                                            if($modf == '1') { 
+                                                $existe_proceso = $RondAg->tf_existe_config($cur['id']); 
+                                                if(!$existe_proceso){   
+                                                    $btn_procesar   = $btn_pro;                                
+                                                    $btn_ver_mostrar= '';
+                                                    $btn_ver_borrar = '';
+                                                }else{                   
+                                                    $btn_procesar   = $RondAg->get_fecha_config($cur['id']);   
+                                                    $btn_ver_mostrar= $btn_ver;                                                    
+                                                    $btn_ver_borrar = $btn_del_mostrar;
+                                                }                                                                                                
+                                            } else {  $btn_procesar= '';    }
 
                                             $dsd_f  = new DateTime($cur['f_inscrip_dsd']);
                                             $dsd_f_ = $dsd_f->format('d/m/y');
@@ -480,16 +658,16 @@
 
                                             $inscrip= $dsd_f_.' al '.$hst_f_;
 
-                                            if($cur['f_dia_2']== '0000-00-00')  $f_dia_2= ''; else $f_dia_2= $cur['f_dia_2'];
+                                            if($cur['f_dia_2']== '1900-01-01')  $f_dia_2= '-'; else $f_dia_2= $cur['f_dia_2'];
 
                                             echo "<tr class=\"cellColor" . ($j%2) . "\" align=\"center\" id=\"tr$j\">\n"
-                                            . '<td style="text-align:center">'. $cur['f_dia_1']  	."</td>\n"
-                                            . '<td style="text-align:center">'. $f_dia_2  	        ."</td>\n"
-                                            . '<td style="text-align:center">'. $cur['nombre']  	."</td>\n"
-                                            . '<td style="text-align:center">'. $inscrip         	."</td>\n"
-                                            . '<td style="text-align:center">'. $btn_del_mostrar . "</td>\n"
-                                            . '<td style="text-align:center">'. $btn_mdf_mostrar . "</td>\n"
-                                            . '<td style="text-align:center">'. $btn_mdf_mostrar . $btn_del_mostrar . "</td>\n"
+                                            . '<td style="text-align:center">'. $cur['nombre']  	. "</td>\n"
+                                            . '<td style="text-align:center">'. $cur['f_dia_1']  	. "</td>\n"
+                                            . '<td style="text-align:center">'. $f_dia_2  	        . "</td>\n"
+                                            . '<td style="text-align:center">'. $inscrip         	. "</td>\n"
+                                            . '<td style="text-align:center">'. $btn_ver_borrar     . "</td>\n"
+                                            . '<td style="text-align:center">'. $btn_procesar       . "</td>\n"
+                                            . '<td style="text-align:center">'. $btn_ver_mostrar    . "</td>\n"
                                             . "</tr>\n";
                                         }
                                         echo "</tbody>";

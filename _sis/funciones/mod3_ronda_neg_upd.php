@@ -18,6 +18,9 @@ $op = 'ok';
 $c1= 'ok';	$er1= '';
 if($user=='' OR $nom=='' OR $lug=='' OR $f1=='' OR $hs=='' OR $f_insc_dsd=='' OR $f_insc_hst=='' OR count($chek)==0){	$c1= 'er';	$er1= 'Faltan datos. '; }
 
+// Control: F2?
+if($f2=='')	$f2_='1900-01-01'; else $f2_=$f2;
+
 // Validacion
 if($c1== 'er'){	$op = 'er';	 }
 
@@ -25,14 +28,13 @@ if($c1== 'er'){	$op = 'er';	 }
 switch($op){
 
 	case 'er':
-			$a_tit= 'Error al actualizar';	  $a_sub= 'Errores: '.$er1;   $a_ico= 'error';	
-			break;
+			$a_tit= 'Error al actualizar';	  $a_sub= 'Errores: '.$er1;   $a_ico= 'error';				break;
 
 	case 'ok':
 			$add_ev= false;
 
 			// upd ronda
-			$upd = $RN->upd($id, $user, $nom, $lug, $f1, $f2, $f_insc_dsd, $f_insc_hst, $hs);
+			$upd = $RN->upd($id, $user, $nom, $lug, $f1, $f2_, $f_insc_dsd, $f_insc_hst, $hs);
 
 			// upd evento (para web)
 			$upd_ev = $RN->upd_evento('RN', $id, $user, $nom, $lug, $f1, $f_insc_dsd, $f_insc_hst, $hs);

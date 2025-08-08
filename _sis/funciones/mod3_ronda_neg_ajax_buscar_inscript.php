@@ -1,13 +1,17 @@
 <?php
 include('./mod3_ronda_neg.php');	    $RN  = new RondaNegocios();
 
-if (isset($_POST["b"]))  { $id  = $_POST["b"];  } else { $id  = ''; }  
+if (isset($_POST["b"]))  { $id  = $_POST["b"];  } else { $id  = ''; } 
+
+$nombre='todos_los_inscriptos';
 
 $arr_inscript_c = array();
 $arr_inscript_c = $RN->gets_inscrip_x_id($id, 'c'); 
+$knt_inscript_c = count($arr_inscript_c);
 
 $arr_inscript_v = array();
-$arr_inscript_v = $RN->gets_inscrip_x_id($id, 'v');     
+$arr_inscript_v = $RN->gets_inscrip_x_id($id, 'v');  
+$knt_inscript_v = count($arr_inscript_v);   
 ?>
 
 <!-- TABS -->
@@ -15,10 +19,16 @@ $arr_inscript_v = $RN->gets_inscrip_x_id($id, 'v');
 
     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-c" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Compradores</button>
+            <button class="nav-link active position-relative mb-2 me-4" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-c" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                <span class="btn-text-inner"> Compradores </span>
+                <span class="badge badge-info counter"><?php echo $knt_inscript_c; ?></span>
+            </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-v" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Vendedores</button>
+            <button class="nav-link position-relative mb-2 me-4" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-v" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                <span class="btn-text-inner"> Vendedores </span>
+                <span class="badge badge-info counter"><?php echo $knt_inscript_v; ?></span>
+            </button>
         </li>                            
     </ul>
     <div class="tab-content" id="pills-tabContent">
@@ -130,10 +140,17 @@ $arr_inscript_v = $RN->gets_inscrip_x_id($id, 'v');
             "dom": "<'dt--top-section'<'row'<'col-sm-12 col-md-6 d-flex justify-content-md-start justify-content-center'B><'col-sm-12 col-md-6 d-flex justify-content-md-end justify-content-center mt-md-0 mt-3'f>>>" +
         "<'table-responsive'tr>" +
         "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+            // buttons: {  buttons: [  { extend: 'copy', className: 'btn' },  { extend: 'excel', className: 'btn' }     ] },
             buttons: {
                 buttons: [
-                    { extend: 'copy', className: 'btn' },
-                    { extend: 'excel', className: 'btn' }
+                    { extend: 'excel', 
+                        className: 'btn btn-success btn-sm btn-export',     title: '',
+                        filename: function () {   var nombre = '<?php echo $nombre; ?>';        return 'Inscriptos '+nombre;       }
+                    },
+                    { extend: 'print', 
+                        className: 'btn btn-success btn-sm btn-export',    title: '', 
+                        filename: function () {   var nombre = '<?php echo $nombre; ?>';        return 'Inscriptos '+nombre;       } 
+                    }
                 ]
             },
             "columnDefs": [ {
@@ -159,10 +176,17 @@ $arr_inscript_v = $RN->gets_inscrip_x_id($id, 'v');
             "dom": "<'dt--top-section'<'row'<'col-sm-12 col-md-6 d-flex justify-content-md-start justify-content-center'B><'col-sm-12 col-md-6 d-flex justify-content-md-end justify-content-center mt-md-0 mt-3'f>>>" +
         "<'table-responsive'tr>" +
         "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+            // buttons: {  buttons: [  { extend: 'copy', className: 'btn' },  { extend: 'excel', className: 'btn' }     ] },
             buttons: {
                 buttons: [
-                    { extend: 'copy', className: 'btn' },
-                    { extend: 'excel', className: 'btn' }
+                    { extend: 'excel', 
+                        className: 'btn btn-success btn-sm btn-export',    title: '',
+                        filename: function () {   var nombre = '<?php echo $nombre; ?>';        return 'Inscriptos '+nombre;       }
+                    },
+                    { extend: 'print', 
+                        className: 'btn btn-success btn-sm btn-export',    title: '', 
+                        filename: function () {   var nombre = '<?php echo $nombre; ?>';        return 'Inscriptos '+nombre;       } 
+                    }
                 ]
             },
             "columnDefs": [ {

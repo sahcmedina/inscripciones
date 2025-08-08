@@ -1,43 +1,38 @@
 <?php
 session_start();
-include("mod3_ronda_neg.php"); $RN = new RondaNegocios();
+include("mod3_ronda_neg.php");          $RN = new RondaNegocios();
 
-if (isset($_POST["usuario"]))       { $user= $_POST["usuario"];     		} else { $user= '';  		}
-if (isset($_POST["nom_"]))       	{ $nom= $_POST["nom_"];      			} else { $nom= '';   		}
-if (isset($_POST["lug_"]))       	{ $lug= $_POST["lug_"];      			} else { $lug= '';   		}
-if (isset($_POST["f1"]))       		{ $f1= $_POST["f1"];      				} else { $f1= '';   		}
-if (isset($_POST["f2"]))       		{ $f2= $_POST["f2"];      				} else { $f2= '';   		}
-if (isset($_POST["f_insc_dsd"]))  	{ $f_insc_dsd= $_POST["f_insc_dsd"];  	} else { $f_insc_dsd= '';   }
-if (isset($_POST["f_insc_hst"]))  	{ $f_insc_hst= $_POST["f_insc_hst"];  	} else { $f_insc_hst= '';   }
-if (isset($_POST["hs"]))  	        { $hs= $_POST["hs"];                 	} else { $hs= '';   		}
-if (isset($_POST["chek"]))      	{ $chek= $_POST["chek"];            	} else { $chek= '';         }
+if (isset($_SESSION["var_user"]))       { $user= $_SESSION["var_user"];     	    } else { $user= '';  		}
+if (isset($_SESSION["var_nom"]))       	{ $nom= $_SESSION["var_nom"];      			} else { $nom= '';   		}
+if (isset($_SESSION["var_lug"]))       	{ $lug= $_SESSION["var_lug"];      			} else { $lug= '';   		}
+if (isset($_SESSION["var_f1"]))       	{ $f1= $_SESSION["var_f1"];      			} else { $f1= '';   		}
+if (isset($_SESSION["var_f2"]))       	{ $f2= $_SESSION["var_f2"];      			} else { $f2= '';   		}
+if (isset($_SESSION["var_f_insc_dsd"])) { $f_insc_dsd= $_SESSION["var_f_insc_dsd"]; } else { $f_insc_dsd= '';   }
+if (isset($_SESSION["var_f_insc_hst"])) { $f_insc_hst= $_SESSION["var_f_insc_hst"]; } else { $f_insc_hst= '';   }
+if (isset($_SESSION["var_hs"]))  	    { $hs= $_SESSION["var_hs"];                 } else { $hs= '';   		}
+if (isset($_SESSION["var_chek"]))      	{ $chek= $_SESSION["var_chek"];            	} else { $chek= '';         }
 $op = 'ok';
 
 // Control: Faltan datos?
 $c1= 'ok';	$er1= '';
 if($user=='' OR $nom=='' OR $lug=='' OR $f1=='' OR $hs=='' OR $f_insc_dsd=='' OR $f_insc_hst=='' OR count($chek)==0){	$c1= 'er';	$er1= 'Faltan datos. '; }
 
-// Control: El nombre existe?
-$c2= 'ok';	$er2= '';
-$existe = $RN->tf_existe_nombre($nom);
-if($existe){ $c2= 'er';  $er2= 'Repite nombre. ';	}
+// Control: F2?
+if($f2=='')	$f2_='1900-01-01'; else $f2_=$f2;
 
 // Validacion
-if($c1== 'er' OR $c2== 'er'){	$op = 'er';	 }
-
+if($c1== 'er'){	$op = 'er';	 }
 
 switch($op){
 
-	case 'er':
-			$a_tit= 'Error al Agregar';	  $a_sub= 'Errores: '.$er1.$er2;   $a_ico= 'error';	
-			break;
+	case 'er':	$a_tit= 'Error al Agregar';	  $a_sub= 'Errores: '.$er1;   $a_ico= 'error';		break;
 
 	case 'ok':
 			$id_rn = 0;
 			$add_ev= false;
 
 			// agregar ronda
-			$add  = $RN->add($user, $nom, $lug, $f1, $f2, $f_insc_dsd, $f_insc_hst, $hs);
+			$add  = $RN->add($user, $nom, $lug, $f1, $f2_, $f_insc_dsd, $f_insc_hst, $hs);
 			$id_rn= $RN->get_last_id_rn();
 
 			// agregar evento (para web)

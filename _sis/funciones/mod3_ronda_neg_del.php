@@ -10,9 +10,18 @@ switch($opc){
 
 	case 'ok':	
 				include_once('./mod3_ronda_neg.php');	 $RondaNeg  = new RondaNegocios();
-				$del = $RondaNeg->del($id);
-				if($del){	$a_ico= 'success';  $a_tit= 'Registro borrado';	 $a_sub= '';						}
-				else{		$a_ico= 'error';    $a_tit= 'Error al borrar';	 $a_sub= 'Intente de nuevo.';		}
+
+				$del_evento= $RondaNeg->del_evento($id);				
+				$del_prod  = $RondaNeg->del_prod($id);				
+				$del_ronda = $RondaNeg->del_ronda($id);	
+					
+
+				if($del_evento && $del_prod && $del_ronda){	$a_ico= 'success';  $a_tit= 'Registro borrado';	 $a_sub= '';		}
+				else{		
+					if(!$del_evento)	$msj='Evento (web), ';
+					if(!$del_prod)	    $msj='Productos, ';
+					if(!$del_ronda)	    $msj='Ronda';
+					$a_ico= 'error';    $a_tit= 'Error al borrar';	 $a_sub= $msj.' Comuniquese con el Administrador del sistema.';		}
 				break;
 
 	case 'er':

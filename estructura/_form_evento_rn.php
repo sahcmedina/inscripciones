@@ -1,20 +1,18 @@
 <?php
-
-if (isset($_SESSION['ses_id_evento']))     	{ $id= $_SESSION['ses_id_evento']; }    else { $id= '';      }
-
-include_once("_sis/funciones/pais_prov.php");           $Pais= new Pais_prov();
+include_once("_sis/funciones/pais_prov.php");           $Pais      = new Pais_prov();
 include_once('_sis/funciones/mod3_productos.php');      $Productos = new Productos();
+include_once('_sis/funciones/mod3_ronda_neg.php');      $RondaNeg  = new RondaNegocios();
 
-$arr_  = array();
-$arr_  = $Eve->gets($id); 
-$titulo= $arr_[0]['titulo'];
+$arr_     = array();
+$arr_     = $Eve->gets($id); 
+$titulo   = $arr_[0]['titulo'];
+$id_evento= $arr_[0]['fk_evento'];
 
 $arr_prov = array();
 $arr_prov = $Pais->gets_provincias();
 
 $arr_prod= array();
-$arr_prod= $Productos->gets();
-
+$arr_prod= $Productos->gets_evento($id_evento);
 ?>
 
 <style>  
@@ -75,7 +73,7 @@ $arr_prod= $Productos->gets();
           <div class="checkbox-item"> 
               <input type="checkbox" name="chek[]" id="chek[]" value="<?php echo $arr_prod[$i]['id'] ?>" class="u-field-input" data-calc="" >
               <label class="u-field-label"> <?php echo $arr_prod[$i]['nombre'] ?>  </label>
-              <input type="hidden"  id="id" name="id" value="<?php echo $id ?>">
+              <input type="hidden"  id="id" name="id" value="<?php echo $id_evento ?>">
           </div>
         <?php } ?>
 

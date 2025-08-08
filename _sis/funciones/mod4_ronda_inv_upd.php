@@ -16,15 +16,19 @@ $op = 'ok';
 
 // Control: Faltan datos?
 $c1= 'ok';	$er1= '';
-if($user=='' OR $nom=='' OR $lug=='' OR $f1=='' OR $hs=='' OR $f_insc_dsd=='' OR $f_insc_hst=='' OR count($chek)==0){	$c1= 'er';	$er1= 'Faltan datos. '; }
+if($user=='' OR $nom=='' OR $lug=='' OR $f1=='' OR $hs=='' OR $f_insc_dsd=='' OR $f_insc_hst==''){	$c1= 'er';	$er1= 'Faltan datos. '; }
+
+//verifico que haya seleccionado al menos un sector
+$c2= 'ok';	$er2= '';
+if(!is_array($chek) OR count($chek)==0){ $c2= 'er';	$er2= 'Falta sector'; }
 
 // Validacion
-if($c1== 'er'){	$op = 'er';	 }
+if($c1== 'er' OR $c2== 'er'){	$op = 'er';	 }
 
 switch($op){
 
 	case 'er':
-			$a_tit= 'Error al actualizar';	  $a_sub= 'Errores: '.$er1;   $a_ico= 'error';	
+			$a_tit= 'Error al actualizar';	  $a_sub= 'Errores: '.$er1.$er2;   $a_ico= 'error';	
 			break;
 
 	case 'ok':

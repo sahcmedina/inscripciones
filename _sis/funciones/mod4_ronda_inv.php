@@ -334,6 +334,36 @@ class RondaInversiones {
 		finally{				$sql = null;				}
 	}
 
+	function gets_todos_los_inscrip(){
+		include('conexion_pdo.php');
+		$query_= " SELECT i.*, if(i.i_o = 'i', 'Inversor', 'Oferente') AS rol, p.nombre As prov, r.nombre AS ronda, r.lugar, r.hora, r.f_dia_1 
+		            FROM eventos_ronda_inv_inscrip AS i 
+					INNER JOIN eventos_ronda_inv AS r ON i.fk_ri= r.id 
+					INNER JOIN provincia AS p ON p.id= i.fk_prov ";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->execute();
+			$res = $sql->fetchAll();
+			return $res;
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
+
+	function get_datos_ri_segun_id($id){
+		include('conexion_pdo.php');
+		$query_= " SELECT * FROM eventos_ronda_inv WHERE id = :id "; 
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':id', $id);
+			$sql->execute();
+			$res = $sql->fetchAll();
+			return $res;
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
+
 	//-------------------------------------------------------------------------------
 
 	function gets_param(){
