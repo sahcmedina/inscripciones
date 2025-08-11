@@ -242,8 +242,7 @@ class RN_Agenda {
 		}
 		catch (Exception $e){ echo $e->getMessage(); 		}
 		finally{				$sql = null;				}
-	}
-	
+	}	
 	function aux_copiar($tabla_destino, $tabla_origen){
 		include('conexion_pdo.php');
 		$query_  = " INSERT INTO $tabla_destino SELECT * FROM $tabla_origen "; 

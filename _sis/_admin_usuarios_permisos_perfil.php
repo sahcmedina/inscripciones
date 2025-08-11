@@ -127,7 +127,7 @@
 
                                         <div class="page-title"></div>
                         
-                                        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+                                        <nav class="breadcrumb-style-five" aria-label="breadcrumb">
                                             <ol class="breadcrumb">
                                                 <li class="breadcrumb-item"> Administración </li>
                                                 <li class="breadcrumb-item"><a href="_admin_usuarios.php" title="ir">Usuarios</a></li>

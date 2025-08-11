@@ -16,7 +16,7 @@ class RondaNegocios {
 	}
 	function gets_id($id_rn){
 		include('conexion_pdo.php');
-		$query_  = " SELECT r.* FROM eventos_ronda_neg r WHERE r.id= :id_rn ";
+		$query_  = " SELECT r.*, concat(DAY(f_dia_1),'/',MONTH(f_dia_1),'/',YEAR(f_dia_1)) as d1 FROM eventos_ronda_neg r WHERE r.id= :id_rn ";
 		try{
 			$sql = $con->prepare($query_);
 			$sql->bindParam(':id_rn', $id_rn);
@@ -52,6 +52,19 @@ class RondaNegocios {
 			$sql->execute();
 			$res = $sql->fetchAll();
 			return $res;
+		}
+		catch (Exception $e){	echo $e->getMessage();		}
+		finally{				$sql = null;				}
+	}
+	function get_nbreEmpresa($id_emp){
+		include('conexion_pdo.php');
+		$query_  = " SELECT emp FROM eventos_ronda_neg_inscrip WHERE id= :id ";
+		try{
+			$sql = $con->prepare($query_);
+			$sql->bindParam(':id',  $id_emp);
+			$sql->execute();
+			$res = $sql->fetch();
+			return $res['emp'];
 		}
 		catch (Exception $e){	echo $e->getMessage();		}
 		finally{				$sql = null;				}

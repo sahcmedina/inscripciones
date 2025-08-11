@@ -16,27 +16,91 @@
     }
 	
 	// ------------------------------ FUNCION ------------------------------ //			
-	include_once('./funciones/mod3_productos.php');               $Productos = new Productos(); 
-	include_once('./funciones/mod3_ronda_neg.php');               $RondaNeg  = new RondaNegocios();
-    include_once('./funciones/mod3_rn_agenda.php');	              $RondAg    = new RN_Agenda();
+	include_once('./funciones/mod3_productos.php');     $Productos = new Productos(); 
+	include_once('./funciones/mod3_ronda_neg.php');     $RondaNeg  = new RondaNegocios();
+    include_once('./funciones/mod3_rn_agenda.php');	    $RondAg    = new RN_Agenda();
 
-    $id = $_SESSION['var_id'];
+    $id       = $_SESSION['var_id'];
+    $id_user  = $U->get_id( $login);
 
-    $arr_durac= array('15', '20','25','30');
-	$arr_p    = array(); 
-	$arr_p    = $Productos->gets(); 
+    // datos de la RN
+    $arr_rn   = array();
+	$arr_rn   = $RondaNeg->gets_id($id);
 
-	$id_user  = $U->get_id( $login);
+    // datos de la Agenda
+    $arr_ag   = array();
+	$arr_ag   = $RondAg->gets_config($id);
 
-    $arr_     = array();
-	$arr_     = $RondaNeg->gets();
+    // Dia 1
+    if($arr_ag[0]['dia1']==1){  
+        $hay_dia1= true;  
+        $arr_info= array();
+        $v_1     = $arr_ag[0]['view1']; 
+        $dia1    = $arr_rn[0]['d1']; 
 
-    $arr_param    = array();
-	$arr_param    = $RondaNeg->gets_param();
-    list($hh, $mm, $ss)= explode(':', $arr_param[0]['primer_reunion']);
-    $par_prim_reun= $hh.':'.$mm;
-    $par_duracion = $arr_param[0]['duracion'];
-    $par_x_dia    = $arr_param[0]['x_dia'];
+        $arr_emp_d1 = array();
+		$arr_emp_d1 = $RondAg->aux_gets_empC($v_1);		
+
+    }else{  
+        $hay_dia1= false; }
+
+    // Dia 2
+    if($arr_ag[0]['dia2']==1){  
+        $hay_dia2 = true;  
+        $arr_info2= array();
+        $v_2      = $arr_ag[0]['view2'];         
+        $dia2     = $arr_rn[0]['d2'];  
+
+        $arr_emp_d2 = array();
+		$arr_emp_d2 = $RondAg->aux_gets_empC($v_2);	
+
+    }else{  
+        $hay_dia2= false; }
+
+    // Hs de reuniones
+    if($hay_dia1 OR $hay_dia2){
+    
+        // Parámetros ($horaInicio     = '09:00';  $duracionReunion= 35; $cantReuniones  = 15; )
+        $arr_param    = array();
+        $arr_param    = $RondaNeg->gets_param();
+        list($hh, $mm, $ss)= explode(':', $arr_param[0]['primer_reunion']);
+        $horaInicio   = $hh.':'.$mm;
+        $duracionReunion = $arr_param[0]['duracion'];
+        $cantReuniones= $arr_param[0]['x_dia'];
+        $arr_hs         = array();
+        $ind_hs         = 0;
+
+        // Convertimos la hora inicial a un objeto DateTime para facilitar los cálculos
+        $fechaActual    = new DateTime();
+        $horaInicioArray= explode(':', $horaInicio);
+        $fechaActual->setTime($horaInicioArray[0], $horaInicioArray[1], 0);
+
+        // Calculamos el horario para cada reunión
+        for ($i = 1; $i <= $cantReuniones; $i++) {
+            // Almacenamos la hora de inicio para esta reunión
+            $inicioReunion = clone $fechaActual;
+            
+            // Calculamos la hora de fin añadiendo la duración
+            $fechaActual->add(new DateInterval('PT' . $duracionReunion . 'M'));
+            
+            // Guardo
+            array_push($arr_hs, $inicioReunion->format('H:i'));
+        }
+    }
+
+
+    //////////////////////////////////////
+    
+    // $arr_durac= array('15', '20','25','30');
+	// $arr_p    = array(); 
+	// $arr_p    = $Productos->gets();     
+
+    // $arr_param    = array();
+	// $arr_param    = $RondaNeg->gets_param();
+    // list($hh, $mm, $ss)= explode(':', $arr_param[0]['primer_reunion']);
+    // $par_prim_reun= $hh.':'.$mm;
+    // $par_duracion = $arr_param[0]['duracion'];
+    // $par_x_dia    = $arr_param[0]['x_dia'];
 ?>
 
 <!DOCTYPE html><html lang="es">
@@ -275,14 +339,14 @@
                                 <div class="d-flex breadcrumb-content">
                                     <div class="page-header">
 
-                                        <div class="page-title"></div>
+                                        <div class="page-title"></div>  
                         
                                         <nav class="breadcrumb-style-five" aria-label="breadcrumb">
                                             <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="principal.php" title="Dashboard"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="inner-text"></span></a></li>
                                                 <li class="breadcrumb-item"> Negocios </li>
-                                                <li class="breadcrumb-item" aria-current="page"> Agenda </li>
-                                                <li class="breadcrumb-item active" aria-current="page"> NOMBRE </li>
+                                                <li class="breadcrumb-item"><a href="_ronda_neg_agenda.php" title="ir">Agenda</a></li>
+                                                <li class="breadcrumb-item active" aria-current="page"> <?php echo $arr_rn[0]['nombre'] ?> </li>
                                             </ol>
                                         </nav>
                         
@@ -332,111 +396,329 @@
                     <div class="simple-pill">
 
                         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active position-relative mb-2 me-4" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-d1" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
-                                    <span class="btn-text-inner"> Compradores </span>
-                                    <span class="badge badge-info counter"><?php echo $knt_inscript_c; ?></span>
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link position-relative mb-2 me-4" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-d2" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
-                                    <span class="btn-text-inner"> Vendedores </span>
-                                    <span class="badge badge-info counter"><?php echo $knt_inscript_v; ?></span>
-                                </button>
-                            </li>                            
+                            <?php if($hay_dia1){ ?>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active position-relative mb-2 me-4" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-d1" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                                        <span class="btn-text-inner"> <b>Día 1:</b> <?php echo $dia1; ?></span>
+                                    </button>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <a href="./informes/agenda1.php"  target="_blank" title="Generar PDF - día 1"
+                                        class="nav-link active position-relative mb-2 me-4 text-decoration-none" 
+                                        id="pills-home-tab" role="tab">
+                                        <span class="btn-text-inner"> PDF </span>
+                                    </a>
+                                </li>  
+                            <?php }	?>                                                      
+
+                            <?php if($hay_dia2){	?>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link position-relative mb-2 me-4" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-d2" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                                        <span class="btn-text-inner"> <b>Día 2</b> <?php echo $dia2; ?></span>
+                                    </button>
+                                </li>   
+
+                                <li class="nav-item" role="presentation">
+                                    <a href="./informes/agenda2.php" target="_blank" title="Generar PDF - día 2"
+                                        class="nav-link active position-relative mb-2 me-4 text-decoration-none" 
+                                        id="pills-home-tab" role="tab">
+                                        <span class="btn-text-inner"> PDF </span>
+                                    </a>
+                                </li>                               
+                            <?php }	?>                        
                         </ul>
 
                         <div class="tab-content" id="pills-tabContent">
-                            <div class="tab-pane fade show active" id="pills-d1" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-                                
-                                <!-- DT Dia 1 -->
-                                <?php if(count($arr_inscript_c) > 0){	?>
-                                <div class="row">
-                                    <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
-                                        <div class="statbox widget box box-shadow">
-                                            <div class="widget-content widget-content-area">
-                                                <table id="dt_c" class="table dt-table-hover" style="width:100%">
-                                                    <?php
+
+                            <!-- Tab Dia 1 -->
+                            <?php if($hay_dia1){	?>
+                                <div class="tab-pane fade show active" id="pills-d1" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+                                                                
+                                    <!-- DT Dia 1 -->
+                                    <?php if($hay_dia1){	?>
+                                    <div class="row">
+                                        <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+                                            <div class="statbox widget box box-shadow">                                            
+                                                <div class="widget-content widget-content-area">
+                                                    <table id="dt_1" class="table table-striped table-bordered" class="datatable">
+                                    
+                                                    <?php 
+
+                                                    // Columnas
                                                     $tabla= "<thead><tr class=\"rowHeaders\">			
-                                                        <th style='text-align:center'> id   	 </th>
-                                                        <th style='text-align:center'> Persona	 </th>
-                                                        <th style='text-align:center'> Telefono  </th>
-                                                        <th style='text-align:center'> Email     </th>
-                                                        <th style='text-align:center'> Empresa   </th>
-                                                        <th style='text-align:center'> CUIT      </th>
-                                                        <th style='text-align:center'> Provincia </th>";
+                                                                <th style='text-align:center'> Hora   	</th>";
+                                                    $arr_info[0][0]= 'Hora';
+                                                    $ind_info      = 1;
+
+                                                    for($p=0 ; $p<count($arr_emp_d1) ; $p++){
+                                                        $nom_emp_c = $RondaNeg->get_nbreEmpresa($arr_emp_d1[$p]);
+                                                        $tabla.= "<th style='text-align:center'> ".$nom_emp_c." </th>";
+                                                        $arr_info[0][$ind_info]= $nom_emp_c;
+                                                        $ind_info++;
+                                                    }
+                                                    $knt_col_t1           = count($arr_emp_d1);
+                                                    $_SESSION['knt_emp_c']= $knt_col_t1;      
+                                                    
                                                     $tabla.="</tr></thead><tbody>";			
                                                     echo $tabla;
-                                                    for($j=0 ; is_array($arr_inscript_c) && $j<count($arr_inscript_c) ; $j++){
-                                                        $cur  = $arr_inscript_c[$j];
-                                                        echo "<tr class=\"cellColor" . ($j%2) . "\" align=\"center\" id=\"tr$j\">\n"
-                                                            . '<td style="text-align:center">'. $cur['id']    	    ."</td>\n"
-                                                            . '<td style="text-align:center">'. $cur['persona']     ."</td>\n"
-                                                            . '<td style="text-align:center">'. $cur['tel']         ."</td>\n"
-                                                            . '<td style="text-align:center">'. $cur['email']       ."</td>\n"
-                                                            . '<td style="text-align:center">'. $cur['emp']         ."</td>\n"
-                                                            . '<td style="text-align:center">'. $cur['cuit']        ."</td>\n"
-                                                            . '<td style="text-align:center">'. $cur['prov']        ."</td>\n"
-                                                            . "</tr>\n";
+
+                                                    $ind_info_f = 1;
+                                                    $ind_info_c = 0;
+
+                                                    // Filas
+                                                    $fila= "<tr class=\"cellColor" . ($pp%2) . "\" align=\"center\" id=\"tr$pp\">\n";
+                                                    $arr_fila = array();
+                                                    for($pp= 2; $pp <= 16 ; $pp++){
+                                                        $arr_fila = $RondAg->gets_fila($v_1, $pp);
+                                                        $ccant    = 0;
+
+                                                        // hs
+                                                        $f= '<td style="text-align:center">'. $arr_hs[$ind_hs]."</td>\n";
+                                                        $ind_hs++;
+
+                                                        $ind_info_c= 0;
+                                                        $arr_info[$ind_info_f][$ind_info_c]= $arr_hs[$ind_hs];
+                                                        $ind_info_c ++;
+
+                                                        for($m=0 ; $m<count($arr_fila) ; $m++){ 
+                                                            if(1<= $knt_col_t1){ 
+                                                                $emp_a_most = $arr_fila[$m]['c1'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(2<= $knt_col_t1){ 
+                                                                $emp_a_most = $arr_fila[$m]['c2'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(3<= $knt_col_t1){ 
+                                                                $emp_a_most = $arr_fila[$m]['c3'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(4<= $knt_col_t1){ 
+                                                                $emp_a_most = $arr_fila[$m]['c4'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(5<= $knt_col_t1){ 
+                                                                $emp_a_most = $arr_fila[$m]['c5'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(6<= $knt_col_t1){ 
+                                                                $emp_a_most = $arr_fila[$m]['c6'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(7<= $knt_col_t1){ 
+                                                                $emp_a_most = $arr_fila[$m]['c7'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(8<= $knt_col_t1){ 
+                                                                $emp_a_most = $arr_fila[$m]['c8'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(9<= $knt_col_t1){ 
+                                                                $emp_a_most = $arr_fila[$m]['c9'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(10<=$knt_col_t1){ 
+                                                                $emp_a_most = $arr_fila[$m]['c10']; 
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                        }
+                                                        $ind_info_f++;
+                                                        
+                                                        // Permite dibujar solamente las filas con datos
+                                                        if($ccant > 0){ echo $f; }
+                                                        echo "</tr>\n";
                                                     }
-                                                    echo "</tbody>";
-                                                ?>  
+                                                    echo "</tr>\n";
+                                                    
+                                                    echo "</tbody>";?>
                                                 </table>
+
+                                                </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <?php } ?>
+                                    <!-- Fin - DT Dia 1 -->
+
                                 </div>
-                                <?php }else{ 
-                                    echo '<center><span style="font-weight:bold;color:red;">No hay Compradores inscriptos </span></center>';
-                                } ?>
-                                <!-- Fin - DT Compradores -->
+                            <?php }	?>
 
-                            </div>
-                            <div class="tab-pane fade" id="pills-d2" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+                            <!-- Tab Dia 2 -->
+                            <?php if($hay_dia2){	?>
+                                <div class="tab-pane fade show active" id="pills-d2" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+                                                                
+                                    <!-- DT Dia 2 -->
+                                    <?php if($hay_dia2){	?>
+                                    <div class="row">
+                                        <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+                                            <div class="statbox widget box box-shadow">
+                                                <div class="widget-content widget-content-area">
+                                                    <table id="dt_2" class="table table-striped table-bordered" class="datatable">
+                                    
+                                                    <?php 
 
-                                <!-- DT Dia 2 -->
-                                <?php if(count($arr_inscript_v) > 0){	?>
-                                <div class="row">
-                                    <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
-                                        <div class="statbox widget box box-shadow">
-                                            <div class="widget-content widget-content-area">
-                                                <table id="dt_v" class="table dt-table-hover" style="width:100%">
-                                                    <?php
-                                                    $tabla= "<thead><tr class=\"rowHeaders\">		
-                                                        <th style='text-align:center'> id   	 </th>
-                                                        <th style='text-align:center'> Persona	 </th>
-                                                        <th style='text-align:center'> Telefono  </th>
-                                                        <th style='text-align:center'> Email     </th>
-                                                        <th style='text-align:center'> Empresa   </th>
-                                                        <th style='text-align:center'> CUIT      </th>
-                                                        <th style='text-align:center'> Provincia </th>";
+                                                    // Columnas
+                                                    $tabla= "<thead><tr class=\"rowHeaders\">			
+                                                                <th style='text-align:center'> Hora   	</th>";
+                                                    $arr_info[0][0]= 'Hora';
+                                                    $ind_info      = 1;
+
+                                                    for($p=0 ; $p<count($arr_emp_d2) ; $p++){
+                                                        $nom_emp_c2 = $RondaNeg->get_nbreEmpresa($arr_emp_d2[$p]);
+                                                        $tabla.= "<th style='text-align:center'> ".$nom_emp_c2." </th>";
+                                                        $arr_info[0][$ind_info]= $nom_emp_c2;
+                                                        $ind_info++;
+                                                    }
+                                                    $knt_col_t2            = count($arr_emp_d2);
+                                                    $_SESSION['knt_emp_c2']= $knt_col_t2;      
+                                                    
                                                     $tabla.="</tr></thead><tbody>";			
                                                     echo $tabla;
-                                                    for($j=0 ; is_array($arr_inscript_v) && $j<count($arr_inscript_v) ; $j++){
-                                                        $cur  = $arr_inscript_v[$j];
-                                                        echo "<tr class=\"cellColor" . ($j%2) . "\" align=\"center\" id=\"tr$j\">\n"
-                                                            . '<td style="text-align:center">'. $cur['id']    	    ."</td>\n"
-                                                            . '<td style="text-align:center">'. $cur['persona']     ."</td>\n"
-                                                            . '<td style="text-align:center">'. $cur['tel']         ."</td>\n"
-                                                            . '<td style="text-align:center">'. $cur['email']       ."</td>\n"
-                                                            . '<td style="text-align:center">'. $cur['emp']         ."</td>\n"
-                                                            . '<td style="text-align:center">'. $cur['cuit']        ."</td>\n"
-                                                            . '<td style="text-align:center">'. $cur['prov']        ."</td>\n"
-                                                            . "</tr>\n";
+
+                                                    $ind_info_f = 1;
+                                                    $ind_info_c = 0;
+
+                                                    // Filas
+                                                    $fila= "<tr class=\"cellColor" . ($pp%2) . "\" align=\"center\" id=\"tr$pp\">\n";
+                                                    $arr_fila = array();
+                                                    for($pp= 2; $pp <= 16 ; $pp++){
+                                                        $arr_fila = $RondAg->gets_fila($v_2, $pp);
+                                                        $ccant    = 0;
+
+                                                        // hs
+                                                        $f= '<td style="text-align:center">'. $arr_hs[$ind_hs]."</td>\n";
+                                                        $ind_hs++;
+
+                                                        $ind_info_c= 0;
+                                                        $arr_info[$ind_info_f][$ind_info_c]= $arr_hs[$ind_hs];
+                                                        $ind_info_c ++;
+
+                                                        for($m=0 ; $m<count($arr_fila) ; $m++){ 
+                                                            if(1<= $knt_col_t2){ 
+                                                                $emp_a_most = $arr_fila[$m]['c1'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(2<= $knt_col_t2){ 
+                                                                $emp_a_most = $arr_fila[$m]['c2'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(3<= $knt_col_t2){ 
+                                                                $emp_a_most = $arr_fila[$m]['c3'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(4<= $knt_col_t2){ 
+                                                                $emp_a_most = $arr_fila[$m]['c4'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(5<= $knt_col_t2){ 
+                                                                $emp_a_most = $arr_fila[$m]['c5'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(6<= $knt_col_t2){ 
+                                                                $emp_a_most = $arr_fila[$m]['c6'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(7<= $knt_col_t2){ 
+                                                                $emp_a_most = $arr_fila[$m]['c7'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(8<= $knt_col_t2){ 
+                                                                $emp_a_most = $arr_fila[$m]['c8'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(9<= $knt_col_t2){ 
+                                                                $emp_a_most = $arr_fila[$m]['c9'];  
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                            if(10<=$knt_col_t2){ 
+                                                                $emp_a_most = $arr_fila[$m]['c10']; 
+                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                $f.= '<td style="text-align:center">'. $most."</td>\n";
+
+                                                                $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
+                                                            }
+                                                        }
+                                                        $ind_info_f++;
+                                                        
+                                                        // Permite dibujar solamente las filas con datos
+                                                        if($ccant > 0){ echo $f; }
+                                                        echo "</tr>\n";
                                                     }
-                                                    echo "</tbody>";
-                                                ?>  
+                                                    echo "</tr>\n";
+                                                    
+                                                    echo "</tbody>";?>
                                                 </table>
+
+                                                </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <?php }else{ 
-                                    echo '<center><span style="font-weight:bold;color:red;">No hay Vendedores inscriptos </span></center>';
-                                } ?>
-                                <!-- Fin - DT Vendedores -->
+                                    <?php } ?>
+                                    <!-- Fin - DT Dia 2 -->
 
-                            </div>
+                                </div>
+                            <?php }	?>
+
                         </div>
 
                     </div>
@@ -467,7 +749,23 @@
 
     <!-- CONFIG DATATABLE -->
     <script>
-        $('#dt_').DataTable({
+        $('#dt_1').DataTable({
+            "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
+        "<'table-responsive'tr>" +
+        "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+            "oLanguage": {
+                "oPaginate": { "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>', "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>' },
+                "sInfo": "Mostrando página _PAGE_ de _PAGES_",
+                "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                "sSearchPlaceholder": "Buscar...",
+               "sLengthMenu": "Results :  _MENU_",
+            },
+            "stripeClasses": [],
+            "lengthMenu": [5, 10, 20, 50],
+            "pageLength": 5 
+        });
+
+        $('#dt_2').DataTable({
             "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
         "<'table-responsive'tr>" +
         "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
@@ -498,6 +796,15 @@
     <?php 
 	    require_once('./estructura/buscador_barra.php');
 	?> 
+
+    <?php
+        $_SESSION['arr_info']   = $arr_info;      
+        $_SESSION['arr_info2']  = $arr_info2;      
+        $_SESSION['hay_tabla_1']= $hay_dia1;      
+        $_SESSION['hay_tabla_2']= $hay_dia2;      
+        $_SESSION['f_dia_1_']   = $dia1;      
+        $_SESSION['f_dia_2_']   = $dia2;      
+    ?>
 
 </body>
 </html>

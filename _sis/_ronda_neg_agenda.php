@@ -29,6 +29,7 @@
     $arr_     = array();
 	$arr_     = $RondaNeg->gets();
 
+    // Parametros
     $arr_param    = array();
 	$arr_param    = $RondaNeg->gets_param();
     list($hh, $mm, $ss)= explode(':', $arr_param[0]['primer_reunion']);
