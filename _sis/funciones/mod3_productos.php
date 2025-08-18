@@ -63,7 +63,7 @@ class Productos {
 		finally{				$sql = null;				}
 	}
 
-	function del($id){
+	function del_OLD($id){
 		include('conexion_pdo.php');				
 		$query_  = " DELETE FROM eventos_ronda_neg_productos WHERE id= :id "; 
 		try{
@@ -75,6 +75,36 @@ class Productos {
 		}
 		catch (Exception $e){ echo $e->getMessage();}
 		finally{				$sql = null;		}
+	}
+	function del($id){
+		include('conexion_pdo.php');	
+		$return  = ['success' => false, 'message' => ''];	
+
+		try {
+			$query = "DELETE FROM eventos_ronda_neg_productos WHERE id = :id";
+			$sql   = $con->prepare($query);
+			$sql->bindParam(':id', $id);
+			
+			if($sql->execute()) {
+				$return['success'] = true;
+				$return['message'] = 'ok';
+			} else {
+				$return['message'] = 'Intente de nuevo.';
+			}			
+		} 
+		catch (PDOException $e) {
+			// Código de error para violación de clave foránea (MySQL)
+			if($e->errorInfo[1] == 1451) {
+				$return['message'] = 'No se puede eliminar el producto porque está siendo utilizado!';
+			} else {
+				$return['message'] = 'Error inesperado: ' . $e->getMessage();
+			}
+		} 
+		finally {
+			$sql = null;
+			$con = null;
+		}    
+    	return $return;
 	}
 
 	function upd($id, $user, $nombre){
