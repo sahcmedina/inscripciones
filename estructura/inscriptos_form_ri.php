@@ -16,8 +16,8 @@ if (isset($_POST['fk_id'])) { $fk_id   = $_POST['fk_id'];} else { $fk_id   = '';
 $op = 'ok';
 if($id=='' OR $i_o=='' OR $prov=='' OR $emp=='' OR $cuit=='' OR $resp=='' OR $tel=='' OR $email=='')	$op= 'dats_f';
 
-// Control: # productos elegidos
-if(count($arr_sect)== 0)	$op= 'sect_f';
+// Control: # sectores elegidos
+if (!isset($arr_sect) OR !is_array($arr_sect) OR count($arr_sect) < 0) { $op= 'sect_f';}
 
 switch($op){
 
@@ -35,10 +35,10 @@ switch($op){
 			$add       = $RI->add_inscrip($fk_id, $emp, $cuit, $resp, $tel, $i_o, $prov, $email);
 			$id_inscrip= $RI->get_last_id_inscrip();
 
-			// add productos
+			// add sectores
 			for($i=0 ; $i<count($arr_sect) ; $i++){
-				$sect    = $arr_sect[$i];
-				$add_sect= $RI->add_inscrip_sect($id_inscrip, $sect);
+				$sect    = $arr_sect[$i]; 
+				$add_sect= $RI->add_inscrip_sect($fk_id, $id_inscrip, $i_o, $sect);
 			}
 
 			if($id_inscrip!= 0){	$a_ico= 'success';    $a_tit= 'Inscripción realizada';	 $a_sub= 'Nos comunicaremos vía email.';	 										}
