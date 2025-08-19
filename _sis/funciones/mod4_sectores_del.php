@@ -10,9 +10,9 @@ switch($opc){
 
 	case 'ok':	
 				include_once('./mod4_sectores.php');	$Sectores = new Sectores();
-				$del = $Sectores->del($id);
-				if($del){	$a_ico= 'success';  $a_tit= 'Registro borrado';	 $a_sub= '';						}
-				else{		$a_ico= 'error';    $a_tit= 'Error al borrar';	 $a_sub= 'Intente de nuevo.';		}
+				$ret_del = $Sectores->del($id);
+				if(!$ret_del['success']){	$a_ico= 'error';    $a_tit= 'Error al borrar';	 $a_sub= $ret_del['message'];  	}
+				else{	                    $a_ico= 'success';  $a_tit= 'Registro borrado';	 $a_sub= '';					}
 				break;
 
 	case 'er':
