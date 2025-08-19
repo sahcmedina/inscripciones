@@ -3,7 +3,7 @@
 
 	// consultar permisos del usuario (logueado) a la funcion
 	$datos_f = array();
-	$datos_f = $U->get_permisos('10',$datos[0]['fk_perfil']);
+	$datos_f = $U->get_permisos('13',$datos[0]['fk_perfil']);
 	$alta    = $datos_f[0]['alta'];
 	$baja    = $datos_f[0]['baja'];
 	$modf    = $datos_f[0]['modificacion'];
@@ -16,16 +16,16 @@
     }
 	
 	// ------------------------------ FUNCION ------------------------------ //			
-	include_once('./funciones/mod3_productos.php');     $Productos = new Productos(); 
-	include_once('./funciones/mod3_ronda_neg.php');     $RondaNeg  = new RondaNegocios();
-    include_once('./funciones/mod3_rn_agenda.php');	    $RondAg    = new RN_Agenda();
+	include_once('./funciones/mod4_sectores.php');  $Sectores = new Sectores(); 
+	include_once('./funciones/mod4_ronda_inv.php'); $RondaInv = new RondaInversiones();
+    include_once('./funciones/mod4_ri_agenda.php');	$RondAg   = new RI_Agenda();
 
     $id       = $_SESSION['var_id'];
     $id_user  = $U->get_id( $login);
 
-    // datos de la RN
-    $arr_rn   = array();
-	$arr_rn   = $RondaNeg->gets_id($id);
+    // datos de la RI
+    $arr_ri   = array();
+	$arr_ri   = $RondaInv->gets_id($id);
 
     // datos de la Agenda
     $arr_ag   = array();
@@ -36,10 +36,10 @@
         $hay_dia1= true;  
         $arr_info= array();
         $v_1     = $arr_ag[0]['view1']; 
-        $dia1    = $arr_rn[0]['d1']; 
+        $dia1    = $arr_ri[0]['d1']; 
 
         $arr_emp_d1 = array();
-		$arr_emp_d1 = $RondAg->aux_gets_empC($v_1);		
+		$arr_emp_d1 = $RondAg->aux_gets_empI($v_1);		
 
     }else{  
         $hay_dia1= false; }
@@ -49,10 +49,10 @@
         $hay_dia2 = true;  
         $arr_info2= array();
         $v_2      = $arr_ag[0]['view2'];         
-        $dia2     = $arr_rn[0]['d2'];  
+        $dia2     = $arr_ri[0]['d2'];  
 
         $arr_emp_d2 = array();
-		$arr_emp_d2 = $RondAg->aux_gets_empC($v_2);	
+		$arr_emp_d2 = $RondAg->aux_gets_empI($v_2);	
 
     }else{  
         $hay_dia2= false; }
@@ -62,7 +62,7 @@
     
         // Parámetros ($horaInicio     = '09:00';  $duracionReunion= 35; $cantReuniones  = 15; )
         $arr_param    = array();
-        $arr_param    = $RondaNeg->gets_param();
+        $arr_param    = $RondaInv->gets_param();
         list($hh, $mm, $ss)= explode(':', $arr_param[0]['primer_reunion']);
         $horaInicio   = $hh.':'.$mm;
         $duracionReunion = $arr_param[0]['duracion'];
@@ -345,7 +345,7 @@
                                             <ol class="breadcrumb">
                                             <li class="breadcrumb-item"><a href="principal.php" title="Dashboard"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="inner-text"></span></a></li>
                                                 <li class="breadcrumb-item"> Negocios </li>
-                                                <li class="breadcrumb-item"><a href="_ronda_neg_agenda.php" title="ir">Agenda</a></li>
+                                                <li class="breadcrumb-item"><a href="_ronda_inv_agenda.php" title="ir">Agenda</a></li>
                                                 <li class="breadcrumb-item active" aria-current="page"> <?php echo $arr_rn[0]['nombre'] ?> </li>
                                             </ol>
                                         </nav>
@@ -452,9 +452,9 @@
                                                     $ind_info      = 1;
 
                                                     for($p=0 ; $p<count($arr_emp_d1) ; $p++){
-                                                        $nom_emp_c = $RondaNeg->get_nbreEmpresa($arr_emp_d1[$p]);
-                                                        $tabla.= "<th style='text-align:center'> ".$nom_emp_c." </th>";
-                                                        $arr_info[0][$ind_info]= $nom_emp_c;
+                                                        $nom_emp_i = $RondaInv->get_nbreEmpresa($arr_emp_d1[$p]);
+                                                        $tabla.= "<th style='text-align:center'> ".$nom_emp_i." </th>";
+                                                        $arr_info[0][$ind_info]= $nom_emp_i;
                                                         $ind_info++;
                                                     }
                                                     $knt_col_t1           = count($arr_emp_d1);
@@ -484,28 +484,28 @@
                                                         for($m=0 ; $m<count($arr_fila) ; $m++){ 
                                                             if(1<= $knt_col_t1){ 
                                                                 $emp_a_most = $arr_fila[$m]['c1'];  
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
                                                             }
                                                             if(2<= $knt_col_t1){ 
                                                                 $emp_a_most = $arr_fila[$m]['c2'];  
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
                                                             }
                                                             if(3<= $knt_col_t1){ 
                                                                 $emp_a_most = $arr_fila[$m]['c3'];  
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
                                                             }
                                                             if(4<= $knt_col_t1){ 
                                                                 $emp_a_most = $arr_fila[$m]['c4'];  
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
@@ -519,35 +519,35 @@
                                                             }
                                                             if(6<= $knt_col_t1){ 
                                                                 $emp_a_most = $arr_fila[$m]['c6'];  
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
                                                             }
                                                             if(7<= $knt_col_t1){ 
                                                                 $emp_a_most = $arr_fila[$m]['c7'];  
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
                                                             }
                                                             if(8<= $knt_col_t1){ 
                                                                 $emp_a_most = $arr_fila[$m]['c8'];  
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
                                                             }
                                                             if(9<= $knt_col_t1){ 
                                                                 $emp_a_most = $arr_fila[$m]['c9'];  
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
                                                             }
                                                             if(10<=$knt_col_t1){ 
                                                                 $emp_a_most = $arr_fila[$m]['c10']; 
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
@@ -596,7 +596,7 @@
                                                     $ind_info      = 1;
 
                                                     for($p=0 ; $p<count($arr_emp_d2) ; $p++){
-                                                        $nom_emp_c2 = $RondaNeg->get_nbreEmpresa($arr_emp_d2[$p]);
+                                                        $nom_emp_c2 = $RondaInv->get_nbreEmpresa($arr_emp_d2[$p]);
                                                         $tabla.= "<th style='text-align:center'> ".$nom_emp_c2." </th>";
                                                         $arr_info[0][$ind_info]= $nom_emp_c2;
                                                         $ind_info++;
@@ -628,70 +628,70 @@
                                                         for($m=0 ; $m<count($arr_fila) ; $m++){ 
                                                             if(1<= $knt_col_t2){ 
                                                                 $emp_a_most = $arr_fila[$m]['c1'];  
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
                                                             }
                                                             if(2<= $knt_col_t2){ 
                                                                 $emp_a_most = $arr_fila[$m]['c2'];  
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
                                                             }
                                                             if(3<= $knt_col_t2){ 
                                                                 $emp_a_most = $arr_fila[$m]['c3'];  
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
                                                             }
                                                             if(4<= $knt_col_t2){ 
                                                                 $emp_a_most = $arr_fila[$m]['c4'];  
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
                                                             }
                                                             if(5<= $knt_col_t2){ 
                                                                 $emp_a_most = $arr_fila[$m]['c5'];  
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
                                                             }
                                                             if(6<= $knt_col_t2){ 
                                                                 $emp_a_most = $arr_fila[$m]['c6'];  
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
                                                             }
                                                             if(7<= $knt_col_t2){ 
                                                                 $emp_a_most = $arr_fila[$m]['c7'];  
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
                                                             }
                                                             if(8<= $knt_col_t2){ 
                                                                 $emp_a_most = $arr_fila[$m]['c8'];  
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
                                                             }
                                                             if(9<= $knt_col_t2){ 
                                                                 $emp_a_most = $arr_fila[$m]['c9'];  
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
                                                             }
                                                             if(10<=$knt_col_t2){ 
                                                                 $emp_a_most = $arr_fila[$m]['c10']; 
-                                                                if($emp_a_most != 0){ $most = $RondaNeg->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
+                                                                if($emp_a_most != 0){ $most = $RondaInv->get_nbreEmpresa($emp_a_most);	$ccant++;}else{ $most=''; }
                                                                 $f.= '<td style="text-align:center">'. $most."</td>\n";
 
                                                                 $arr_info[$ind_info_f][$ind_info_c]= $most;	$ind_info_c++;
@@ -798,7 +798,7 @@
 	?> 
 
     <?php
-        $_SESSION['evento']     = 'rn';
+        $_SESSION['evento']     = 'ri';
         $_SESSION['arr_info']   = $arr_info;      
         $_SESSION['arr_info2']  = $arr_info2;      
         $_SESSION['hay_tabla_1']= $hay_dia1;      

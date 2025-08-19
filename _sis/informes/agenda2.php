@@ -81,7 +81,7 @@ $pdf->AliasNbPages();
 $pdf->AddPage();
 
 session_start();
-
+$evento      = $_SESSION['evento'];
 $hay_tabla_1 = $_SESSION['hay_tabla_1'];
 $hay_tabla_2 = $_SESSION['hay_tabla_2'];
 $knt_emp_c   = $_SESSION['knt_emp_c'];
@@ -90,11 +90,13 @@ $f_dia       = $_SESSION['f_dia_2_'];
 $knt_emp_c_  = $knt_emp_c + 1;
 
 
-// CABECERA	
-$pdf->Image('logo_apaisado.png', 19 , 3,  250, 30, 'png', '');  // x(<->) y(arriba abajo) z(ancho) w(alto)
+// CABECERA
+if($evento == 'ri'){$pdf->Image('logo_apaisado_ri.png', 19 , 3,  250, 30, 'png', ''); $titulo_evento='Agenda de Ronda de Inversiones ';}
+else {$pdf->Image('logo_apaisado.png', 19 , 3,  250, 30, 'png', ''); $titulo_evento='Agenda de Ronda de Negocios ';}  // x(<->) y(arriba abajo) z(ancho) w(alto)		
+
 $pdf->Ln(30);
 $pdf->SetFont('Helvetica','B', 11);// B negrita / I cursiva / U subrayado
-$pdf->Cell(0,10,utf8_decode('Agenda de Negocios '.$f_dia),10,0,'C');
+$pdf->Cell(0,10,utf8_decode($titulo_evento.$f_dia),10,0,'C');
 $pdf->Cell(190);
 $pdf->Ln(10);
 
@@ -272,6 +274,7 @@ echo "<script language='javascript'>window.open('agenda.pdf','_self','');</scrip
 
 
 // borrar las variables de sesion
+if (isset($_SESSION['evento']))      	  unset($_SESSION['evento']);
 if (isset($_SESSION['hay_tabla_1']))      unset($_SESSION['hay_tabla_1']);
 if (isset($_SESSION['hay_tabla_2']))      unset($_SESSION['hay_tabla_2']);
 if (isset($_SESSION['knt_emp_c']))        unset($_SESSION['knt_emp_c']);
