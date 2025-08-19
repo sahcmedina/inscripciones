@@ -268,8 +268,8 @@ $(document).ready(function(){
             "sLengthMenu": "Results :  _MENU_",
         },
         "stripeClasses": [],
-        "lengthMenu": [10, 20, 50],
-        "pageLength": 5 
+        "lengthMenu": [5, 10, 20, 50],
+        "pageLength": 10 
     });
 </script>
 

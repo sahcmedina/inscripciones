@@ -313,7 +313,7 @@ $(document).ready(function(){
                         <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Información </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"><i class="bi bi-info-circle" style="font-size: 1rem;"></i> Información </h6></div>
 
                             <form name="form_del_user" id="form_del_user" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
                                 
@@ -341,7 +341,7 @@ $(document).ready(function(){
                         <div class="modal-dialog modal-content" >
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Borrar <?php echo $entidad ?> </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"><i class="bi bi-trash" style="font-size: 1rem;"></i> Borrar <?php echo $entidad ?> </h6></div>
 
                             <form name="form_del_reg" id="form_del_reg" class="form-horizontal validate" method="post" action="#" enctype="multipart/form-data" >
                                 
@@ -381,7 +381,7 @@ $(document).ready(function(){
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Agregar <?php echo $entidad ?> </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"><i class="bi bi-plus-circle" style="font-size: 1rem;"></i> Agregar <?php echo $entidad ?> </h6></div>
 
                             <form name="add_ri" id="add_ri" class="form-horizontal validate" method="post" action="./funciones/mod4_ronda_inv_add.php" enctype="multipart/form-data" >
                                 
@@ -469,7 +469,7 @@ $(document).ready(function(){
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                             
-                            <div class="modal-header"><h6 class="modal-title"> Modificar <?php echo $entidad ?> </h6></div>
+                            <div class="modal-header"><h6 class="modal-title"><i class="bi bi-pencil" style="font-size: 1rem;"></i> Modificar <?php echo $entidad ?> </h6></div>
 
                             <form name="form_mdf_" id="form_mdf_" class="form-horizontal validate" method="post" action="./_ronda_inv_admin_upd.php" enctype="multipart/form-data" >
                                 
